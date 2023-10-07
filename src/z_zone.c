@@ -28,6 +28,8 @@
 #include "i_system.h"
 #include "doomdef.h"
 
+#include <stdint.h>
+
 
 //
 // ZONE MEMORY ALLOCATION
@@ -452,7 +454,7 @@ void Z_ChangeTag2(void* ptr, int tag)
     if (block->id != ZONEID)
         I_Error("Error: Z_ChangeTag: freed a pointer without ZONEID");
 
-    if (tag >= PU_PURGELEVEL && (unsigned long long)block->user < 0x100)
+    if (tag >= PU_PURGELEVEL && (uintptr_t)block->user < 0x100)
         I_Error("Error: Z_ChangeTag: an owner is required for purgable blocks");
 
     block->tag = tag;

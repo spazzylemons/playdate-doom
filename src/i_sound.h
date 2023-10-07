@@ -33,7 +33,7 @@
 
 
 // Init at program start...
-void I_InitSound();
+void I_InitSound(void);
 
 // ... update sound buffer and audio device at runtime...
 void I_UpdateSound(void);
@@ -48,7 +48,7 @@ void I_ShutdownSound(void);
 //
 
 // Initialize channels?
-void I_SetChannels();
+void I_SetChannels(void);
 
 // Get raw data lump index for sound descriptor.
 int I_GetSfxLumpNum(sfxinfo_t* sfxinfo);
@@ -98,7 +98,7 @@ void I_StopSong(int handle);
 void I_UnRegisterSong(int handle);
 
 // Get next MIDI message
-unsigned long I_TickSong();
+unsigned long I_TickSong(void);
 
 
 #endif

@@ -830,7 +830,7 @@ void R_SortVisSprites(void)
     int count;
     vissprite_t* ds;
     vissprite_t* best;
-    vissprite_t unsorted;
+    static vissprite_t unsorted; // make static to avoid compiler warning
     fixed_t bestscale;
 
     count = (int)(vissprite_p - vissprites);

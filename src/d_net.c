@@ -34,6 +34,8 @@
 #include "doomdef.h"
 #include "doomstat.h"
 
+#include <stdint.h>
+
 
 //
 // NETWORKING
@@ -100,7 +102,7 @@ void D_DoAdvanceDemo(void);
 //
 int NetbufferSize(void)
 {
-    return (int)(long long)&(((doomdata_t*)0)->cmds[netbuffer->numtics]);
+    return (int)(uintptr_t)&(((doomdata_t*)0)->cmds[netbuffer->numtics]);
 }
 
 
@@ -119,7 +121,7 @@ unsigned NetbufferChecksum(void)
     return 0;                        // byte order problems
 // #endif
 
-    l = (NetbufferSize() - (int)(long long)&(((doomdata_t*)0)->retransmitfrom)) / 4;
+    l = (NetbufferSize() - (int)(uintptr_t)&(((doomdata_t*)0)->retransmitfrom)) / 4;
     for (i = 0; i < l; i++)
         c += ((unsigned*)&netbuffer->retransmitfrom)[i] * (i + 1);
 

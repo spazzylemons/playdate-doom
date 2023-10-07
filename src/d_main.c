@@ -644,7 +644,7 @@ void IdentifyVersion(void)
     }
 
     void* f;
-    if (f = doom_open(doom2fwad, "rb"))
+    if ((f = doom_open(doom2fwad, "rb")))
     {
         doom_close(f);
         gamemode = commercial;
@@ -656,7 +656,7 @@ void IdentifyVersion(void)
         return;
     }
 
-    if (f = doom_open(doom2wad, "rb"))
+    if ((f = doom_open(doom2wad, "rb")))
     {
         doom_close(f);
         gamemode = commercial;
@@ -664,7 +664,7 @@ void IdentifyVersion(void)
         return;
     }
 
-    if (f = doom_open(plutoniawad, "rb"))
+    if ((f = doom_open(plutoniawad, "rb")))
     {
         doom_close(f);
         gamemode = commercial;
@@ -672,7 +672,7 @@ void IdentifyVersion(void)
         return;
     }
 
-    if (f = doom_open(tntwad, "rb"))
+    if ((f = doom_open(tntwad, "rb")))
     {
         doom_close(f);
         gamemode = commercial;
@@ -680,7 +680,7 @@ void IdentifyVersion(void)
         return;
     }
 
-    if (f = doom_open(doomuwad, "rb"))
+    if ((f = doom_open(doomuwad, "rb")))
     {
         doom_close(f);
         gamemode = retail;
@@ -688,7 +688,7 @@ void IdentifyVersion(void)
         return;
     }
 
-    if (f = doom_open(doomwad, "rb"))
+    if ((f = doom_open(doomwad, "rb")))
     {
         doom_close(f);
         gamemode = registered;
@@ -696,7 +696,7 @@ void IdentifyVersion(void)
         return;
     }
 
-    if (f = doom_open(doom1wad, "rb"))
+    if ((f = doom_open(doom1wad, "rb")))
     {
         doom_close(f);
         gamemode = shareware;

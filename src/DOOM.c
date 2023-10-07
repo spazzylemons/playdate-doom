@@ -14,6 +14,7 @@
 #include "m_misc.h"
 
 #include <string.h>
+#include <stdint.h>
 
 
 extern byte* screens[5];
@@ -48,8 +49,8 @@ doom_getenv_fn doom_getenv = 0;
 
 void D_DoomLoop(void);
 void D_UpdateWipe(void);
-void I_UpdateSound();
-unsigned long I_TickSong();
+void I_UpdateSound(void);
+unsigned long I_TickSong(void);
 
 
 #if defined(DOOM_IMPLEMENT_PRINT)
@@ -191,7 +192,9 @@ char* doom_getenv_impl(const char* var)
     return getenv(var);
 }
 #else
-char* doom_getenv_impl(const char* var) {}
+char* doom_getenv_impl(const char* var) {
+    return NULL;
+}
 #endif
 
 
@@ -394,7 +397,7 @@ const char* doom_ctoa(char c)
 const char* doom_ptoa(void* p)
 {
     int idx = 0;
-    unsigned long long i = (unsigned long long)p;
+    uintptr_t i = (uintptr_t)p;
 
     itoa_buf[idx++] = '0';
     itoa_buf[idx++] = 'x';
@@ -529,7 +532,7 @@ void doom_init(int argc, char** argv, int flags)
 }
 
 
-void doom_update()
+void doom_update(void)
 {
     if (is_wiping_screen)
         D_UpdateWipe();
@@ -575,13 +578,13 @@ const unsigned char* doom_get_framebuffer(int channels)
 }
 
 
-unsigned long doom_tick_midi()
+unsigned long doom_tick_midi(void)
 {
     return I_TickSong();
 }
 
 
-short* doom_get_sound_buffer()
+short* doom_get_sound_buffer(void)
 {
     I_UpdateSound();
     return 0;

@@ -1,5 +1,4 @@
-#define DOOM_IMPLEMENTATION
-#include "PureDOOM.h"
+#include "DOOM.h"
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -192,6 +191,7 @@ static int update(void *userdata) {
 
 extern signed short mixbuffer_left[1024];
 extern signed short mixbuffer_right[1024];
+void I_UpdateSound(void);
 
 static int sound_callback(void* context, int16_t* left, int16_t* right, int len) {
     static int buffer_index = 2048;

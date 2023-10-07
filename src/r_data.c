@@ -47,6 +47,8 @@
 #endif
 #include "r_data.h"
 
+#include <stdint.h>
+
 
 //
 // Graphics.
@@ -648,7 +650,7 @@ void R_InitColormaps(void)
     lump = W_GetNumForName("COLORMAP");
     length = W_LumpLength(lump) + 255;
     colormaps = Z_Malloc(length, PU_STATIC, 0);
-    colormaps = (byte*)(((unsigned long long)colormaps + 255) & ~0xff);
+    colormaps = (byte*)(((uintptr_t)colormaps + 255) & ~0xff);
     W_ReadLump(lump, colormaps);
 }
 
