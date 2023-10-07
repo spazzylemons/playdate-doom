@@ -62,21 +62,6 @@ typedef enum
 } doom_seek_t;
 
 
-typedef void(*doom_print_fn)(const char* str);
-typedef void*(*doom_malloc_fn)(int size);
-typedef void(*doom_free_fn)(void* ptr);
-typedef void*(*doom_open_fn)(const char* filename, const char* mode);
-typedef void(*doom_close_fn)(void* handle);
-typedef int(*doom_read_fn)(void* handle, void *buf, int count);
-typedef int(*doom_write_fn)(void* handle, const void *buf, int count);
-typedef int(*doom_seek_fn)(void* handle, int offset, doom_seek_t origin);
-typedef int(*doom_tell_fn)(void* handle);
-typedef int(*doom_eof_fn)(void* handle);
-typedef void(*doom_gettime_fn)(int* sec, int* usec);
-typedef void(*doom_exit_fn)(int code);
-typedef char*(*doom_getenv_fn)(const char* var);
-
-
 // Doom key mapping
 typedef enum
 {
@@ -170,20 +155,6 @@ void doom_set_resolution(int width, int height);
 // Set default configurations. Lets say, changing arrows to WASD as default controls
 void doom_set_default_int(const char* name, int value);
 void doom_set_default_string(const char* name, const char* value);
-
-// set callbacks
-void doom_set_print(doom_print_fn print_fn);
-void doom_set_malloc(doom_malloc_fn malloc_fn, doom_free_fn free_fn);
-void doom_set_file_io(doom_open_fn open_fn,
-                      doom_close_fn close_fn,
-                      doom_read_fn read_fn,
-                      doom_write_fn write_fn,
-                      doom_seek_fn seek_fn,
-                      doom_tell_fn tell_fn,
-                      doom_eof_fn eof_fn);
-void doom_set_gettime(doom_gettime_fn gettime_fn);
-void doom_set_exit(doom_exit_fn exit_fn);
-void doom_set_getenv(doom_getenv_fn getenv_fn);
 
 // Initializes DOOM and start things up. Call only call one
 void doom_init(int argc, char** argv, int flags);

@@ -6,6 +6,8 @@
 
 #include "DOOM.h"
 
+#include "doom_config.h"
+
 #include "d_main.h"
 #include "doomdef.h"
 #include "doomtype.h"
@@ -32,170 +34,12 @@ static char itoa_buf[20];
 
 char error_buf[260];
 int doom_flags = 0;
-doom_print_fn doom_print = 0;
-doom_malloc_fn doom_malloc = 0;
-doom_free_fn doom_free = 0;
-doom_open_fn doom_open = 0;
-doom_close_fn doom_close = 0;
-doom_read_fn doom_read = 0;
-doom_write_fn doom_write = 0;
-doom_seek_fn doom_seek = 0;
-doom_tell_fn doom_tell = 0;
-doom_eof_fn doom_eof = 0;
-doom_gettime_fn doom_gettime = 0;
-doom_exit_fn doom_exit = 0;
-doom_getenv_fn doom_getenv = 0;
 
 
 void D_DoomLoop(void);
 void D_UpdateWipe(void);
 void I_UpdateSound(void);
 unsigned long I_TickSong(void);
-
-
-#if defined(DOOM_IMPLEMENT_PRINT)
-#include <stdio.h>
-static void doom_print_impl(const char* str)
-{
-    printf("%s", str);
-}
-#else
-static void doom_print_impl(const char* str) {}
-#endif
-
-#if defined(DOOM_IMPLEMENT_MALLOC)
-#include <stdlib.h>
-static void* doom_malloc_impl(int size)
-{
-    return malloc((size_t)size);
-}
-static void doom_free_impl(void* ptr)
-{
-    free(ptr);
-}
-#else
-static void* doom_malloc_impl(int size) { return 0; }
-static void doom_free_impl(void* ptr) {}
-#endif
-
-
-#if defined(DOOM_IMPLEMENT_FILE_IO)
-#include <stdio.h>
-void* doom_open_impl(const char* filename, const char* mode)
-{
-    return fopen(filename, mode);
-}
-void doom_close_impl(void* handle)
-{
-    fclose(handle);
-}
-int doom_read_impl(void* handle, void *buf, int count)
-{
-    return (int)fread(buf, 1, count, handle);
-}
-int doom_write_impl(void* handle, const void *buf, int count)
-{
-    return (int)fwrite(buf, 1, count, handle);
-}
-int doom_seek_impl(void* handle, int offset, doom_seek_t origin)
-{
-    return fseek(handle, offset, origin);
-}
-int doom_tell_impl(void* handle)
-{
-    return (int)ftell(handle);
-}
-int doom_eof_impl(void* handle)
-{
-    return feof(handle);
-}
-#else
-void* doom_open_impl(const char* filename, const char* mode)
-{
-    return 0;
-}
-void doom_close_impl(void* handle) {}
-int doom_read_impl(void* handle, void *buf, int count)
-{
-    return -1;
-}
-int doom_write_impl(void* handle, const void *buf, int count)
-{
-    return -1;
-}
-int doom_seek_impl(void* handle, int offset, doom_seek_t origin)
-{
-    return -1;
-}
-int doom_tell_impl(void* handle)
-{
-    return -1;
-}
-int doom_eof_impl(void* handle)
-{
-    return 1;
-}
-#endif
-
-
-#if defined(DOOM_IMPLEMENT_GETTIME)
-#if defined(WIN32)
-#include <winsock.h>
-#else
-#include <sys/time.h>
-#endif
-void doom_gettime_impl(int* sec, int* usec)
-{
-#if defined(WIN32)
-    static const unsigned long long EPOCH = ((unsigned long long)116444736000000000ULL);
-    SYSTEMTIME system_time;
-    FILETIME file_time;
-    unsigned long long time;
-    GetSystemTime(&system_time);
-    SystemTimeToFileTime(&system_time, &file_time);
-    time = ((unsigned long long)file_time.dwLowDateTime);
-    time += ((unsigned long long)file_time.dwHighDateTime) << 32;
-    *sec = (int)((time - EPOCH) / 10000000L);
-    *usec = (int)(system_time.wMilliseconds * 1000);
-#else
-    struct timeval tp;
-    struct timezone tzp;
-    gettimeofday(&tp, &tzp);
-    *sec = tp.tv_sec;
-    *usec = tp.tv_usec;
-#endif
-}
-#else
-void doom_gettime_impl(int* sec, int* usec)
-{
-    *sec = 0;
-    *usec = 0;
-}
-#endif
-
-
-#if defined(DOOM_IMPLEMENT_EXIT)
-#include <stdlib.h>
-void doom_exit_impl(int code)
-{
-    exit(code);
-}
-#else
-void doom_exit_impl(int code) {}
-#endif
-
-
-#if defined(DOOM_IMPLEMENT_GETENV)
-#include <stdlib.h>
-char* doom_getenv_impl(const char* var)
-{
-    return getenv(var);
-}
-#else
-char* doom_getenv_impl(const char* var) {
-    return NULL;
-}
-#endif
 
 
 void doom_memset(void* ptr, int value, int num)
@@ -457,71 +301,8 @@ void doom_set_default_string(const char* name, const char* value)
 }
 
 
-void doom_set_print(doom_print_fn print_fn)
-{
-    doom_print = print_fn;
-}
-
-
-void doom_set_malloc(doom_malloc_fn malloc_fn, doom_free_fn free_fn)
-{
-    doom_malloc = malloc_fn;
-    doom_free = free_fn;
-}
-
-
-void doom_set_file_io(doom_open_fn open_fn,
-                      doom_close_fn close_fn,
-                      doom_read_fn read_fn,
-                      doom_write_fn write_fn,
-                      doom_seek_fn seek_fn,
-                      doom_tell_fn tell_fn,
-                      doom_eof_fn eof_fn)
-{
-    doom_open = open_fn;
-    doom_close = close_fn;
-    doom_read = read_fn;
-    doom_write = write_fn;
-    doom_seek = seek_fn;
-    doom_tell = tell_fn;
-    doom_eof = eof_fn;
-}
-
-
-void doom_set_gettime(doom_gettime_fn gettime_fn)
-{
-    doom_gettime = gettime_fn;
-}
-
-
-void doom_set_exit(doom_exit_fn exit_fn)
-{
-    doom_exit = exit_fn;
-}
-
-
-void doom_set_getenv(doom_getenv_fn getenv_fn)
-{
-    doom_getenv = getenv_fn;
-}
-
-
 void doom_init(int argc, char** argv, int flags)
 {
-    if (!doom_print) doom_print = doom_print_impl;
-    if (!doom_malloc) doom_malloc = doom_malloc_impl;
-    if (!doom_free) doom_free = doom_free_impl;
-    if (!doom_open) doom_open = doom_open_impl;
-    if (!doom_close) doom_close = doom_close_impl;
-    if (!doom_read) doom_read = doom_read_impl;
-    if (!doom_write) doom_write = doom_write_impl;
-    if (!doom_seek) doom_seek = doom_seek_impl;
-    if (!doom_tell) doom_tell = doom_tell_impl;
-    if (!doom_eof) doom_eof = doom_eof_impl;
-    if (!doom_gettime) doom_gettime = doom_gettime_impl;
-    if (!doom_exit) doom_exit = doom_exit_impl;
-    if (!doom_getenv) doom_getenv = doom_getenv_impl;
-
     screen_buffer = doom_malloc(SCREENWIDTH * SCREENHEIGHT);
 
     myargc = argc;

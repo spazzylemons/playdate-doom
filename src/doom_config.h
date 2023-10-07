@@ -19,19 +19,19 @@
 
 extern char error_buf[260];
 extern int doom_flags;
-extern doom_print_fn doom_print;
-extern doom_malloc_fn doom_malloc;
-extern doom_free_fn doom_free;
-extern doom_open_fn doom_open;
-extern doom_close_fn doom_close;
-extern doom_read_fn doom_read;
-extern doom_write_fn doom_write;
-extern doom_seek_fn doom_seek;
-extern doom_tell_fn doom_tell;
-extern doom_eof_fn doom_eof;
-extern doom_gettime_fn doom_gettime;
-extern doom_exit_fn doom_exit;
-extern doom_getenv_fn doom_getenv;
+void doom_print(const char *str);
+void *doom_malloc(int size);
+void doom_free(void *ptr);
+void *doom_open(const char *filename, const char *mode);
+void doom_close(void *handle);
+int doom_read(void *handle, void *buf, int count);
+int doom_write(void *handle, const void *buf, int count);
+int doom_seek(void *handle, int offset, doom_seek_t origin);
+int doom_tell(void *handle);
+int doom_eof(void *handle);
+void doom_gettime(int *sec, int *usec);
+void doom_exit(int code);
+char *doom_getenv(const char *var);
 
 
 const char* doom_itoa(int i, int radix);

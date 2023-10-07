@@ -10,7 +10,7 @@
 
 static PlaydateAPI *playdate;
 
-static void print_fn(const char *str) {
+void doom_print(const char *str) {
     static char print_buffer[PRINT_BUFFER_SIZE];
     static int print_buffer_size = 0;
 
@@ -27,46 +27,46 @@ static void print_fn(const char *str) {
     }
 }
 
-static void *malloc_fn(int size) {
+void *doom_malloc(int size) {
     if (size == 0) {
         size = 1;
     }
     return playdate->system->realloc(NULL, size);
 }
 
-static void free_fn(void *ptr) {
+void doom_free(void *ptr) {
     if (ptr != NULL) {
         playdate->system->realloc(ptr, 0);
     }
 }
 
-static void *open_fn(const char *filename, const char *mode) {
+void *doom_open(const char *filename, const char *mode) {
     FileOptions options = strstr(mode, "w") ? kFileWrite : kFileRead;
     if (strstr(mode, "a")) options |= kFileAppend;
     return playdate->file->open(filename, options);
 }
 
-static void close_fn(void *handle) {
+void doom_close(void *handle) {
     playdate->file->close(handle);
 }
 
-static int read_fn(void *handle, void *buf, int count) {
+int doom_read(void *handle, void *buf, int count) {
     return playdate->file->read(handle, buf, count);
 }
 
-static int write_fn(void *handle, const void *buf, int count) {
+int doom_write(void *handle, const void *buf, int count) {
     return playdate->file->write(handle, buf, count);
 }
 
-static int seek_fn(void *handle, int offset, doom_seek_t origin) {
+int doom_seek(void *handle, int offset, doom_seek_t origin) {
     return playdate->file->seek(handle, offset, origin);
 }
 
-static int tell_fn(void *handle) {
+int doom_tell(void *handle) {
     return playdate->file->tell(handle);
 }
 
-static int eof_fn(void *handle) {
+int doom_eof(void *handle) {
     int old_pos = playdate->file->tell(handle);
     playdate->file->seek(handle, 1, SEEK_CUR);
     int new_pos = playdate->file->tell(handle);
@@ -75,7 +75,7 @@ static int eof_fn(void *handle) {
 }
 
 // TODO pause menu might cause strange things to happen if we use this for timing...
-static void gettime_fn(int *sec, int *usec) {
+void doom_gettime(int *sec, int *usec) {
     unsigned int msec;
     unsigned int seconds = playdate->system->getSecondsSinceEpoch(&msec);
     if (sec != NULL) {
@@ -86,7 +86,7 @@ static void gettime_fn(int *sec, int *usec) {
     }
 }
 
-static void exit_fn(int code) {
+void doom_exit(int code) {
     // Can't actually exit using Playdate API. This is the best we can do
     while (true) {
         __builtin_trap();
@@ -94,7 +94,7 @@ static void exit_fn(int code) {
     __builtin_unreachable();
 }
 
-static char *getenv_fn(const char *var) {
+char *doom_getenv(const char *var) {
     if (!strcmp(var, "HOME") || !strcmp(var, "DOOMWADDIR")) {
         return "/";
     } else {
@@ -348,22 +348,6 @@ int eventHandler(PlaydateAPI* pd, PDSystemEvent event, uint32_t arg) {
 
         // match DOOM tic rate
         playdate->display->setRefreshRate(35.0f);
-
-        doom_set_print(print_fn);
-        doom_set_malloc(malloc_fn, free_fn);
-        doom_set_file_io(
-            open_fn,
-            close_fn,
-            read_fn,
-            write_fn,
-            seek_fn,
-            tell_fn,
-            eof_fn
-        );
-        doom_set_gettime(gettime_fn);
-        doom_set_exit(exit_fn);
-        doom_set_getenv(getenv_fn);
-
         doom_init(1, argv, 0);
 
         playdate->sound->addSource(sound_callback, NULL, 1);
