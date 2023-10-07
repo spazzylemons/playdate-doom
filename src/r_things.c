@@ -98,8 +98,8 @@ void R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation, doom_boole
     {
         //I_Error("Error: R_InstallSpriteLump: "
         //        "Bad frame characters in lump %i", lump);
-        doom_strcpy(error_buf, "Error: R_InstallSpriteLump: Bad frame characters in lump ");
-        doom_concat(error_buf, doom_itoa(lump, 10));
+        strcpy(error_buf, "Error: R_InstallSpriteLump: Bad frame characters in lump ");
+        strcat(error_buf, doom_itoa(lump, 10));
         I_Error(error_buf);
     }
 
@@ -113,11 +113,11 @@ void R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation, doom_boole
         {
             //I_Error("Error: R_InitSprites: Sprite %s frame %c has "
             //        "multip rot=0 lump", spritename, 'A' + frame);
-            doom_strcpy(error_buf, "Error: R_InitSprites: Sprite ");
-            doom_concat(error_buf, spritename);
-            doom_concat(error_buf, " frame ");
-            doom_concat(error_buf, doom_ctoa('A' + frame));
-            doom_concat(error_buf, " has multip rot=0 lump");
+            strcpy(error_buf, "Error: R_InitSprites: Sprite ");
+            strcat(error_buf, spritename);
+            strcat(error_buf, " frame ");
+            strcat(error_buf, doom_ctoa('A' + frame));
+            strcat(error_buf, " has multip rot=0 lump");
             I_Error(error_buf);
         }
 
@@ -125,11 +125,11 @@ void R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation, doom_boole
         {
             //I_Error("Error: R_InitSprites: Sprite %s frame %c has rotations "
             //        "and a rot=0 lump", spritename, 'A' + frame);
-            doom_strcpy(error_buf, "Error: R_InitSprites: Sprite ");
-            doom_concat(error_buf, spritename);
-            doom_concat(error_buf, " frame ");
-            doom_concat(error_buf, doom_ctoa('A' + frame));
-            doom_concat(error_buf, " has rotations ");
+            strcpy(error_buf, "Error: R_InitSprites: Sprite ");
+            strcat(error_buf, spritename);
+            strcat(error_buf, " frame ");
+            strcat(error_buf, doom_ctoa('A' + frame));
+            strcat(error_buf, " has rotations ");
             I_Error(error_buf);
         }
 
@@ -147,11 +147,11 @@ void R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation, doom_boole
     {
         //I_Error("Error: R_InitSprites: Sprite %s frame %c has rotations "
         //        "and a rot=0 lump", spritename, 'A' + frame);
-        doom_strcpy(error_buf, "Error: R_InitSprites: Sprite ");
-        doom_concat(error_buf, spritename);
-        doom_concat(error_buf, " frame ");
-        doom_concat(error_buf, doom_ctoa('A' + frame));
-        doom_concat(error_buf, " has rotations ");
+        strcpy(error_buf, "Error: R_InitSprites: Sprite ");
+        strcat(error_buf, spritename);
+        strcat(error_buf, " frame ");
+        strcat(error_buf, doom_ctoa('A' + frame));
+        strcat(error_buf, " has rotations ");
         I_Error(error_buf);
     }
 
@@ -164,13 +164,13 @@ void R_InstallSpriteLump(int lump, unsigned frame, unsigned rotation, doom_boole
         //I_Error("Error: R_InitSprites: Sprite %s : %c : %c "
         //        "has two lumps mapped to it",
         //        spritename, 'A' + frame, '1' + rotation);
-        doom_strcpy(error_buf, "Error: R_InitSprites: Sprite ");
-        doom_concat(error_buf, spritename);
-        doom_concat(error_buf, " : ");
-        doom_concat(error_buf, doom_ctoa('A' + frame));
-        doom_concat(error_buf, " : ");
-        doom_concat(error_buf, doom_ctoa('1' + rotation));
-        doom_concat(error_buf, " ");
+        strcpy(error_buf, "Error: R_InitSprites: Sprite ");
+        strcat(error_buf, spritename);
+        strcat(error_buf, " : ");
+        strcat(error_buf, doom_ctoa('A' + frame));
+        strcat(error_buf, " : ");
+        strcat(error_buf, doom_ctoa('1' + rotation));
+        strcat(error_buf, " ");
         I_Error(error_buf);
     }
 
@@ -227,7 +227,7 @@ void R_InitSpriteDefs(char** namelist)
     for (i = 0; i < numsprites; i++)
     {
         spritename = namelist[i];
-        doom_memset(sprtemp, -1, sizeof(sprtemp));
+        memset(sprtemp, -1, sizeof(sprtemp));
 
         maxframe = -1;
         intname = *(int*)namelist[i];
@@ -275,10 +275,10 @@ void R_InitSpriteDefs(char** namelist)
                     // no rotations were found for that frame at all
                     //I_Error("Error: R_InitSprites: No patches found "
                     //        "for %s frame %c", namelist[i], frame + 'A');
-                    doom_strcpy(error_buf, "Error: R_InitSprites: No patches found for ");
-                    doom_concat(error_buf, namelist[i]);
-                    doom_concat(error_buf, " frame ");
-                    doom_concat(error_buf, doom_ctoa(frame + 'A'));
+                    strcpy(error_buf, "Error: R_InitSprites: No patches found for ");
+                    strcat(error_buf, namelist[i]);
+                    strcat(error_buf, " frame ");
+                    strcat(error_buf, doom_ctoa(frame + 'A'));
                     I_Error(error_buf);
                     break;
                 }
@@ -295,11 +295,11 @@ void R_InitSpriteDefs(char** namelist)
                             //I_Error("Error: R_InitSprites: Sprite %s frame %c "
                             //        "is missing rotations",
                             //        namelist[i], frame + 'A');
-                            doom_strcpy(error_buf, "Error: R_InitSprites: Sprite ");
-                            doom_concat(error_buf, namelist[i]);
-                            doom_concat(error_buf, " frame ");
-                            doom_concat(error_buf, doom_ctoa(frame + 'A'));
-                            doom_concat(error_buf, " is missing rotations");
+                            strcpy(error_buf, "Error: R_InitSprites: Sprite ");
+                            strcat(error_buf, namelist[i]);
+                            strcat(error_buf, " frame ");
+                            strcat(error_buf, doom_ctoa(frame + 'A'));
+                            strcat(error_buf, " is missing rotations");
                             I_Error(error_buf);
                         }
                     break;
@@ -310,7 +310,7 @@ void R_InitSpriteDefs(char** namelist)
         sprites[i].numframes = maxframe;
         sprites[i].spriteframes =
             Z_Malloc(maxframe * sizeof(spriteframe_t), PU_STATIC, 0);
-        doom_memcpy(sprites[i].spriteframes, sprtemp, maxframe * sizeof(spriteframe_t));
+        memcpy(sprites[i].spriteframes, sprtemp, maxframe * sizeof(spriteframe_t));
     }
 }
 
@@ -527,9 +527,9 @@ void R_ProjectSprite(mobj_t* thing)
         //I_Error("Error: R_ProjectSprite: invalid sprite number %i ",
         //        thing->sprite);
         
-        doom_strcpy(error_buf, "Error: R_ProjectSprite: invalid sprite number ");
-        doom_concat(error_buf, doom_itoa(thing->sprite, 10));
-        doom_concat(error_buf, " ");
+        strcpy(error_buf, "Error: R_ProjectSprite: invalid sprite number ");
+        strcat(error_buf, doom_itoa(thing->sprite, 10));
+        strcat(error_buf, " ");
         I_Error(error_buf);
     }
 #endif
@@ -540,11 +540,11 @@ void R_ProjectSprite(mobj_t* thing)
         //I_Error("Error: R_ProjectSprite: invalid sprite frame %i : %i ",
         //        thing->sprite, thing->frame);
         
-        doom_strcpy(error_buf, "Error: R_ProjectSprite: invalid sprite frame ");
-        doom_concat(error_buf, doom_itoa(thing->sprite, 10));
-        doom_concat(error_buf, " : ");
-        doom_concat(error_buf, doom_itoa(thing->frame, 10));
-        doom_concat(error_buf, " ");
+        strcpy(error_buf, "Error: R_ProjectSprite: invalid sprite frame ");
+        strcat(error_buf, doom_itoa(thing->sprite, 10));
+        strcat(error_buf, " : ");
+        strcat(error_buf, doom_itoa(thing->frame, 10));
+        strcat(error_buf, " ");
         I_Error(error_buf);
     }
 #endif
@@ -693,9 +693,9 @@ void R_DrawPSprite(pspdef_t* psp)
     {
         //I_Error("Error: R_ProjectSprite: invalid sprite number %i ",
         //        psp->state->sprite);
-        doom_strcpy(error_buf, "Error: R_ProjectSprite: invalid sprite number ");
-        doom_concat(error_buf, doom_itoa(psp->state->sprite, 10));
-        doom_concat(error_buf, " ");
+        strcpy(error_buf, "Error: R_ProjectSprite: invalid sprite number ");
+        strcat(error_buf, doom_itoa(psp->state->sprite, 10));
+        strcat(error_buf, " ");
         I_Error(error_buf);
     }
 #endif
@@ -705,11 +705,11 @@ void R_DrawPSprite(pspdef_t* psp)
     {
         //I_Error("Error: R_ProjectSprite: invalid sprite frame %i : %i ",
         //        psp->state->sprite, psp->state->frame);
-        doom_strcpy(error_buf, "Error: R_ProjectSprite: invalid sprite frame ");
-        doom_concat(error_buf, doom_itoa(psp->state->sprite, 10));
-        doom_concat(error_buf, " : ");
-        doom_concat(error_buf, doom_itoa(psp->state->frame, 10));
-        doom_concat(error_buf, " ");
+        strcpy(error_buf, "Error: R_ProjectSprite: invalid sprite frame ");
+        strcat(error_buf, doom_itoa(psp->state->sprite, 10));
+        strcat(error_buf, " : ");
+        strcat(error_buf, doom_itoa(psp->state->frame, 10));
+        strcat(error_buf, " ");
         I_Error(error_buf);
     }
 #endif

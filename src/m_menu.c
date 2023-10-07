@@ -781,7 +781,7 @@ void M_DrawCustomMenuText(char* name, int x, int y)
     for (int i = 0; i < custom_texts_count; ++i)
     {
         menu_custom_text_t* custom_text = menu_custom_texts + i;
-        if (doom_strcmp(custom_text->name, name) == 0)
+        if (strcmp(custom_text->name, name) == 0)
         {
             menu_custom_text_seg_t* seg = custom_text->segs;
             while (seg->lump)
@@ -816,15 +816,15 @@ void M_ReadSaveStrings(void)
 #endif
         {
             //doom_sprintf(name, SAVEGAMENAME"%d.dsg", i);
-            doom_strcpy(name, SAVEGAMENAME);
-            doom_concat(name, doom_itoa(i, 10));
-            doom_strcpy(name, ".dsg");
+            strcpy(name, SAVEGAMENAME);
+            strcat(name, doom_itoa(i, 10));
+            strcpy(name, ".dsg");
         }
 
         handle = doom_open(name, "r");
         if (handle == 0)
         {
-            doom_strcpy(&savegamestrings[i][0], EMPTYSTRING);
+            strcpy(&savegamestrings[i][0], EMPTYSTRING);
             LoadMenu[i].status = 0;
             continue;
         }
@@ -884,9 +884,9 @@ void M_LoadSelect(int choice)
 #endif
     {
         //doom_sprintf(name, SAVEGAMENAME"%d.dsg", choice);
-        doom_strcpy(name, SAVEGAMENAME);
-        doom_concat(name, doom_itoa(choice, 10));
-        doom_strcpy(name, ".dsg");
+        strcpy(name, SAVEGAMENAME);
+        strcat(name, doom_itoa(choice, 10));
+        strcpy(name, ".dsg");
     }
     G_LoadGame(name);
     M_ClearMenus();
@@ -954,10 +954,10 @@ void M_SaveSelect(int choice)
     saveStringEnter = 1;
 
     saveSlot = choice;
-    doom_strcpy(saveOldString, savegamestrings[choice]);
-    if (!doom_strcmp(savegamestrings[choice], EMPTYSTRING))
+    strcpy(saveOldString, savegamestrings[choice]);
+    if (!strcmp(savegamestrings[choice], EMPTYSTRING))
         savegamestrings[choice][0] = 0;
-    saveCharIndex = (int)doom_strlen(savegamestrings[choice]);
+    saveCharIndex = (int)strlen(savegamestrings[choice]);
 }
 
 
@@ -1013,9 +1013,9 @@ void M_QuickSave(void)
         return;
     }
     //doom_sprintf(tempstring, QSPROMPT, savegamestrings[quickSaveSlot]);
-    doom_strcpy(tempstring, QSPROMPT_1);
-    doom_concat(tempstring, savegamestrings[quickSaveSlot]);
-    doom_strcpy(tempstring, QSPROMPT_2);
+    strcpy(tempstring, QSPROMPT_1);
+    strcat(tempstring, savegamestrings[quickSaveSlot]);
+    strcpy(tempstring, QSPROMPT_2);
     M_StartMessage(tempstring, M_QuickSaveResponse, true);
 }
 
@@ -1047,9 +1047,9 @@ void M_QuickLoad(void)
         return;
     }
     //doom_sprintf(tempstring, QLPROMPT, savegamestrings[quickSaveSlot]);
-    doom_strcpy(tempstring, QLPROMPT_1);
-    doom_concat(tempstring, savegamestrings[quickSaveSlot]);
-    doom_strcpy(tempstring, QLPROMPT_2);
+    strcpy(tempstring, QLPROMPT_1);
+    strcat(tempstring, savegamestrings[quickSaveSlot]);
+    strcpy(tempstring, QLPROMPT_2);
     M_StartMessage(tempstring, M_QuickLoadResponse, true);
 }
 
@@ -1445,14 +1445,14 @@ void M_QuitDOOM(int choice)
     if (language != english)
     {
         //doom_sprintf(endstring, "%s\n\n"DOSY, endmsg[0]);
-        doom_strcpy(endstring, endmsg[0]);
-        doom_concat(endstring, "\n\n" DOSY);
+        strcpy(endstring, endmsg[0]);
+        strcat(endstring, "\n\n" DOSY);
     }
     else
     {
         //doom_sprintf(endstring, "%s\n\n" DOSY, endmsg[gametic % (NUM_QUITMESSAGES - 2) + 1]);
-        doom_strcpy(endstring, endmsg[gametic % (NUM_QUITMESSAGES - 2) + 1]);
-        doom_concat(endstring, "\n\n" DOSY);
+        strcpy(endstring, endmsg[gametic % (NUM_QUITMESSAGES - 2) + 1]);
+        strcat(endstring, "\n\n" DOSY);
     }
 
     M_StartMessage(endstring, M_QuitResponse, true);
@@ -1583,9 +1583,9 @@ int M_StringWidth(char* string)
     int w = 0;
     int c;
 
-    for (i = 0; i < doom_strlen(string); i++)
+    for (i = 0; i < strlen(string); i++)
     {
-        c = doom_toupper(string[i]) - HU_FONTSTART;
+        c = toupper(string[i]) - HU_FONTSTART;
         if (c < 0 || c >= HU_FONTSIZE)
             w += 4;
         else
@@ -1606,7 +1606,7 @@ int M_StringHeight(char* string)
     int height = SHORT(hu_font[0]->height);
 
     h = height;
-    for (i = 0; i < doom_strlen(string); i++)
+    for (i = 0; i < strlen(string); i++)
         if (string[i] == '\n')
             h += height;
 
@@ -1641,7 +1641,7 @@ void M_WriteText(int x, int y, char* string)
             continue;
         }
 
-        c = doom_toupper(c) - HU_FONTSTART;
+        c = toupper(c) - HU_FONTSTART;
         if (c < 0 || c >= HU_FONTSIZE)
         {
             cx += 4;
@@ -1782,7 +1782,7 @@ doom_boolean M_Responder(event_t* ev)
 
             case KEY_ESCAPE:
                 saveStringEnter = 0;
-                doom_strcpy(&savegamestrings[saveSlot][0], saveOldString);
+                strcpy(&savegamestrings[saveSlot][0], saveOldString);
                 break;
 
             case KEY_ENTER:
@@ -1792,7 +1792,7 @@ doom_boolean M_Responder(event_t* ev)
                 break;
 
             default:
-                ch = doom_toupper(ch);
+                ch = toupper(ch);
                 if (ch != 32)
                     if (ch - HU_FONTSTART < 0 || ch - HU_FONTSTART >= HU_FONTSIZE)
                         break;
@@ -2078,18 +2078,18 @@ void M_Drawer(void)
         y = 100 - M_StringHeight(messageString) / 2;
         while (*(messageString + start))
         {
-            for (i = 0; i < doom_strlen(messageString + start); i++)
+            for (i = 0; i < strlen(messageString + start); i++)
                 if (*(messageString + start + i) == '\n')
                 {
-                    doom_memset(string, 0, 40);
-                    doom_strncpy(string, messageString + start, i);
+                    memset(string, 0, 40);
+                    strncpy(string, messageString + start, i);
                     start += i + 1;
                     break;
                 }
 
-            if (i == doom_strlen(messageString + start))
+            if (i == strlen(messageString + start))
             {
-                doom_strcpy(string, messageString + start);
+                strcpy(string, messageString + start);
                 start += i;
             }
 
@@ -2130,7 +2130,7 @@ void M_Drawer(void)
         menuitem_t* menuitem = currentMenu->menuitems + i;
         if (menuitem->name[0])
         {
-            if (doom_strncmp(menuitem->name, "TXT_", 4) == 0)
+            if (strncmp(menuitem->name, "TXT_", 4) == 0)
             {
                 M_DrawCustomMenuText(menuitem->name, x, y);
             }
@@ -2194,29 +2194,29 @@ void M_Init(void)
     if (hide_mouse && !hide_sound)
     {
         OptionsMenu = OptionsMenuNoMouse;
-        doom_memcpy(&OptionsDef, &OptionsNoMouseDef, sizeof(OptionsDef));
+        memcpy(&OptionsDef, &OptionsNoMouseDef, sizeof(OptionsDef));
     }
     else if (!hide_mouse && hide_sound)
     {
         OptionsMenu = OptionsMenuNoSound;
-        doom_memcpy(&OptionsDef, &OptionsNoSoundDef, sizeof(OptionsDef));
+        memcpy(&OptionsDef, &OptionsNoSoundDef, sizeof(OptionsDef));
     }
     else if (hide_mouse && hide_sound)
     {
         OptionsMenu = OptionsMenuNoSoundNoMouse;
-        doom_memcpy(&OptionsDef, &OptionsNoSoundNoMouseDef, sizeof(OptionsDef));
+        memcpy(&OptionsDef, &OptionsNoSoundNoMouseDef, sizeof(OptionsDef));
     }
 
     SoundMenu = SoundMenuFull;
     if (doom_flags & DOOM_FLAG_HIDE_MUSIC_OPTIONS)
     {
         SoundMenu = SoundMenuNoMusic;
-        doom_memcpy(&SoundDef, &SoundNoMusicDef, sizeof(SoundDef));
+        memcpy(&SoundDef, &SoundNoMusicDef, sizeof(SoundDef));
     }
     else if (doom_flags & DOOM_FLAG_HIDE_SOUND_OPTIONS)
     {
         SoundMenu = SoundMenuNoSFX;
-        doom_memcpy(&SoundDef, &SoundNoSFXDef, sizeof(SoundDef));
+        memcpy(&SoundDef, &SoundNoSFXDef, sizeof(SoundDef));
     }
 
     currentMenu = &MainDef;

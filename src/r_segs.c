@@ -368,10 +368,10 @@ void R_StoreWallRange(int start, int stop)
     {
         //I_Error("Error: Bad R_RenderWallRange: %i to %i", start, stop);
         
-        doom_strcpy(error_buf, "Error: Bad R_RenderWallRange: ");
-        doom_concat(error_buf, doom_itoa(start, 10));
-        doom_concat(error_buf, " to ");
-        doom_concat(error_buf, doom_itoa(stop, 10));
+        strcpy(error_buf, "Error: Bad R_RenderWallRange: ");
+        strcat(error_buf, doom_itoa(start, 10));
+        strcat(error_buf, " to ");
+        strcat(error_buf, doom_itoa(stop, 10));
         I_Error(error_buf);
     }
 #endif
@@ -701,7 +701,7 @@ void R_StoreWallRange(int start, int stop)
     if (((ds_p->silhouette & SIL_TOP) || maskedtexture)
         && !ds_p->sprtopclip)
     {
-        doom_memcpy(lastopening, ceilingclip + start, 2 * (rw_stopx - start));
+        memcpy(lastopening, ceilingclip + start, 2 * (rw_stopx - start));
         ds_p->sprtopclip = lastopening - start;
         lastopening += rw_stopx - start;
     }
@@ -709,7 +709,7 @@ void R_StoreWallRange(int start, int stop)
     if (((ds_p->silhouette & SIL_BOTTOM) || maskedtexture)
         && !ds_p->sprbottomclip)
     {
-        doom_memcpy(lastopening, floorclip + start, 2 * (rw_stopx - start));
+        memcpy(lastopening, floorclip + start, 2 * (rw_stopx - start));
         ds_p->sprbottomclip = lastopening - start;
         lastopening += rw_stopx - start;
     }

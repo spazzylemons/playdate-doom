@@ -135,7 +135,7 @@ byte* I_AllocLow(int length)
     byte* mem;
 
     mem = (byte*)doom_malloc(length);
-    doom_memset(mem, 0, length);
+    memset(mem, 0, length);
     return mem;
 }
 

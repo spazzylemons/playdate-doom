@@ -109,8 +109,8 @@ SOCKET UDPsocket(void)
     {
         //I_Error("Error: can't create socket: %s", strerror(errno));
         
-        doom_strcpy(error_buf, "Error: can't create socket: ");
-        doom_concat(error_buf, strerror(errno));
+        strcpy(error_buf, "Error: can't create socket: ");
+        strcat(error_buf, strerror(errno));
         I_Error(error_buf);
     }
 
@@ -128,7 +128,7 @@ void BindToLocalPort(SOCKET s, int port)
     int v;
     struct sockaddr_in address;
 
-    doom_memset(&address, 0, sizeof(address));
+    memset(&address, 0, sizeof(address));
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = port;
@@ -138,8 +138,8 @@ void BindToLocalPort(SOCKET s, int port)
     {
         //I_Error("Error: BindToPort: bind: %s", strerror(errno));
         
-        doom_strcpy(error_buf, "Error: BindToPort: bind: ");
-        doom_concat(error_buf, strerror(errno));
+        strcpy(error_buf, "Error: BindToPort: bind: ");
+        strcat(error_buf, strerror(errno));
         I_Error(error_buf);
     }
 }
@@ -206,8 +206,8 @@ void PacketGet(void)
         {
             //I_Error("Error: GetPacket: %i", r);
             
-            doom_strcpy(error_buf, "Error: GetPacket: ");
-            doom_concat(error_buf, doom_itoa(r, 10));
+            strcpy(error_buf, "Error: GetPacket: ");
+            strcat(error_buf, doom_itoa(r, 10));
             I_Error(error_buf);
         }
 #else
@@ -215,8 +215,8 @@ void PacketGet(void)
         {
             //I_Error("Error: GetPacket: %s", strerror(errno));
             
-            doom_strcpy(error_buf, "Error: GetPacket: ");
-            doom_concat(error_buf, strerror(errno));
+            strcpy(error_buf, "Error: GetPacket: ");
+            strcat(error_buf, strerror(errno));
             I_Error(error_buf);
         }
 #endif
@@ -288,8 +288,8 @@ int GetLocalAddress(void)
     {
         //I_Error("Error: GetLocalAddress : gethostname: errno %d", errno);
         
-        doom_strcpy(error_buf, "Error: GetLocalAddress : gethostname: errno ");
-        doom_concat(error_buf, strerror(errno));
+        strcpy(error_buf, "Error: GetLocalAddress : gethostname: errno ");
+        strcat(error_buf, strerror(errno));
         I_Error(error_buf);
     }
 
@@ -326,7 +326,7 @@ void I_InitNetwork(void)
     struct hostent* hostentry;        // host information entry
 
     doomcom = doom_malloc(sizeof(*doomcom));
-    doom_memset(doomcom, 0, sizeof(*doomcom));
+    memset(doomcom, 0, sizeof(*doomcom));
 
     // set up for network
     i = M_CheckParm("-dup");
@@ -349,7 +349,7 @@ void I_InitNetwork(void)
     p = M_CheckParm("-port");
     if (p && p < myargc - 1)
     {
-        DOOMPORT = doom_atoi(myargv[p + 1]);
+        DOOMPORT = atoi(myargv[p + 1]);
         //doom_print("using alternate port %i\n", DOOMPORT);
         doom_print("using alternate port ");
         doom_print(doom_itoa(DOOMPORT, 10));
@@ -359,7 +359,7 @@ void I_InitNetwork(void)
     p = M_CheckParm("-sendport");
     if (p && p < myargc - 1)
     {
-        DOOMPORT_SEND = doom_atoi(myargv[p + 1]);
+        DOOMPORT_SEND = atoi(myargv[p + 1]);
         //doom_print("using alternate send port %i\n", DOOMPORT_SEND);
         doom_print("using alternate send port ");
         doom_print(doom_itoa(DOOMPORT_SEND, 10));
@@ -407,8 +407,8 @@ void I_InitNetwork(void)
             {
                 //I_Error("Error: gethostbyname: couldn't find %s", myargv[i]);
                 
-                doom_strcpy(error_buf, "Error: gethostbyname: couldn't find ");
-                doom_concat(error_buf, myargv[i]);
+                strcpy(error_buf, "Error: gethostbyname: couldn't find ");
+                strcat(error_buf, myargv[i]);
                 I_Error(error_buf);
             }
             sendaddress[doomcom->numnodes].sin_addr.s_addr
@@ -449,8 +449,8 @@ void I_NetCmd(void)
     {
         //I_Error("Error: Bad net cmd: %i\n", doomcom->command);
         
-        doom_strcpy(error_buf, "Error: Bad net cmd: ");
-        doom_concat(error_buf, doom_itoa(doomcom->command, 10));
+        strcpy(error_buf, "Error: Bad net cmd: ");
+        strcat(error_buf, doom_itoa(doomcom->command, 10));
         I_Error(error_buf);
     }
 #endif

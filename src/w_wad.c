@@ -52,7 +52,7 @@ void doom_strupr(char* s)
 {
     while (*s)
     {
-        *s = doom_toupper(*s); s++;
+        *s = toupper(*s); s++;
     }
 }
 
@@ -62,7 +62,7 @@ void ExtractFileBase(char* path, char* dest)
     char* src;
     int length;
 
-    src = path + doom_strlen(path) - 1;
+    src = path + strlen(path) - 1;
 
     // back up until a \ or the start
     while (src != path
@@ -73,7 +73,7 @@ void ExtractFileBase(char* path, char* dest)
     }
 
     // copy up to eight characters
-    doom_memset(dest, 0, 8);
+    memset(dest, 0, 8);
     length = 0;
 
     while (*src && *src != '.')
@@ -81,13 +81,13 @@ void ExtractFileBase(char* path, char* dest)
         if (++length == 9)
         {
             //I_Error("Error: Filename base of %s >8 chars", path);
-            doom_strcpy(error_buf, "Error: Filename base of ");
-            doom_concat(error_buf, path);
-            doom_concat(error_buf, " >8 chars");
+            strcpy(error_buf, "Error: Filename base of ");
+            strcat(error_buf, path);
+            strcat(error_buf, " >8 chars");
             I_Error(error_buf);
         }
 
-        *dest++ = doom_toupper((int)*src++);
+        *dest++ = toupper((int)*src++);
     }
 }
 
@@ -146,7 +146,7 @@ void W_AddFile(char* filename)
     doom_print("\n");
     startlump = numlumps;
 
-    if (doom_strcasecmp(filename + doom_strlen(filename) - 3, "wad"))
+    if (doom_strcasecmp(filename + strlen(filename) - 3, "wad"))
     {
         // single lump file
         fileinfo = &singleinfo;
@@ -162,16 +162,16 @@ void W_AddFile(char* filename)
     {
         // WAD file
         doom_read(handle, &header, sizeof(header));
-        if (doom_strncmp(header.identification, "IWAD", 4))
+        if (strncmp(header.identification, "IWAD", 4))
         {
             // Homebrew levels?
-            if (doom_strncmp(header.identification, "PWAD", 4))
+            if (strncmp(header.identification, "PWAD", 4))
             {
                 //I_Error("Error: Wad file %s doesn't have IWAD "
                 //        "or PWAD id\n", filename);
-                doom_strcpy(error_buf, "Error: Wad file ");
-                doom_concat(error_buf, filename);
-                doom_concat(error_buf, " doesn't have IWAD or PWAD id\n");
+                strcpy(error_buf, "Error: Wad file ");
+                strcat(error_buf, filename);
+                strcat(error_buf, " doesn't have IWAD or PWAD id\n");
                 I_Error(error_buf);
             }
 
@@ -190,7 +190,7 @@ void W_AddFile(char* filename)
     // Fill in lumpinfo
     static int previous_realloc_size = 1;
     void* new_lumpinfo = doom_malloc(numlumps * sizeof(lumpinfo_t));
-    doom_memcpy(new_lumpinfo, lumpinfo, previous_realloc_size);
+    memcpy(new_lumpinfo, lumpinfo, previous_realloc_size);
     previous_realloc_size = numlumps * sizeof(lumpinfo_t);
     lumpinfo = new_lumpinfo;
 
@@ -206,7 +206,7 @@ void W_AddFile(char* filename)
         lump_p->handle = storehandle;
         lump_p->position = LONG(fileinfo->filepos);
         lump_p->size = LONG(fileinfo->size);
-        doom_strncpy(lump_p->name, fileinfo->name, 8);
+        strncpy(lump_p->name, fileinfo->name, 8);
     }
 
     if (reloadname)
@@ -237,8 +237,8 @@ void W_Reload(void)
     if ((handle = doom_open(reloadname, "rb")) == 0)
     {
         //I_Error("Error: W_Reload: couldn't open %s", reloadname);
-        doom_strcpy(error_buf, "Error: W_Reload: couldn't open ");
-        doom_concat(error_buf, reloadname);
+        strcpy(error_buf, "Error: W_Reload: couldn't open ");
+        strcat(error_buf, reloadname);
         I_Error(error_buf);
     }
 
@@ -306,7 +306,7 @@ void W_InitMultipleFiles(char** filenames)
     if (!lumpcache)
         I_Error("Error: Couldn't allocate lumpcache");
 
-    doom_memset(lumpcache, 0, size);
+    memset(lumpcache, 0, size);
 }
 
 
@@ -350,7 +350,7 @@ int W_CheckNumForName(char* name)
     lumpinfo_t* lump_p;
 
     // make the name into two integers for easy compares
-    doom_strncpy(name8.s, name, 8);
+    strncpy(name8.s, name, 8);
 
     // in case the name was a fill 8 chars
     name8.s[8] = 0;
@@ -391,7 +391,7 @@ int W_GetNumForName(char* name)
 
     if (i == -1)
     {
-        if (doom_strcmp(name, "HELP2") == 0)
+        if (strcmp(name, "HELP2") == 0)
         {
             name = "HELP1"; // Ultimate Doom EXE was modified to use this instead
             i = W_CheckNumForName(name);
@@ -399,9 +399,9 @@ int W_GetNumForName(char* name)
         if (i == -1)
         {
             //I_Error("Error: W_GetNumForName, %s not found!", name);
-            doom_strcpy(error_buf, "Error: W_GetNumForName, ");
-            doom_concat(error_buf, name);
-            doom_concat(error_buf, " not found!");
+            strcpy(error_buf, "Error: W_GetNumForName, ");
+            strcat(error_buf, name);
+            strcat(error_buf, " not found!");
             I_Error(error_buf);
         }
     }
@@ -419,9 +419,9 @@ int W_LumpLength(int lump)
     if (lump >= numlumps)
     {
         //I_Error("Error: W_LumpLength: %i >= numlumps", lump);
-        doom_strcpy(error_buf, "Error: W_LumpLength: ");
-        doom_concat(error_buf, doom_itoa(lump, 10));
-        doom_concat(error_buf, " >= numlumps");
+        strcpy(error_buf, "Error: W_LumpLength: ");
+        strcat(error_buf, doom_itoa(lump, 10));
+        strcat(error_buf, " >= numlumps");
         I_Error(error_buf);
     }
 
@@ -443,9 +443,9 @@ void W_ReadLump(int lump, void* dest)
     if (lump >= numlumps)
     {
         //I_Error("Error: W_ReadLump: %i >= numlumps", lump);
-        doom_strcpy(error_buf, "Error: W_ReadLump: ");
-        doom_concat(error_buf, doom_itoa(lump, 10));
-        doom_concat(error_buf, " >= numlump");
+        strcpy(error_buf, "Error: W_ReadLump: ");
+        strcat(error_buf, doom_itoa(lump, 10));
+        strcat(error_buf, " >= numlump");
         I_Error(error_buf);
     }
 
@@ -459,8 +459,8 @@ void W_ReadLump(int lump, void* dest)
         if ((handle = doom_open(reloadname, "rb")) == 0)
         {
             //I_Error("Error: W_ReadLump: couldn't open %s", reloadname);
-            doom_strcpy(error_buf, "Error: W_ReadLump: couldn't open ");
-            doom_concat(error_buf, reloadname);
+            strcpy(error_buf, "Error: W_ReadLump: couldn't open ");
+            strcat(error_buf, reloadname);
             I_Error(error_buf);
         }
     }
@@ -474,12 +474,12 @@ void W_ReadLump(int lump, void* dest)
     {
         //I_Error("Error: W_ReadLump: only read %i of %i on lump %i",
         //        c, l->size, lump);
-        doom_strcpy(error_buf, "Error: W_ReadLump: only read ");
-        doom_concat(error_buf, doom_itoa(c, 10));
-        doom_concat(error_buf, " of ");
-        doom_concat(error_buf, doom_itoa(l->size, 10));
-        doom_concat(error_buf, " on lump ");
-        doom_concat(error_buf, doom_itoa(lump, 10));
+        strcpy(error_buf, "Error: W_ReadLump: only read ");
+        strcat(error_buf, doom_itoa(c, 10));
+        strcat(error_buf, " of ");
+        strcat(error_buf, doom_itoa(l->size, 10));
+        strcat(error_buf, " on lump ");
+        strcat(error_buf, doom_itoa(lump, 10));
         I_Error(error_buf);
     }
 
@@ -500,9 +500,9 @@ void* W_CacheLumpNum(int lump, int tag)
     if ((unsigned)lump >= (unsigned)numlumps)
     {
         //I_Error("Error: W_CacheLumpNum: %i >= numlumps", lump);
-        doom_strcpy(error_buf, "Error: W_CacheLumpNum: ");
-        doom_concat(error_buf, doom_itoa(lump, 10));
-        doom_concat(error_buf, " >= numlumps");
+        strcpy(error_buf, "Error: W_CacheLumpNum: ");
+        strcat(error_buf, doom_itoa(lump, 10));
+        strcat(error_buf, " >= numlumps");
         I_Error(error_buf);
     }
 
@@ -571,7 +571,7 @@ void W_Profile(void)
 
     for (i = 0; i < numlumps; i++)
     {
-        doom_memcpy(name, lumpinfo[i].name, 8);
+        memcpy(name, lumpinfo[i].name, 8);
 
         for (j = 0; j < 8; j++)
             if (!name[j])

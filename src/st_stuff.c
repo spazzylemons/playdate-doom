@@ -233,7 +233,7 @@
  // Height, in lines. 
 #define ST_OUTHEIGHT 1
 
-#define ST_MAPWIDTH (doom_strlen(mapnames[(gameepisode - 1) * 9 + (gamemap - 1)]))
+#define ST_MAPWIDTH (strlen(mapnames[(gameepisode - 1) * 9 + (gamemap - 1)]))
 
 #define ST_MAPTITLEX (SCREENWIDTH - ST_MAPWIDTH * ST_CHATFONTWIDTH)
 
@@ -552,13 +552,13 @@ doom_boolean ST_Responder(event_t* ev)
                 //        players[consoleplayer].mo->angle,
                 //        players[consoleplayer].mo->x,
                 //        players[consoleplayer].mo->y);
-                doom_strcpy(buf, "ang=0x");
-                doom_concat(buf, doom_itoa(players[consoleplayer].mo->angle, 16));
-                doom_concat(buf, ";x,y=(0x");
-                doom_concat(buf, doom_itoa(players[consoleplayer].mo->x, 16));
-                doom_concat(buf, ",0x");
-                doom_concat(buf, doom_itoa(players[consoleplayer].mo->y, 16));
-                doom_concat(buf, ")");
+                strcpy(buf, "ang=0x");
+                strcat(buf, doom_itoa(players[consoleplayer].mo->angle, 16));
+                strcat(buf, ";x,y=(0x");
+                strcat(buf, doom_itoa(players[consoleplayer].mo->x, 16));
+                strcat(buf, ",0x");
+                strcat(buf, doom_itoa(players[consoleplayer].mo->y, 16));
+                strcat(buf, ")");
                 plyr->message = buf;
             }
         }
@@ -1007,13 +1007,13 @@ void ST_loadGraphics(void)
     for (i = 0; i < 10; i++)
     {
         //doom_sprintf(namebuf, "STTNUM%d", i);
-        doom_strcpy(namebuf, "STTNUM");
-        doom_concat(namebuf, doom_itoa(i, 10));
+        strcpy(namebuf, "STTNUM");
+        strcat(namebuf, doom_itoa(i, 10));
         tallnum[i] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
 
         //doom_sprintf(namebuf, "STYSNUM%d", i);
-        doom_strcpy(namebuf, "STYSNUM");
-        doom_concat(namebuf, doom_itoa(i, 10));
+        strcpy(namebuf, "STYSNUM");
+        strcat(namebuf, doom_itoa(i, 10));
         shortnum[i] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
     }
 
@@ -1025,8 +1025,8 @@ void ST_loadGraphics(void)
     for (i = 0; i < NUMCARDS; i++)
     {
         //doom_sprintf(namebuf, "STKEYS%d", i);
-        doom_strcpy(namebuf, "STKEYS");
-        doom_concat(namebuf, doom_itoa(i, 10));
+        strcpy(namebuf, "STKEYS");
+        strcat(namebuf, doom_itoa(i, 10));
         keys[i] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
     }
 
@@ -1037,8 +1037,8 @@ void ST_loadGraphics(void)
     for (i = 0; i < 6; i++)
     {
         //doom_sprintf(namebuf, "STGNUM%d", i + 2);
-        doom_strcpy(namebuf, "STGNUM");
-        doom_concat(namebuf, doom_itoa(i + 2, 10));
+        strcpy(namebuf, "STGNUM");
+        strcat(namebuf, doom_itoa(i + 2, 10));
 
         // gray #
         arms[i][0] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
@@ -1049,8 +1049,8 @@ void ST_loadGraphics(void)
 
     // face backgrounds for different color players
     //doom_sprintf(namebuf, "STFB%d", consoleplayer);
-    doom_strcpy(namebuf, "STFB");
-    doom_concat(namebuf, doom_itoa(consoleplayer, 10));
+    strcpy(namebuf, "STFB");
+    strcat(namebuf, doom_itoa(consoleplayer, 10));
     faceback = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
 
     // status bar background bits
@@ -1063,32 +1063,32 @@ void ST_loadGraphics(void)
         for (j = 0; j < ST_NUMSTRAIGHTFACES; j++)
         {
             //doom_sprintf(namebuf, "STFST%d%d", i, j);
-            doom_strcpy(namebuf, "STFST");
-            doom_concat(namebuf, doom_itoa(i, 10));
-            doom_concat(namebuf, doom_itoa(j, 10));
+            strcpy(namebuf, "STFST");
+            strcat(namebuf, doom_itoa(i, 10));
+            strcat(namebuf, doom_itoa(j, 10));
             faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
         }
         //doom_sprintf(namebuf, "STFTR%d0", i);        // turn right
-        doom_strcpy(namebuf, "STFTR");
-        doom_concat(namebuf, doom_itoa(i, 10));
-        doom_concat(namebuf, "0");
+        strcpy(namebuf, "STFTR");
+        strcat(namebuf, doom_itoa(i, 10));
+        strcat(namebuf, "0");
         faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
         //doom_sprintf(namebuf, "STFTL%d0", i);        // turn left
-        doom_strcpy(namebuf, "STFTL");
-        doom_concat(namebuf, doom_itoa(i, 10));
-        doom_concat(namebuf, "0");
+        strcpy(namebuf, "STFTL");
+        strcat(namebuf, doom_itoa(i, 10));
+        strcat(namebuf, "0");
         faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
         //doom_sprintf(namebuf, "STFOUCH%d", i);        // ouch!
-        doom_strcpy(namebuf, "STFOUCH");
-        doom_concat(namebuf, doom_itoa(i, 10));
+        strcpy(namebuf, "STFOUCH");
+        strcat(namebuf, doom_itoa(i, 10));
         faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
         //doom_sprintf(namebuf, "STFEVL%d", i);        // evil grin ;)
-        doom_strcpy(namebuf, "STFEVL");
-        doom_concat(namebuf, doom_itoa(i, 10));
+        strcpy(namebuf, "STFEVL");
+        strcat(namebuf, doom_itoa(i, 10));
         faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
         //doom_sprintf(namebuf, "STFKILL%d", i);        // pissed off
-        doom_strcpy(namebuf, "STFKILL");
-        doom_concat(namebuf, doom_itoa(i, 10));
+        strcpy(namebuf, "STFKILL");
+        strcat(namebuf, doom_itoa(i, 10));
         faces[facenum++] = W_CacheLumpName(namebuf, PU_STATIC);
     }
     faces[facenum++] = W_CacheLumpName("STFGOD0", PU_STATIC);

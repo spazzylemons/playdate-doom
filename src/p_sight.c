@@ -146,10 +146,10 @@ doom_boolean P_CrossSubsector(int num)
         //        num,
         //        numsubsectors);
         
-        doom_strcpy(error_buf, "Error: P_CrossSubsector: ss ");
-        doom_concat(error_buf, doom_itoa(num, 10));
-        doom_concat(error_buf, " with numss = ");
-        doom_concat(error_buf, doom_itoa(numsubsectors, 10));
+        strcpy(error_buf, "Error: P_CrossSubsector: ss ");
+        strcat(error_buf, doom_itoa(num, 10));
+        strcat(error_buf, " with numss = ");
+        strcat(error_buf, doom_itoa(numsubsectors, 10));
         I_Error(error_buf);
     }
 #endif

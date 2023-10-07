@@ -180,10 +180,10 @@ void P_InitPicAnims(void)
             //        animdefs[i].startname,
             //        animdefs[i].endname);
             
-            doom_strcpy(error_buf, "Error: P_InitPicAnims: bad cycle from ");
-            doom_concat(error_buf, animdefs[i].startname);
-            doom_concat(error_buf, " to ");
-            doom_concat(error_buf, animdefs[i].endname);
+            strcpy(error_buf, "Error: P_InitPicAnims: bad cycle from ");
+            strcat(error_buf, animdefs[i].startname);
+            strcat(error_buf, " to ");
+            strcat(error_buf, animdefs[i].endname);
             I_Error(error_buf);
         }
 
@@ -1029,8 +1029,8 @@ void P_PlayerInSpecialSector(player_t* player)
             //        sector->special);
             
             
-            doom_strcpy(error_buf, "Error: P_PlayerInSpecialSector: unknown special ");
-            doom_concat(error_buf, doom_itoa(sector->special, 10));
+            strcpy(error_buf, "Error: P_PlayerInSpecialSector: unknown special ");
+            strcat(error_buf, doom_itoa(sector->special, 10));
             I_Error(error_buf);
             break;
         }
@@ -1108,7 +1108,7 @@ void P_UpdateSpecials(void)
                         break;
                 }
                 S_StartSound((mobj_t*)&buttonlist[i].soundorg, sfx_swtchn);
-                doom_memset(&buttonlist[i], 0, sizeof(button_t));
+                memset(&buttonlist[i], 0, sizeof(button_t));
             }
         }
 }
@@ -1215,7 +1215,7 @@ void P_SpawnSpecials(void)
     if (i && deathmatch)
     {
         int time;
-        time = doom_atoi(myargv[i + 1]) * 60 * 35;
+        time = atoi(myargv[i + 1]) * 60 * 35;
         levelTimer = true;
         levelTimeCount = time;
     }
@@ -1309,5 +1309,5 @@ void P_SpawnSpecials(void)
         activeplats[i] = 0;
 
     for (i = 0; i < MAXBUTTONS; i++)
-        doom_memset(&buttonlist[i], 0, sizeof(button_t));
+        memset(&buttonlist[i], 0, sizeof(button_t));
 }

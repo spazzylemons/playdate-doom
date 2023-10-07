@@ -486,10 +486,10 @@ void R_Subsector(int num)
         //        numsubsectors);
 
         
-        doom_strcpy(error_buf, "Error: R_Subsector: ss ");
-        doom_concat(error_buf, doom_itoa(num, 10));
-        doom_concat(error_buf, " with numss = ");
-        doom_concat(error_buf, doom_itoa(numsubsectors, 10));
+        strcpy(error_buf, "Error: R_Subsector: ss ");
+        strcat(error_buf, doom_itoa(num, 10));
+        strcat(error_buf, " with numss = ");
+        strcat(error_buf, doom_itoa(numsubsectors, 10));
         I_Error(error_buf);
     }
 #endif

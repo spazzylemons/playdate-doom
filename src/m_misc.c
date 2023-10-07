@@ -201,7 +201,7 @@ int M_DrawText(int x, int y, doom_boolean direct, char* string)
 
     while (*string)
     {
-        c = doom_toupper(*string) - HU_FONTSTART;
+        c = toupper(*string) - HU_FONTSTART;
         string++;
         if (c < 0 || c> HU_FONTSIZE)
         {
@@ -260,8 +260,8 @@ int M_ReadFile(char const* name, byte** buffer)
     {
         //I_Error("Error: Couldn't read file %s", name);
         
-        doom_strcpy(error_buf, "Error: Couldn't read file ");
-        doom_concat(error_buf, name);
+        strcpy(error_buf, "Error: Couldn't read file ");
+        strcat(error_buf, name);
         I_Error(error_buf);
     }
     doom_seek(handle, 0, DOOM_SEEK_END);
@@ -275,8 +275,8 @@ int M_ReadFile(char const* name, byte** buffer)
     {
         //I_Error("Error: Couldn't read file %s", name);
         
-        doom_strcpy(error_buf, "Error: Couldn't read file ");
-        doom_concat(error_buf, name);
+        strcpy(error_buf, "Error: Couldn't read file ");
+        strcat(error_buf, name);
         I_Error(error_buf);
     }
 
@@ -418,10 +418,10 @@ void M_LoadDefaults(void)
                 {
                     // get a string default
                     isstring = true;
-                    len = (int)doom_strlen(strparm);
+                    len = (int)strlen(strparm);
                     newstring = (char*)doom_malloc(len);
                     strparm[len - 1] = 0;
-                    doom_strcpy(newstring, strparm + 1);
+                    strcpy(newstring, strparm + 1);
                 }
                 else if (strparm[0] == '0' && strparm[1] == 'x')
                 {
@@ -431,10 +431,10 @@ void M_LoadDefaults(void)
                 else
                 {
                     //sscanf(strparm, "%i", &parm);
-                    parm = doom_atoi(strparm);
+                    parm = atoi(strparm);
                 }
                 for (i = 0; i < numdefaults; i++)
-                    if (!doom_strcmp(def, defaults[i].name))
+                    if (!strcmp(def, defaults[i].name))
                     {
                         if (!isstring)
                             *defaults[i].location = parm;
@@ -472,11 +472,11 @@ void WritePCXfile(char* filename, byte* data, int width, int height, byte* palet
     pcx->ymax = SHORT(height - 1);
     pcx->hres = SHORT(width);
     pcx->vres = SHORT(height);
-    doom_memset(pcx->palette, 0, sizeof(pcx->palette));
+    memset(pcx->palette, 0, sizeof(pcx->palette));
     pcx->color_planes = 1; // chunky image
     pcx->bytes_per_line = SHORT(width);
     pcx->palette_type = SHORT(2); // not a grey scale
-    doom_memset(pcx->filler, 0, sizeof(pcx->filler));
+    memset(pcx->filler, 0, sizeof(pcx->filler));
 
     // pack the image
     pack = &pcx->data;
@@ -520,7 +520,7 @@ void M_ScreenShot(void)
     I_ReadScreen(linear);
 
     // find a file name to save it to
-    doom_strcpy(lbmname, "DOOM00.pcx");
+    strcpy(lbmname, "DOOM00.pcx");
 
     for (i = 0; i <= 99; i++)
     {

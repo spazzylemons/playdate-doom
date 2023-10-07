@@ -59,7 +59,7 @@ void P_ArchivePlayers(void)
         PADSAVEP();
 
         dest = (player_t*)save_p;
-        doom_memcpy(dest, &players[i], sizeof(player_t));
+        memcpy(dest, &players[i], sizeof(player_t));
         save_p += sizeof(player_t);
         for (j = 0; j < NUMPSPRITES; j++)
         {
@@ -88,7 +88,7 @@ void P_UnArchivePlayers(void)
 
         PADSAVEP();
 
-        doom_memcpy(&players[i], save_p, sizeof(player_t));
+        memcpy(&players[i], save_p, sizeof(player_t));
         save_p += sizeof(player_t);
 
         // will be set when unarc thinker
@@ -237,7 +237,7 @@ void P_ArchiveThinkers(void)
             *save_p++ = tc_mobj;
             PADSAVEP();
             mobj = (mobj_t*)save_p;
-            doom_memcpy(mobj, th, sizeof(*mobj));
+            memcpy(mobj, th, sizeof(*mobj));
             save_p += sizeof(*mobj);
             mobj->state = (state_t*)(mobj->state - states);
 
@@ -291,7 +291,7 @@ void P_UnArchiveThinkers(void)
             case tc_mobj:
                 PADSAVEP();
                 mobj = Z_Malloc(sizeof(*mobj), PU_LEVEL, 0);
-                doom_memcpy(mobj, save_p, sizeof(*mobj));
+                memcpy(mobj, save_p, sizeof(*mobj));
                 save_p += sizeof(*mobj);
                 mobj->state = &states[(uintptr_t)mobj->state];
                 mobj->target = 0;
@@ -312,9 +312,9 @@ void P_UnArchiveThinkers(void)
             {
                 //I_Error("Error: Unknown tclass %i in savegame", tclass);
                 
-                doom_strcpy(error_buf, "Error: Unknown tclass ");
-                doom_concat(error_buf, doom_itoa(tclass, 10));
-                doom_concat(error_buf, " in savegame");
+                strcpy(error_buf, "Error: Unknown tclass ");
+                strcat(error_buf, doom_itoa(tclass, 10));
+                strcat(error_buf, " in savegame");
                 I_Error(error_buf);
             }
         }
@@ -375,7 +375,7 @@ void P_ArchiveSpecials(void)
                 *save_p++ = tc_ceiling;
                 PADSAVEP();
                 ceiling = (ceiling_t*)save_p;
-                doom_memcpy(ceiling, th, sizeof(*ceiling));
+                memcpy(ceiling, th, sizeof(*ceiling));
                 save_p += sizeof(*ceiling);
                 ceiling->sector = (sector_t*)(ceiling->sector - sectors);
             }
@@ -387,7 +387,7 @@ void P_ArchiveSpecials(void)
             *save_p++ = tc_ceiling;
             PADSAVEP();
             ceiling = (ceiling_t*)save_p;
-            doom_memcpy(ceiling, th, sizeof(*ceiling));
+            memcpy(ceiling, th, sizeof(*ceiling));
             save_p += sizeof(*ceiling);
             ceiling->sector = (sector_t*)(ceiling->sector - sectors);
             continue;
@@ -398,7 +398,7 @@ void P_ArchiveSpecials(void)
             *save_p++ = tc_door;
             PADSAVEP();
             door = (vldoor_t*)save_p;
-            doom_memcpy(door, th, sizeof(*door));
+            memcpy(door, th, sizeof(*door));
             save_p += sizeof(*door);
             door->sector = (sector_t*)(door->sector - sectors);
             continue;
@@ -409,7 +409,7 @@ void P_ArchiveSpecials(void)
             *save_p++ = tc_floor;
             PADSAVEP();
             floor = (floormove_t*)save_p;
-            doom_memcpy(floor, th, sizeof(*floor));
+            memcpy(floor, th, sizeof(*floor));
             save_p += sizeof(*floor);
             floor->sector = (sector_t*)(floor->sector - sectors);
             continue;
@@ -420,7 +420,7 @@ void P_ArchiveSpecials(void)
             *save_p++ = tc_plat;
             PADSAVEP();
             plat = (plat_t*)save_p;
-            doom_memcpy(plat, th, sizeof(*plat));
+            memcpy(plat, th, sizeof(*plat));
             save_p += sizeof(*plat);
             plat->sector = (sector_t*)(plat->sector - sectors);
             continue;
@@ -431,7 +431,7 @@ void P_ArchiveSpecials(void)
             *save_p++ = tc_flash;
             PADSAVEP();
             flash = (lightflash_t*)save_p;
-            doom_memcpy(flash, th, sizeof(*flash));
+            memcpy(flash, th, sizeof(*flash));
             save_p += sizeof(*flash);
             flash->sector = (sector_t*)(flash->sector - sectors);
             continue;
@@ -442,7 +442,7 @@ void P_ArchiveSpecials(void)
             *save_p++ = tc_strobe;
             PADSAVEP();
             strobe = (strobe_t*)save_p;
-            doom_memcpy(strobe, th, sizeof(*strobe));
+            memcpy(strobe, th, sizeof(*strobe));
             save_p += sizeof(*strobe);
             strobe->sector = (sector_t*)(strobe->sector - sectors);
             continue;
@@ -453,7 +453,7 @@ void P_ArchiveSpecials(void)
             *save_p++ = tc_glow;
             PADSAVEP();
             glow = (glow_t*)save_p;
-            doom_memcpy(glow, th, sizeof(*glow));
+            memcpy(glow, th, sizeof(*glow));
             save_p += sizeof(*glow);
             glow->sector = (sector_t*)(glow->sector - sectors);
             continue;
@@ -492,7 +492,7 @@ void P_UnArchiveSpecials(void)
             case tc_ceiling:
                 PADSAVEP();
                 ceiling = Z_Malloc(sizeof(*ceiling), PU_LEVEL, 0);
-                doom_memcpy(ceiling, save_p, sizeof(*ceiling));
+                memcpy(ceiling, save_p, sizeof(*ceiling));
                 save_p += sizeof(*ceiling);
                 ceiling->sector = &sectors[(uintptr_t)ceiling->sector];
                 ceiling->sector->specialdata = ceiling;
@@ -507,7 +507,7 @@ void P_UnArchiveSpecials(void)
             case tc_door:
                 PADSAVEP();
                 door = Z_Malloc(sizeof(*door), PU_LEVEL, 0);
-                doom_memcpy(door, save_p, sizeof(*door));
+                memcpy(door, save_p, sizeof(*door));
                 save_p += sizeof(*door);
                 door->sector = &sectors[(uintptr_t)door->sector];
                 door->sector->specialdata = door;
@@ -518,7 +518,7 @@ void P_UnArchiveSpecials(void)
             case tc_floor:
                 PADSAVEP();
                 floor = Z_Malloc(sizeof(*floor), PU_LEVEL, 0);
-                doom_memcpy(floor, save_p, sizeof(*floor));
+                memcpy(floor, save_p, sizeof(*floor));
                 save_p += sizeof(*floor);
                 floor->sector = &sectors[(uintptr_t)floor->sector];
                 floor->sector->specialdata = floor;
@@ -529,7 +529,7 @@ void P_UnArchiveSpecials(void)
             case tc_plat:
                 PADSAVEP();
                 plat = Z_Malloc(sizeof(*plat), PU_LEVEL, 0);
-                doom_memcpy(plat, save_p, sizeof(*plat));
+                memcpy(plat, save_p, sizeof(*plat));
                 save_p += sizeof(*plat);
                 plat->sector = &sectors[(uintptr_t)plat->sector];
                 plat->sector->specialdata = plat;
@@ -544,7 +544,7 @@ void P_UnArchiveSpecials(void)
             case tc_flash:
                 PADSAVEP();
                 flash = Z_Malloc(sizeof(*flash), PU_LEVEL, 0);
-                doom_memcpy(flash, save_p, sizeof(*flash));
+                memcpy(flash, save_p, sizeof(*flash));
                 save_p += sizeof(*flash);
                 flash->sector = &sectors[(uintptr_t)flash->sector];
                 flash->thinker.function.acp1 = (actionf_p1)T_LightFlash;
@@ -554,7 +554,7 @@ void P_UnArchiveSpecials(void)
             case tc_strobe:
                 PADSAVEP();
                 strobe = Z_Malloc(sizeof(*strobe), PU_LEVEL, 0);
-                doom_memcpy(strobe, save_p, sizeof(*strobe));
+                memcpy(strobe, save_p, sizeof(*strobe));
                 save_p += sizeof(*strobe);
                 strobe->sector = &sectors[(uintptr_t)strobe->sector];
                 strobe->thinker.function.acp1 = (actionf_p1)T_StrobeFlash;
@@ -564,7 +564,7 @@ void P_UnArchiveSpecials(void)
             case tc_glow:
                 PADSAVEP();
                 glow = Z_Malloc(sizeof(*glow), PU_LEVEL, 0);
-                doom_memcpy(glow, save_p, sizeof(*glow));
+                memcpy(glow, save_p, sizeof(*glow));
                 save_p += sizeof(*glow);
                 glow->sector = &sectors[(uintptr_t)glow->sector];
                 glow->thinker.function.acp1 = (actionf_p1)T_Glow;
@@ -576,9 +576,9 @@ void P_UnArchiveSpecials(void)
                 //I_Error("Error: P_UnarchiveSpecials:Unknown tclass %i "
                 //        "in savegame", tclass);
                 
-                doom_strcpy(error_buf, "Error: P_UnarchiveSpecials:Unknown tclass ");
-                doom_concat(error_buf, doom_itoa(tclass, 10));
-                doom_concat(error_buf, " in savegame");
+                strcpy(error_buf, "Error: P_UnarchiveSpecials:Unknown tclass ");
+                strcat(error_buf, doom_itoa(tclass, 10));
+                strcat(error_buf, " in savegame");
                 I_Error(error_buf);
             }
         }

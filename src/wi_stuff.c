@@ -383,7 +383,7 @@ static int sp_state;
 
 void WI_slamBackground(void)
 {
-    doom_memcpy(screens[0], screens[1], SCREENWIDTH * SCREENHEIGHT);
+    memcpy(screens[0], screens[1], SCREENWIDTH * SCREENHEIGHT);
     V_MarkRect(0, 0, SCREENWIDTH, SCREENHEIGHT);
 }
 
@@ -1478,18 +1478,18 @@ void WI_loadData(void)
     anim_t* a;
 
     if (gamemode == commercial)
-        doom_strcpy(name, "INTERPIC");
+        strcpy(name, "INTERPIC");
     else
     {
         //doom_sprintf(name, "WIMAP%d", wbs->epsd);
-        doom_strcpy(name, "WIMAP");
-        doom_concat(name, doom_itoa(wbs->epsd, 10));
+        strcpy(name, "WIMAP");
+        strcat(name, doom_itoa(wbs->epsd, 10));
     }
 
     if (gamemode == retail)
     {
         if (wbs->epsd == 3)
-            doom_strcpy(name, "INTERPIC");
+            strcpy(name, "INTERPIC");
     }
 
     // background
@@ -1504,9 +1504,9 @@ void WI_loadData(void)
         for (i = 0; i < NUMCMAPS; i++)
         {
             //doom_sprintf(name, "CWILV%2.2d", i);
-            doom_strcpy(name, "CWILV");
-            if (i < 10) doom_concat(name, "0");
-            doom_concat(name, doom_itoa(i, 10));
+            strcpy(name, "CWILV");
+            if (i < 10) strcat(name, "0");
+            strcat(name, doom_itoa(i, 10));
             lnames[i] = W_CacheLumpName(name, PU_STATIC);
         }
     }
@@ -1517,9 +1517,9 @@ void WI_loadData(void)
         for (i = 0; i < NUMMAPS; i++)
         {
             //doom_sprintf(name, "WILV%d%d", wbs->epsd, i);
-            doom_strcpy(name, "WILV");
-            doom_concat(name, doom_itoa(wbs->epsd, 10));
-            doom_concat(name, doom_itoa(i, 10));
+            strcpy(name, "WILV");
+            strcat(name, doom_itoa(wbs->epsd, 10));
+            strcat(name, doom_itoa(i, 10));
             lnames[i] = W_CacheLumpName(name, PU_STATIC);
         }
 
@@ -1544,12 +1544,12 @@ void WI_loadData(void)
                     {
                         // animations
                         //doom_sprintf(name, "WIA%d%.2d%.2d", wbs->epsd, j, i);
-                        doom_strcpy(name, "WIA");
-                        doom_concat(name, doom_itoa(wbs->epsd, 10));
-                        if (j < 10) doom_concat(name, "0");
-                        doom_concat(name, doom_itoa(j, 10));
-                        if (i < 10) doom_concat(name, "0");
-                        doom_concat(name, doom_itoa(i, 10));
+                        strcpy(name, "WIA");
+                        strcat(name, doom_itoa(wbs->epsd, 10));
+                        if (j < 10) strcat(name, "0");
+                        strcat(name, doom_itoa(j, 10));
+                        if (i < 10) strcat(name, "0");
+                        strcat(name, doom_itoa(i, 10));
                         a->p[i] = W_CacheLumpName(name, PU_STATIC);
                     }
                     else
@@ -1569,8 +1569,8 @@ void WI_loadData(void)
     {
         // numbers 0-9
         //doom_sprintf(name, "WINUM%d", i);
-        doom_strcpy(name, "WINUM");
-        doom_concat(name, doom_itoa(i, 10));
+        strcpy(name, "WINUM");
+        strcat(name, doom_itoa(i, 10));
         num[i] = W_CacheLumpName(name, PU_STATIC);
     }
 
@@ -1638,14 +1638,14 @@ void WI_loadData(void)
     {
         // "1,2,3,4"
         //doom_sprintf(name, "STPB%d", i);
-        doom_strcpy(name, "STPB");
-        doom_concat(name, doom_itoa(i, 10));
+        strcpy(name, "STPB");
+        strcat(name, doom_itoa(i, 10));
         p[i] = W_CacheLumpName(name, PU_STATIC);
 
         // "1,2,3,4"
         //doom_sprintf(name, "WIBP%d", i + 1);
-        doom_strcpy(name, "WIBP");
-        doom_concat(name, doom_itoa(i + 1, 10));
+        strcpy(name, "WIBP");
+        strcat(name, doom_itoa(i + 1, 10));
         bp[i] = W_CacheLumpName(name, PU_STATIC);
     }
 }

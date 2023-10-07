@@ -234,8 +234,8 @@ void S_StartSoundAtVolume(void* origin_p, int sfx_id, int volume)
     if (sfx_id < 1 || sfx_id > NUMSFX)
     {
         //I_Error("Error: Bad sfx #: %d", sfx_id);
-        doom_strcpy(error_buf, "Error: Bad sfx #: ");
-        doom_concat(error_buf, doom_itoa(sfx_id, 10));
+        strcpy(error_buf, "Error: Bad sfx #: ");
+        strcat(error_buf, doom_itoa(sfx_id, 10));
         I_Error(error_buf);
     }
 
@@ -479,8 +479,8 @@ void S_SetMusicVolume(int volume)
     {
         //I_Error("Error: Attempt to set music volume at %d",
         //        volume);
-        doom_strcpy(error_buf, "Error: Attempt to set music volume at ");
-        doom_concat(error_buf, doom_itoa(volume, 10));
+        strcpy(error_buf, "Error: Attempt to set music volume at ");
+        strcat(error_buf, doom_itoa(volume, 10));
         I_Error(error_buf);
     }
 
@@ -495,8 +495,8 @@ void S_SetSfxVolume(int volume)
     if (volume < 0 || volume > 127)
     {
         //I_Error("Error: Attempt to set sfx volume at %d", volume);
-        doom_strcpy(error_buf, "Error: Attempt to set sfx volume at ");
-        doom_concat(error_buf, doom_itoa(volume, 10));
+        strcpy(error_buf, "Error: Attempt to set sfx volume at ");
+        strcat(error_buf, doom_itoa(volume, 10));
         I_Error(error_buf);
     }
 
@@ -522,8 +522,8 @@ void S_ChangeMusic(int musicnum, int looping)
         || (musicnum >= NUMMUSIC))
     {
         //I_Error("Error: Bad music number %d", musicnum);
-        doom_strcpy(error_buf, "Error: Bad music number ");
-        doom_concat(error_buf, doom_itoa(musicnum, 10));
+        strcpy(error_buf, "Error: Bad music number ");
+        strcat(error_buf, doom_itoa(musicnum, 10));
         I_Error(error_buf);
     }
     else
@@ -539,8 +539,8 @@ void S_ChangeMusic(int musicnum, int looping)
     if (!music->lumpnum)
     {
         //doom_sprintf(namebuf, "d_%s", music->name);
-        doom_strcpy(namebuf, "d_");
-        doom_concat(namebuf, music->name);
+        strcpy(namebuf, "d_");
+        strcat(namebuf, music->name);
         music->lumpnum = W_GetNumForName(namebuf);
     }
 

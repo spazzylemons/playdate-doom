@@ -146,10 +146,10 @@ int ExpandTics(int low)
         return (maketic & ~0xff) + 256 + low;
 
     //I_Error("Error: ExpandTics: strange value %i at maketic %i", low, maketic);
-    doom_strcpy(error_buf, "Error: ExpandTics: strange value ");
-    doom_concat(error_buf, doom_itoa(low, 10));
-    doom_concat(error_buf, " at maketic ");
-    doom_concat(error_buf, doom_itoa(maketic, 10));
+    strcpy(error_buf, "Error: ExpandTics: strange value ");
+    strcat(error_buf, doom_itoa(low, 10));
+    strcat(error_buf, " at maketic ");
+    strcat(error_buf, doom_itoa(maketic, 10));
     I_Error(error_buf);
     return 0;
 }
@@ -342,7 +342,7 @@ void GetPackets(void)
                 continue;
             nodeingame[netnode] = false;
             playeringame[netconsole] = false;
-            doom_strcpy(exitmsg, "Player 1 left the game");
+            strcpy(exitmsg, "Player 1 left the game");
             exitmsg[7] += netconsole;
             players[consoleplayer].message = exitmsg;
             if (demorecording)
@@ -555,7 +555,7 @@ void D_ArbitrateNetStart(void)
     doom_boolean gotinfo[MAXNETNODES];
 
     autostart = true;
-    doom_memset(gotinfo, 0, sizeof(gotinfo));
+    memset(gotinfo, 0, sizeof(gotinfo));
 
     if (doomcom->consoleplayer)
     {

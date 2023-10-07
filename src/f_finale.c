@@ -276,7 +276,7 @@ void F_Ticker(void)
     if (gamemode == commercial)
         return;
 
-    if (!finalestage && finalecount > doom_strlen(finaletext) * TEXTSPEED + TEXTWAIT)
+    if (!finalestage && finalecount > strlen(finaletext) * TEXTSPEED + TEXTWAIT)
     {
         finalecount = 0;
         finalestage = 1;
@@ -310,12 +310,12 @@ void F_TextWrite(void)
     {
         for (x = 0; x < SCREENWIDTH / 64; x++)
         {
-            doom_memcpy(dest, src + ((y & 63) << 6), 64);
+            memcpy(dest, src + ((y & 63) << 6), 64);
             dest += 64;
         }
         if (SCREENWIDTH & 63)
         {
-            doom_memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
+            memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
             dest += (SCREENWIDTH & 63);
         }
     }
@@ -342,7 +342,7 @@ void F_TextWrite(void)
             continue;
         }
 
-        c = doom_toupper(c) - HU_FONTSTART;
+        c = toupper(c) - HU_FONTSTART;
         if (c < 0 || c> HU_FONTSIZE)
         {
             cx += 4;
@@ -525,7 +525,7 @@ void F_CastPrint(char* text)
         c = *ch++;
         if (!c)
             break;
-        c = doom_toupper(c) - HU_FONTSTART;
+        c = toupper(c) - HU_FONTSTART;
         if (c < 0 || c> HU_FONTSIZE)
         {
             width += 4;
@@ -544,7 +544,7 @@ void F_CastPrint(char* text)
         c = *ch++;
         if (!c)
             break;
-        c = doom_toupper(c) - HU_FONTSTART;
+        c = toupper(c) - HU_FONTSTART;
         if (c < 0 || c> HU_FONTSIZE)
         {
             cx += 4;
@@ -671,8 +671,8 @@ void F_BunnyScroll(void)
     }
 
     //doom_sprintf(name, "END%i", stage);
-    doom_strcpy(name, "END");
-    doom_concat(name, doom_itoa(stage, 10));
+    strcpy(name, "END");
+    strcat(name, doom_itoa(stage, 10));
     V_DrawPatch((SCREENWIDTH - 13 * 8) / 2, (SCREENHEIGHT - 8 * 8) / 2, 0, W_CacheLumpName(name, PU_CACHE));
 }
 

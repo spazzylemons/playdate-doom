@@ -173,7 +173,7 @@ void V_CopyRect(int srcx,
 
     for (; height > 0; height--)
     {
-        doom_memcpy(dest, src, width);
+        memcpy(dest, src, width);
         src += SCREENWIDTH;
         dest += SCREENWIDTH;
     }
@@ -408,7 +408,7 @@ void V_DrawBlock(int x, int y, int scrn, int width, int height, byte* src)
 
     while (height--)
     {
-        doom_memcpy(dest, src, width);
+        memcpy(dest, src, width);
         src += width;
         dest += SCREENWIDTH;
     }
@@ -438,7 +438,7 @@ void V_GetBlock(int x, int y, int scrn, int width, int height, byte* dest)
 
     while (height--)
     {
-        doom_memcpy(dest, src, width);
+        memcpy(dest, src, width);
         src += SCREENWIDTH;
         dest += width;
     }

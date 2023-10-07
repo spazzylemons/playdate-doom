@@ -85,8 +85,8 @@ P_GiveAmmo
     {
         //I_Error ("P_GiveAmmo: bad type %i", ammo);
         
-        doom_strcpy(error_buf, "P_GiveAmmo: bad type ");
-        doom_concat(error_buf, doom_itoa(ammo, 10));
+        strcpy(error_buf, "P_GiveAmmo: bad type ");
+        strcat(error_buf, doom_itoa(ammo, 10));
         I_Error(error_buf);
     }
                 

@@ -210,9 +210,9 @@ void* Z_Malloc(int size, int tag, void* user)
         {
             // scanned all the way around the list
             //I_Error("Error: Z_Malloc: failed on allocation of %i bytes", size);
-            doom_strcpy(error_buf, "Error: Z_Malloc: failed on allocation of ");
-            doom_concat(error_buf, doom_itoa(size, 10));
-            doom_concat(error_buf, " bytes");
+            strcpy(error_buf, "Error: Z_Malloc: failed on allocation of ");
+            strcat(error_buf, doom_itoa(size, 10));
+            strcat(error_buf, " bytes");
             I_Error(error_buf);
         }
 

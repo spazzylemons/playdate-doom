@@ -100,7 +100,7 @@ void HUlib_drawTextLine(hu_textline_t* l, doom_boolean drawcursor)
     x = l->x;
     for (i = 0; i < l->len; i++)
     {
-        c = doom_toupper(l->l[i]);
+        c = toupper(l->l[i]);
         if (c != ' '
             && c >= l->sc
             && c <= '_')

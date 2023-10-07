@@ -398,10 +398,10 @@ void HU_Init(void)
     {
         //if (j == 40) __debugbreak();
         //doom_sprintf(buffer, "STCFN%.3d", j++);
-        doom_strcpy(buffer, "STCFN");
-        if (j < 100) doom_concat(buffer, "0");
-        if (j < 10) doom_concat(buffer, "0");
-        doom_concat(buffer, doom_itoa(j++, 10));
+        strcpy(buffer, "STCFN");
+        if (j < 100) strcat(buffer, "0");
+        if (j < 10) strcat(buffer, "0");
+        strcat(buffer, doom_itoa(j++, 10));
         hu_font[i] = (patch_t*)W_CacheLumpName(buffer, PU_STATIC);
     }
 }
@@ -700,7 +700,7 @@ doom_boolean HU_Responder(event_t* ev)
 
             // leave chat mode and notify that it was sent
             chat_on = false;
-            doom_strcpy(lastmessage, chat_macros[c]);
+            strcpy(lastmessage, chat_macros[c]);
             plr->message = lastmessage;
             eatkey = true;
         }
@@ -720,7 +720,7 @@ doom_boolean HU_Responder(event_t* ev)
                 chat_on = false;
                 if (w_chat.l.len)
                 {
-                    doom_strcpy(lastmessage, w_chat.l.l);
+                    strcpy(lastmessage, w_chat.l.l);
                     plr->message = lastmessage;
                 }
             }

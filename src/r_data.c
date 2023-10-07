@@ -208,7 +208,7 @@ void R_DrawColumnInCache(column_t* patch, byte* cache, int originy, int cachehei
             count = cacheheight - position;
 
         if (count > 0)
-            doom_memcpy(cache + position, source, count);
+            memcpy(cache + position, source, count);
 
         patch = (column_t*)((byte*)patch + patch->length + 4);
     }
@@ -314,7 +314,7 @@ void R_GenerateLookup(int texnum)
     // Fill in the lump / offset, so columns
     //  with only a single patch are all done.
     patchcount = (byte*)doom_malloc(texture->width);
-    doom_memset(patchcount, 0, texture->width);
+    memset(patchcount, 0, texture->width);
     patch = texture->patches;
 
     for (i = 0, patch = texture->patches;
@@ -364,9 +364,9 @@ void R_GenerateLookup(int texnum)
                 //I_Error("Error: R_GenerateLookup: texture %i is >64k",
                 //        texnum);
                 
-                doom_strcpy(error_buf, "Error: R_GenerateLookup: texture ");
-                doom_concat(error_buf, doom_itoa(texnum, 10));
-                doom_concat(error_buf, " is >64k");
+                strcpy(error_buf, "Error: R_GenerateLookup: texture ");
+                strcat(error_buf, doom_itoa(texnum, 10));
+                strcat(error_buf, " is >64k");
                 I_Error(error_buf);
             }
 
@@ -450,7 +450,7 @@ void R_InitTextures(void)
 
     for (i = 0; i < nummappatches; i++)
     {
-        doom_strncpy(name, name_p + i * 8, 8);
+        strncpy(name, name_p + i * 8, 8);
         patchlookup[i] = W_CheckNumForName(name);
     }
     Z_Free(names);
@@ -537,7 +537,7 @@ void R_InitTextures(void)
         texture->height = SHORT(mtexture->height);
         texture->patchcount = SHORT(mtexture->patchcount);
 
-        doom_memcpy(texture->name, mtexture->name, sizeof(texture->name));
+        memcpy(texture->name, mtexture->name, sizeof(texture->name));
         mpatch = &mtexture->patches[0];
         patch = &texture->patches[0];
 
@@ -551,8 +551,8 @@ void R_InitTextures(void)
                 //I_Error("Error: R_InitTextures: Missing patch in texture %s",
                 //        texture->name);
                 
-                doom_strcpy(error_buf, "Error: R_InitTextures: Missing patch in texture ");
-                doom_concat(error_buf, texture->name);
+                strcpy(error_buf, "Error: R_InitTextures: Missing patch in texture ");
+                strcat(error_buf, texture->name);
                 I_Error(error_buf);
             }
         }
@@ -688,12 +688,12 @@ int R_FlatNumForName(char* name)
     if (i == -1)
     {
         namet[8] = 0;
-        doom_memcpy(namet, name, 8);
+        memcpy(namet, name, 8);
         //I_Error("Error: R_FlatNumForName: %s not found", namet);
         
-        doom_strcpy(error_buf, "Error: R_FlatNumForName: ");
-        doom_concat(error_buf, namet);
-        doom_concat(error_buf, " not found");
+        strcpy(error_buf, "Error: R_FlatNumForName: ");
+        strcat(error_buf, namet);
+        strcat(error_buf, " not found");
         I_Error(error_buf);
     }
     return i - firstflat;
@@ -737,9 +737,9 @@ int R_TextureNumForName(char* name)
         //I_Error("Error: R_TextureNumForName: %s not found",
         //        name);
         
-        doom_strcpy(error_buf, "Error: R_TextureNumForName: ");
-        doom_concat(error_buf, name);
-        doom_concat(error_buf, " not found");
+        strcpy(error_buf, "Error: R_TextureNumForName: ");
+        strcat(error_buf, name);
+        strcat(error_buf, " not found");
         I_Error(error_buf);
     }
     return i;
@@ -770,7 +770,7 @@ void R_PrecacheLevel(void)
 
     // Precache flats.
     flatpresent = doom_malloc(numflats);
-    doom_memset(flatpresent, 0, numflats);
+    memset(flatpresent, 0, numflats);
 
     for (i = 0; i < numsectors; i++)
     {
@@ -792,7 +792,7 @@ void R_PrecacheLevel(void)
 
     // Precache textures.
     texturepresent = doom_malloc(numtextures);
-    doom_memset(texturepresent, 0, numtextures);
+    memset(texturepresent, 0, numtextures);
 
     for (i = 0; i < numsides; i++)
     {
@@ -827,7 +827,7 @@ void R_PrecacheLevel(void)
 
     // Precache sprites.
     spritepresent = doom_malloc(numsprites);
-    doom_memset(spritepresent, 0, numsprites);
+    memset(spritepresent, 0, numsprites);
 
     for (th = thinkercap.next; th != &thinkercap; th = th->next)
     {

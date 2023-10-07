@@ -133,12 +133,12 @@ void R_DrawColumn(void)
     {
         //I_Error("Error: R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
         
-        doom_strcpy(error_buf, "Error: R_DrawColumn: ");
-        doom_concat(error_buf, doom_itoa(dc_yl, 10));
-        doom_concat(error_buf, " to ");
-        doom_concat(error_buf, doom_itoa(dc_yh, 10));
-        doom_concat(error_buf, " at ");
-        doom_concat(error_buf, doom_itoa(dc_x, 10));
+        strcpy(error_buf, "Error: R_DrawColumn: ");
+        strcat(error_buf, doom_itoa(dc_yl, 10));
+        strcat(error_buf, " to ");
+        strcat(error_buf, doom_itoa(dc_yh, 10));
+        strcat(error_buf, " at ");
+        strcat(error_buf, doom_itoa(dc_x, 10));
         I_Error(error_buf);
     }
 #endif 
@@ -190,12 +190,12 @@ void R_DrawColumnLow(void)
     {
         //I_Error("Error: R_DrawColumn: %i to %i at %i", dc_yl, dc_yh, dc_x);
         
-        doom_strcpy(error_buf, "Error: R_DrawColumn: ");
-        doom_concat(error_buf, doom_itoa(dc_yl, 10));
-        doom_concat(error_buf, " to ");
-        doom_concat(error_buf, doom_itoa(dc_yh, 10));
-        doom_concat(error_buf, " at ");
-        doom_concat(error_buf, doom_itoa(dc_x, 10));
+        strcpy(error_buf, "Error: R_DrawColumn: ");
+        strcat(error_buf, doom_itoa(dc_yl, 10));
+        strcat(error_buf, " to ");
+        strcat(error_buf, doom_itoa(dc_yh, 10));
+        strcat(error_buf, " at ");
+        strcat(error_buf, doom_itoa(dc_x, 10));
         I_Error(error_buf);
     }
 #endif 
@@ -261,12 +261,12 @@ void R_DrawFuzzColumn(void)
         //I_Error("Error: R_DrawFuzzColumn: %i to %i at %i",
         //        dc_yl, dc_yh, dc_x);
         
-        doom_strcpy(error_buf, "Error: R_DrawFuzzColumn: ");
-        doom_concat(error_buf, doom_itoa(dc_yl, 10));
-        doom_concat(error_buf, " to ");
-        doom_concat(error_buf, doom_itoa(dc_yh, 10));
-        doom_concat(error_buf, " at ");
-        doom_concat(error_buf, doom_itoa(dc_x, 10));
+        strcpy(error_buf, "Error: R_DrawFuzzColumn: ");
+        strcat(error_buf, doom_itoa(dc_yl, 10));
+        strcat(error_buf, " to ");
+        strcat(error_buf, doom_itoa(dc_yh, 10));
+        strcat(error_buf, " at ");
+        strcat(error_buf, doom_itoa(dc_x, 10));
         I_Error(error_buf);
     }
 #endif
@@ -328,12 +328,12 @@ void R_DrawTranslatedColumn(void)
         //I_Error("Error: R_DrawColumn: %i to %i at %i",
         //        dc_yl, dc_yh, dc_x);
         
-        doom_strcpy(error_buf, "Error: R_DrawColumn: ");
-        doom_concat(error_buf, doom_itoa(dc_yl, 10));
-        doom_concat(error_buf, " to ");
-        doom_concat(error_buf, doom_itoa(dc_yh, 10));
-        doom_concat(error_buf, " at ");
-        doom_concat(error_buf, doom_itoa(dc_x, 10));
+        strcpy(error_buf, "Error: R_DrawColumn: ");
+        strcat(error_buf, doom_itoa(dc_yl, 10));
+        strcat(error_buf, " to ");
+        strcat(error_buf, doom_itoa(dc_yh, 10));
+        strcat(error_buf, " at ");
+        strcat(error_buf, doom_itoa(dc_x, 10));
         I_Error(error_buf);
     }
 #endif 
@@ -444,12 +444,12 @@ void R_DrawSpan(void)
         //I_Error("Error: R_DrawSpan: %i to %i at %i",
         //        ds_x1, ds_x2, ds_y);
         
-        doom_strcpy(error_buf, "Error: R_DrawSpan: ");
-        doom_concat(error_buf, doom_itoa(ds_x1, 10));
-        doom_concat(error_buf, " to ");
-        doom_concat(error_buf, doom_itoa(ds_x2, 10));
-        doom_concat(error_buf, " at ");
-        doom_concat(error_buf, doom_itoa(ds_y, 10));
+        strcpy(error_buf, "Error: R_DrawSpan: ");
+        strcat(error_buf, doom_itoa(ds_x1, 10));
+        strcat(error_buf, " to ");
+        strcat(error_buf, doom_itoa(ds_x2, 10));
+        strcat(error_buf, " at ");
+        strcat(error_buf, doom_itoa(ds_y, 10));
         I_Error(error_buf);
     }
 #endif 
@@ -500,12 +500,12 @@ void R_DrawSpanLow(void)
         //        ds_x1, ds_x2, ds_y);
         
         
-        doom_strcpy(error_buf, "Error: R_DrawSpan: ");
-        doom_concat(error_buf, doom_itoa(ds_x1, 10));
-        doom_concat(error_buf, " to ");
-        doom_concat(error_buf, doom_itoa(ds_x2, 10));
-        doom_concat(error_buf, " at ");
-        doom_concat(error_buf, doom_itoa(ds_y, 10));
+        strcpy(error_buf, "Error: R_DrawSpan: ");
+        strcat(error_buf, doom_itoa(ds_x1, 10));
+        strcat(error_buf, " to ");
+        strcat(error_buf, doom_itoa(ds_x2, 10));
+        strcat(error_buf, " at ");
+        strcat(error_buf, doom_itoa(ds_y, 10));
         I_Error(error_buf);
     }
 #endif 
@@ -604,13 +604,13 @@ void R_FillBackScreen(void)
     {
         for (x = 0; x < SCREENWIDTH / 64; x++)
         {
-            doom_memcpy(dest, src + ((y & 63) << 6), 64);
+            memcpy(dest, src + ((y & 63) << 6), 64);
             dest += 64;
         }
 
         if (SCREENWIDTH & 63)
         {
-            doom_memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
+            memcpy(dest, src + ((y & 63) << 6), SCREENWIDTH & 63);
             dest += (SCREENWIDTH & 63);
         }
     }
@@ -666,7 +666,7 @@ void R_VideoErase(unsigned ofs, int count)
     //  is not optiomal, e.g. byte by byte on
     //  a 32bit CPU, as GNU GCC/Linux libc did
     //  at one point.
-    doom_memcpy(screens[0] + ofs, screens[1] + ofs, count);
+    memcpy(screens[0] + ofs, screens[1] + ofs, count);
 }
 
 

@@ -495,7 +495,7 @@ void AM_loadPics(void)
 
     for (i = 0; i < 10; i++)
     {
-        doom_concat(doom_strcpy(namebuf, "AMMNUM"), doom_itoa(i, 10));
+        strcat(strcpy(namebuf, "AMMNUM"), doom_itoa(i, 10));
         marknums[i] = W_CacheLumpName(namebuf, PU_STATIC);
     }
 }
@@ -674,9 +674,9 @@ doom_boolean AM_Responder(event_t* ev)
                 plr->message = grid ? AMSTR_GRIDON : AMSTR_GRIDOFF;
                 break;
             case AM_MARKKEY:
-                doom_strcpy(buffer, AMSTR_MARKEDSPOT);
-                doom_concat(buffer, " ");
-                doom_concat(buffer, doom_itoa(markpointnum, 10));
+                strcpy(buffer, AMSTR_MARKEDSPOT);
+                strcat(buffer, " ");
+                strcat(buffer, doom_itoa(markpointnum, 10));
                 //doom_sprintf(buffer, "%s %d", AMSTR_MARKEDSPOT, markpointnum);
                 plr->message = buffer;
                 AM_addMark();
@@ -812,7 +812,7 @@ void AM_Ticker(void)
 //
 void AM_clearFB(int color)
 {
-    doom_memset(fb, color, f_w * f_h);
+    memset(fb, color, f_w * f_h);
 }
 
 

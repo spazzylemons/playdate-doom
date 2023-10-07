@@ -482,7 +482,7 @@ mobj_t* P_SpawnMobj(fixed_t x, fixed_t y, fixed_t z, mobjtype_t type)
     mobjinfo_t* info;
 
     mobj = Z_Malloc(sizeof(*mobj), PU_LEVEL, 0);
-    doom_memset(mobj, 0, sizeof(*mobj));
+    memset(mobj, 0, sizeof(*mobj));
     info = &mobjinfo[type];
 
     mobj->type = type;
@@ -703,7 +703,7 @@ void P_SpawnMapThing(mapthing_t* mthing)
     {
         if (deathmatch_p < &deathmatchstarts[10])
         {
-            doom_memcpy(deathmatch_p, mthing, sizeof(*mthing));
+            memcpy(deathmatch_p, mthing, sizeof(*mthing));
             deathmatch_p++;
         }
         return;
@@ -746,13 +746,13 @@ void P_SpawnMapThing(mapthing_t* mthing)
         //        mthing->x, mthing->y);
         
         
-        doom_strcpy(error_buf, "Error: P_SpawnMapThing: Unknown type ");
-        doom_concat(error_buf, doom_itoa(mthing->type, 10));
-        doom_concat(error_buf, " at (");
-        doom_concat(error_buf, doom_itoa(mthing->x, 10));
-        doom_concat(error_buf, ", ");
-        doom_concat(error_buf, doom_itoa(mthing->y, 10));
-        doom_concat(error_buf, ")");
+        strcpy(error_buf, "Error: P_SpawnMapThing: Unknown type ");
+        strcat(error_buf, doom_itoa(mthing->type, 10));
+        strcat(error_buf, " at (");
+        strcat(error_buf, doom_itoa(mthing->x, 10));
+        strcat(error_buf, ", ");
+        strcat(error_buf, doom_itoa(mthing->y, 10));
+        strcat(error_buf, ")");
         I_Error(error_buf);
     }
 

@@ -519,8 +519,8 @@ void D_AddFile(char* file)
     for (numwadfiles = 0; wadfiles[numwadfiles]; numwadfiles++)
         ;
 
-    newfile = doom_malloc(doom_strlen(file) + 1);
-    doom_strcpy(newfile, file);
+    newfile = doom_malloc(strlen(file) + 1);
+    strcpy(newfile, file);
 
     wadfiles[numwadfiles] = newfile;
 }
@@ -550,46 +550,46 @@ void IdentifyVersion(void)
         doomwaddir = ".";
 
     // Commercial.
-    doom2wad = doom_malloc(doom_strlen(doomwaddir) + 1 + 9 + 1);
+    doom2wad = doom_malloc(strlen(doomwaddir) + 1 + 9 + 1);
     //doom_sprintf(doom2wad, "%s/doom2.wad", doomwaddir);
-    doom_strcpy(doom2wad, doomwaddir);
-    doom_concat(doom2wad, "/doom2.wad");
+    strcpy(doom2wad, doomwaddir);
+    strcat(doom2wad, "/doom2.wad");
 
     // Retail.
-    doomuwad = doom_malloc(doom_strlen(doomwaddir) + 1 + 8 + 1);
+    doomuwad = doom_malloc(strlen(doomwaddir) + 1 + 8 + 1);
     //doom_sprintf(doomuwad, "%s/doomu.wad", doomwaddir);
-    doom_strcpy(doomuwad, doomwaddir);
-    doom_concat(doomuwad, "/doomu.wad");
+    strcpy(doomuwad, doomwaddir);
+    strcat(doomuwad, "/doomu.wad");
 
     // Registered.
-    doomwad = doom_malloc(doom_strlen(doomwaddir) + 1 + 8 + 1);
+    doomwad = doom_malloc(strlen(doomwaddir) + 1 + 8 + 1);
     //doom_sprintf(doomwad, "%s/doom.wad", doomwaddir);
-    doom_strcpy(doomwad, doomwaddir);
-    doom_concat(doomwad, "/doom.wad");
+    strcpy(doomwad, doomwaddir);
+    strcat(doomwad, "/doom.wad");
 
     // Shareware.
-    doom1wad = doom_malloc(doom_strlen(doomwaddir) + 1 + 9 + 1);
+    doom1wad = doom_malloc(strlen(doomwaddir) + 1 + 9 + 1);
     //doom_sprintf(doom1wad, "%s/doom1.wad", doomwaddir);
-    doom_strcpy(doom1wad, doomwaddir);
-    doom_concat(doom1wad, "/doom1.wad");
+    strcpy(doom1wad, doomwaddir);
+    strcat(doom1wad, "/doom1.wad");
 
     // Bug, dear Shawn.
    // Insufficient malloc, caused spurious realloc errors.
-    plutoniawad = doom_malloc(doom_strlen(doomwaddir) + 1 +/*9*/12 + 1);
+    plutoniawad = doom_malloc(strlen(doomwaddir) + 1 +/*9*/12 + 1);
     //doom_sprintf(plutoniawad, "%s/plutonia.wad", doomwaddir);
-    doom_strcpy(plutoniawad, doomwaddir);
-    doom_concat(plutoniawad, "/plutonia.wad");
+    strcpy(plutoniawad, doomwaddir);
+    strcat(plutoniawad, "/plutonia.wad");
 
-    tntwad = doom_malloc(doom_strlen(doomwaddir) + 1 + 9 + 1);
+    tntwad = doom_malloc(strlen(doomwaddir) + 1 + 9 + 1);
     //doom_sprintf(tntwad, "%s/tnt.wad", doomwaddir);
-    doom_strcpy(tntwad, doomwaddir);
-    doom_concat(tntwad, "/tnt.wad");
+    strcpy(tntwad, doomwaddir);
+    strcat(tntwad, "/tnt.wad");
 
     // French stuff.
-    doom2fwad = doom_malloc(doom_strlen(doomwaddir) + 1 + 10 + 1);
+    doom2fwad = doom_malloc(strlen(doomwaddir) + 1 + 10 + 1);
     //doom_sprintf(doom2fwad, "%s/doom2f.wad", doomwaddir);
-    doom_strcpy(doom2fwad, doomwaddir);
-    doom_concat(doom2fwad, "/doom2f.wad");
+    strcpy(doom2fwad, doomwaddir);
+    strcat(doom2fwad, "/doom2f.wad");
 
 #if !defined(DOOM_WIN32)
     home = doom_getenv("HOME");
@@ -599,8 +599,8 @@ void IdentifyVersion(void)
     home = ".";
 #endif
     //doom_sprintf(basedefault, "%s/.doomrc", home);
-    doom_strcpy(basedefault, home);
-    doom_concat(basedefault, "/.doomrc");
+    strcpy(basedefault, home);
+    strcat(basedefault, "/.doomrc");
 
     if (M_CheckParm("-shdev"))
     {
@@ -609,7 +609,7 @@ void IdentifyVersion(void)
         D_AddFile(DEVDATA"doom1.wad");
         D_AddFile(DEVMAPS"data_se/texture1.lmp");
         D_AddFile(DEVMAPS"data_se/pnames.lmp");
-        doom_strcpy(basedefault, DEVDATA"default.cfg");
+        strcpy(basedefault, DEVDATA"default.cfg");
         return;
     }
 
@@ -621,7 +621,7 @@ void IdentifyVersion(void)
         D_AddFile(DEVMAPS"data_se/texture1.lmp");
         D_AddFile(DEVMAPS"data_se/texture2.lmp");
         D_AddFile(DEVMAPS"data_se/pnames.lmp");
-        doom_strcpy(basedefault, DEVDATA"default.cfg");
+        strcpy(basedefault, DEVDATA"default.cfg");
         return;
     }
 
@@ -639,7 +639,7 @@ void IdentifyVersion(void)
 
         D_AddFile(DEVMAPS"cdata/texture1.lmp");
         D_AddFile(DEVMAPS"cdata/pnames.lmp");
-        doom_strcpy(basedefault, DEVDATA"default.cfg");
+        strcpy(basedefault, DEVDATA"default.cfg");
         return;
     }
 
@@ -752,7 +752,7 @@ void FindResponseFile(void)
 
             firstargv = myargv[0];
             myargv = doom_malloc(sizeof(char*) * MAXARGVS);
-            doom_memset(myargv, 0, sizeof(char*) * MAXARGVS);
+            memset(myargv, 0, sizeof(char*) * MAXARGVS);
             myargv[0] = firstargv;
 
             infile = file;
@@ -820,11 +820,11 @@ void D_DoomMain(void)
             //        "The Ultimate DOOM Startup v%i.%i"
             //        "                           ",
             //        VERSION / 100, VERSION % 100);
-            doom_strcpy(title, "                         " "The Ultimate DOOM Startup v");
-            doom_concat(title, doom_itoa(VERSION / 100, 10));
-            doom_concat(title, ".");
-            doom_concat(title, doom_itoa(VERSION % 100, 10));
-            doom_concat(title, "                           ");
+            strcpy(title, "                         " "The Ultimate DOOM Startup v");
+            strcat(title, doom_itoa(VERSION / 100, 10));
+            strcat(title, ".");
+            strcat(title, doom_itoa(VERSION % 100, 10));
+            strcat(title, "                           ");
             break;
         case shareware:
             //doom_sprintf(title,
@@ -832,11 +832,11 @@ void D_DoomMain(void)
             //        "DOOM Shareware Startup v%i.%i"
             //        "                           ",
             //        VERSION / 100, VERSION % 100);
-            doom_strcpy(title, "                            " "DOOM Shareware Startup v");
-            doom_concat(title, doom_itoa(VERSION / 100, 10));
-            doom_concat(title, ".");
-            doom_concat(title, doom_itoa(VERSION % 100, 10));
-            doom_concat(title, "                           ");
+            strcpy(title, "                            " "DOOM Shareware Startup v");
+            strcat(title, doom_itoa(VERSION / 100, 10));
+            strcat(title, ".");
+            strcat(title, doom_itoa(VERSION % 100, 10));
+            strcat(title, "                           ");
             break;
         case registered:
             //doom_sprintf(title,
@@ -844,11 +844,11 @@ void D_DoomMain(void)
             //        "DOOM Registered Startup v%i.%i"
             //        "                           ",
             //        VERSION / 100, VERSION % 100);
-            doom_strcpy(title, "                            " "DOOM Registered Startup v");
-            doom_concat(title, doom_itoa(VERSION / 100, 10));
-            doom_concat(title, ".");
-            doom_concat(title, doom_itoa(VERSION % 100, 10));
-            doom_concat(title, "                           ");
+            strcpy(title, "                            " "DOOM Registered Startup v");
+            strcat(title, doom_itoa(VERSION / 100, 10));
+            strcat(title, ".");
+            strcat(title, doom_itoa(VERSION % 100, 10));
+            strcat(title, "                           ");
             break;
         case commercial:
             //doom_sprintf(title,
@@ -856,11 +856,11 @@ void D_DoomMain(void)
             //        "DOOM 2: Hell on Earth v%i.%i"
             //        "                           ",
             //        VERSION / 100, VERSION % 100);
-            doom_strcpy(title, "                         " "DOOM 2: Hell on Earth v");
-            doom_concat(title, doom_itoa(VERSION / 100, 10));
-            doom_concat(title, ".");
-            doom_concat(title, doom_itoa(VERSION % 100, 10));
-            doom_concat(title, "                           ");
+            strcpy(title, "                         " "DOOM 2: Hell on Earth v");
+            strcat(title, doom_itoa(VERSION / 100, 10));
+            strcat(title, ".");
+            strcat(title, doom_itoa(VERSION % 100, 10));
+            strcat(title, "                           ");
             break;
             /*FIXME
                    case pack_plut:
@@ -884,11 +884,11 @@ void D_DoomMain(void)
             //        "Public DOOM - v%i.%i"
             //        "                           ",
             //        VERSION / 100, VERSION % 100);
-            doom_strcpy(title, "                     " "Public DOOM - v");
-            doom_concat(title, doom_itoa(VERSION / 100, 10));
-            doom_concat(title, ".");
-            doom_concat(title, doom_itoa(VERSION % 100, 10));
-            doom_concat(title, "                           ");
+            strcpy(title, "                     " "Public DOOM - v");
+            strcat(title, doom_itoa(VERSION / 100, 10));
+            strcat(title, ".");
+            strcat(title, doom_itoa(VERSION % 100, 10));
+            strcat(title, "                           ");
             break;
     }
 
@@ -904,7 +904,7 @@ void D_DoomMain(void)
     {
         doom_print(D_CDROM);
         mkdir("c:\\doomdata", 0);
-        doom_strcpy(basedefault, "c:/doomdata/default.cfg");
+        strcpy(basedefault, "c:/doomdata/default.cfg");
     }
 #endif
 
@@ -916,7 +916,7 @@ void D_DoomMain(void)
         extern int sidemove[2];
 
         if (p < myargc - 1)
-            scale = doom_atoi(myargv[p + 1]);
+            scale = atoi(myargv[p + 1]);
         if (scale < 10)
             scale = 10;
         if (scale > 400)
@@ -948,11 +948,11 @@ void D_DoomMain(void)
             case retail:
             case registered:
                 //doom_sprintf(file, "~"DEVMAPS"E%cM%c.wad", myargv[p + 1][0], myargv[p + 2][0]);
-                doom_strcpy(file, "~"DEVMAPS"E");
-                doom_concat(file, doom_ctoa(myargv[p + 1][0]));
-                doom_concat(file, "M");
-                doom_concat(file, doom_ctoa(myargv[p + 2][0]));
-                doom_concat(file, ".wad");
+                strcpy(file, "~"DEVMAPS"E");
+                strcat(file, doom_ctoa(myargv[p + 1][0]));
+                strcat(file, "M");
+                strcat(file, doom_ctoa(myargv[p + 2][0]));
+                strcat(file, ".wad");
 
                 //doom_print("Warping to Episode %s, Map %s.\n", myargv[p + 1], myargv[p + 2]);
                 doom_print("Warping to Episode ");
@@ -964,20 +964,20 @@ void D_DoomMain(void)
 
             case commercial:
             default:
-                p = doom_atoi(myargv[p + 1]);
+                p = atoi(myargv[p + 1]);
                 if (p < 10)
                 {
                     //doom_sprintf(file, "~"DEVMAPS"cdata/map0%i.wad", p);
-                    doom_strcpy(file, "~"DEVMAPS"cdata/map0");
-                    doom_concat(file, doom_itoa(p, 10));
-                    doom_concat(file, ".wad");
+                    strcpy(file, "~"DEVMAPS"cdata/map0");
+                    strcat(file, doom_itoa(p, 10));
+                    strcat(file, ".wad");
                 }
                 else
                 {
                     //doom_sprintf(file, "~"DEVMAPS"cdata/map%i.wad", p);
-                    doom_strcpy(file, "~"DEVMAPS"cdata/map");
-                    doom_concat(file, doom_itoa(p, 10));
-                    doom_concat(file, ".wad");
+                    strcpy(file, "~"DEVMAPS"cdata/map");
+                    strcat(file, doom_itoa(p, 10));
+                    strcat(file, ".wad");
                 }
                 break;
         }
@@ -1002,8 +1002,8 @@ void D_DoomMain(void)
     if (p && p < myargc - 1)
     {
         //doom_sprintf(file, "%s.lmp", myargv[p + 1]);
-        doom_strcpy(file, myargv[p + 1]);
-        doom_concat(file, ".lmp");
+        strcpy(file, myargv[p + 1]);
+        strcat(file, ".lmp");
         D_AddFile(file);
         //doom_print("Playing demo %s.lmp.\n", myargv[p + 1]);
         doom_print("Playing demo ");
@@ -1037,7 +1037,7 @@ void D_DoomMain(void)
     if (p && p < myargc - 1 && deathmatch)
     {
         int     time;
-        time = doom_atoi(myargv[p + 1]);
+        time = atoi(myargv[p + 1]);
         //doom_print("Levels will end after %d minute", time);
         doom_print("Levels will end after ");
         doom_print(doom_itoa(time, 10));
@@ -1055,7 +1055,7 @@ void D_DoomMain(void)
     if (p && p < myargc - 1)
     {
         if (gamemode == commercial)
-            startmap = doom_atoi(myargv[p + 1]);
+            startmap = atoi(myargv[p + 1]);
         else
         {
             startepisode = myargv[p + 1][0] - '0';
@@ -1218,9 +1218,9 @@ void D_DoomMain(void)
 #endif
         {
             //doom_sprintf(file, SAVEGAMENAME"%c.dsg", myargv[p + 1][0]);
-            doom_strcpy(file, SAVEGAMENAME);
-            doom_concat(file, doom_ctoa(myargv[p + 1][0]));
-            doom_concat(file, ".dsg");
+            strcpy(file, SAVEGAMENAME);
+            strcat(file, doom_ctoa(myargv[p + 1][0]));
+            strcat(file, ".dsg");
         }
         G_LoadGame(file);
     }
@@ -1244,9 +1244,9 @@ void D_DoomMain(void)
     {
         char    filename[20];
         //doom_sprintf(filename, "debug%i.txt", consoleplayer);
-        doom_strcpy(filename, "debug");
-        doom_concat(filename, doom_itoa(consoleplayer, 10));
-        doom_concat(filename, ".txt");
+        strcpy(filename, "debug");
+        strcat(filename, doom_itoa(consoleplayer, 10));
+        strcat(filename, ".txt");
         //doom_print("debug output to: %s\n", filename);
         doom_print("debug output to: ");
         doom_print(filename);

@@ -74,8 +74,8 @@ typedef struct memblock_s
     { \
         /*I_Error("Error: Z_CT at "__FILE__":%i",__LINE__);*/ \
         char buf[260]; \
-        doom_strcpy(buf, "Error: Z_CT at " __FILE__ ":"); \
-        doom_concat(buf, doom_itoa(__LINE__, 10)); \
+        strcpy(buf, "Error: Z_CT at " __FILE__ ":"); \
+        strcat(buf, doom_itoa(__LINE__, 10)); \
         I_Error(buf); \
     } \
     Z_ChangeTag2(p,t); \

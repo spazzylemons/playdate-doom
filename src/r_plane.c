@@ -128,12 +128,12 @@ void R_MapPlane(int y, int x1, int x2)
     {
         //I_Error("Error: R_MapPlane: %i, %i at %i", x1, x2, y);
         
-        doom_strcpy(error_buf, "Error: R_MapPlane: ");
-        doom_concat(error_buf, doom_itoa(x1, 10));
-        doom_concat(error_buf, ", ");
-        doom_concat(error_buf, doom_itoa(x2, 10));
-        doom_concat(error_buf, " at ");
-        doom_concat(error_buf, doom_itoa(y, 10));
+        strcpy(error_buf, "Error: R_MapPlane: ");
+        strcat(error_buf, doom_itoa(x1, 10));
+        strcat(error_buf, ", ");
+        strcat(error_buf, doom_itoa(x2, 10));
+        strcat(error_buf, " at ");
+        strcat(error_buf, doom_itoa(y, 10));
         I_Error(error_buf);
     }
 #endif
@@ -198,7 +198,7 @@ void R_ClearPlanes(void)
     lastopening = openings;
 
     // texture calculation
-    doom_memset(cachedheight, 0, sizeof(cachedheight));
+    memset(cachedheight, 0, sizeof(cachedheight));
 
     // left to right mapping
     angle = (viewangle - ANG90) >> ANGLETOFINESHIFT;
@@ -246,7 +246,7 @@ visplane_t* R_FindPlane(fixed_t height, int picnum, int lightlevel)
     check->minx = SCREENWIDTH;
     check->maxx = -1;
 
-    doom_memset(check->top, 0xff, sizeof(check->top));
+    memset(check->top, 0xff, sizeof(check->top));
 
     return check;
 }
@@ -307,7 +307,7 @@ visplane_t* R_CheckPlane(visplane_t* pl, int start, int stop)
     pl->minx = start;
     pl->maxx = stop;
 
-    doom_memset(pl->top, 0xff, sizeof(pl->top));
+    memset(pl->top, 0xff, sizeof(pl->top));
 
     return pl;
 }
@@ -360,9 +360,9 @@ void R_DrawPlanes(void)
         //I_Error("Error: R_DrawPlanes: drawsegs overflow (%i)",
         //        ds_p - drawsegs);
         
-        doom_strcpy(error_buf, "Error: R_DrawPlanes: drawsegs overflow (");
-        doom_concat(error_buf, doom_itoa((int)(ds_p - drawsegs), 10));
-        doom_concat(error_buf, ")");
+        strcpy(error_buf, "Error: R_DrawPlanes: drawsegs overflow (");
+        strcat(error_buf, doom_itoa((int)(ds_p - drawsegs), 10));
+        strcat(error_buf, ")");
         I_Error(error_buf);
     }
 
@@ -371,9 +371,9 @@ void R_DrawPlanes(void)
         //I_Error("Error: R_DrawPlanes: visplane overflow (%i)",
         //        lastvisplane - visplanes);
         
-        doom_strcpy(error_buf, "Error: R_DrawPlanes: visplane overflow (");
-        doom_concat(error_buf, doom_itoa((int)(lastvisplane - visplanes), 10));
-        doom_concat(error_buf, ")");
+        strcpy(error_buf, "Error: R_DrawPlanes: visplane overflow (");
+        strcat(error_buf, doom_itoa((int)(lastvisplane - visplanes), 10));
+        strcat(error_buf, ")");
         I_Error(error_buf);
     }
 
@@ -382,9 +382,9 @@ void R_DrawPlanes(void)
         //I_Error("Error: R_DrawPlanes: opening overflow (%i)",
         //        lastopening - openings);
         
-        doom_strcpy(error_buf, "Error: R_DrawPlanes: opening overflow (");
-        doom_concat(error_buf, doom_itoa((int)(lastopening - openings), 10));
-        doom_concat(error_buf, ")");
+        strcpy(error_buf, "Error: R_DrawPlanes: opening overflow (");
+        strcat(error_buf, doom_itoa((int)(lastopening - openings), 10));
+        strcat(error_buf, ")");
         I_Error(error_buf);
     }
 #endif

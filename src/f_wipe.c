@@ -58,7 +58,7 @@ void wipe_shittyColMajorXform(short* array, int width, int height)
         for (x = 0; x < width; x++)
             dest[x * height + y] = array[y * width + x];
 
-    doom_memcpy(array, dest, width * height * 2);
+    memcpy(array, dest, width * height * 2);
 
     Z_Free(dest);
 }
@@ -66,7 +66,7 @@ void wipe_shittyColMajorXform(short* array, int width, int height)
 
 int wipe_initColorXForm(int width, int height, int ticks)
 {
-    doom_memcpy(wipe_scr, wipe_scr_start, width * height);
+    memcpy(wipe_scr, wipe_scr_start, width * height);
     return 0;
 }
 
@@ -124,7 +124,7 @@ int wipe_initMelt(int width, int height, int ticks)
     int i, r;
 
     // copy start screen to main screen
-    doom_memcpy(wipe_scr, wipe_scr_start, width * height);
+    memcpy(wipe_scr, wipe_scr_start, width * height);
 
     // makes this wipe faster (in theory)
     // to have stuff in column-major format

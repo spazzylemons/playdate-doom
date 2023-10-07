@@ -41,88 +41,11 @@ void D_UpdateWipe(void);
 void I_UpdateSound(void);
 unsigned long I_TickSong(void);
 
-
-void doom_memset(void* ptr, int value, int num)
-{
-    memset(ptr, value, num);
-}
-
-
-void* doom_memcpy(void* destination, const void* source, int num)
-{
-    return memcpy(destination, source, num);
-}
-
-
-int doom_strlen(const char* str)
-{
-    return strlen(str);
-}
-
-
-char* doom_concat(char* dst, const char* src)
-{
-    return strcat(dst, src);
-}
-
-
-char* doom_strcpy(char* dst, const char* src)
-{
-    return strcpy(dst, src);
-}
-
-
-char* doom_strncpy(char* dst, const char* src, int num)
-{
-    return strncpy(dst, src, num);
-}
-
-
-int doom_strcmp(const char* str1, const char* str2)
-{
-    int ret = 0;
-
-    while (!(ret = *(unsigned char*)str1 - *(unsigned char*) str2) && *str1)
-        ++str1, ++str2;
-
-    if (ret < 0)
-        ret = -1;
-    else if (ret > 0)
-        ret = 1;
-
-    return (ret);
-}
-
-
-int doom_strncmp(const char* str1, const char* str2, int n)
-{
-    int ret = 0;
-    int count = 1;
-
-    while (!(ret = *(unsigned char*)str1 - *(unsigned char*) str2) && *str1 && count++ < n)
-        ++str1, ++str2;
-
-    if (ret < 0)
-        ret = -1;
-    else if (ret > 0)
-        ret = 1;
-
-    return (ret);
-}
-
-
-int doom_toupper(int c)
-{
-    if (c >= 'a' && c <= 'z') return c - 'a' + 'A';
-    return c;
-}
-
-
 int doom_strcasecmp(const char* str1, const char* str2)
 {
     int ret = 0;
 
-    while (!(ret = doom_toupper(*(unsigned char*)str1) - doom_toupper(*(unsigned char*)str2)) && *str1)
+    while (!(ret = toupper(*(unsigned char*)str1) - toupper(*(unsigned char*)str2)) && *str1)
         ++str1, ++str2;
 
     if (ret < 0)
@@ -139,7 +62,7 @@ int doom_strncasecmp(const char* str1, const char* str2, int n)
     int ret = 0;
     int count = 1;
 
-    while (!(ret = doom_toupper(*(unsigned char*)str1) - doom_toupper(*(unsigned char*)str2)) && *str1 && count++ < n)
+    while (!(ret = toupper(*(unsigned char*)str1) - toupper(*(unsigned char*)str2)) && *str1 && count++ < n)
         ++str1, ++str2;
 
     if (ret < 0)
@@ -148,21 +71,6 @@ int doom_strncasecmp(const char* str1, const char* str2, int n)
         ret = 1;
 
     return (ret);
-}
-
-
-int doom_atoi(const char* str)
-{
-    int i = 0;
-    int c;
-
-    while ((c = *str++) != 0)
-    {
-        i *= 10;
-        i += c - '0';
-    }
-
-    return i;
 }
 
 
@@ -263,7 +171,7 @@ const char* doom_ptoa(void* p)
 
 int doom_fprint(void* handle, const char* str)
 {
-    return doom_write(handle, str, doom_strlen(str));
+    return doom_write(handle, str, strlen(str));
 }
 
 
@@ -271,7 +179,7 @@ static default_t* get_default(const char* name)
 {
     for (int i = 0; i < numdefaults; ++i)
     {
-        if (doom_strcmp(defaults[i].name, name) == 0) return &defaults[i];
+        if (strcmp(defaults[i].name, name) == 0) return &defaults[i];
     }
     return 0;
 }
@@ -326,7 +234,7 @@ const unsigned char* doom_get_framebuffer(int channels)
 {
     int i, len;
 
-    doom_memcpy(screen_buffer, screens[0], SCREENWIDTH * SCREENHEIGHT);
+    memcpy(screen_buffer, screens[0], SCREENWIDTH * SCREENHEIGHT);
 
     extern doom_boolean menuactive;
     extern gamestate_t gamestate; 

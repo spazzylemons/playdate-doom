@@ -254,7 +254,7 @@ void G_BuildTiccmd(ticcmd_t* cmd)
     ticcmd_t* base;
 
     base = I_BaseTiccmd();                // empty, or external driver
-    doom_memcpy(cmd, base, sizeof(*cmd));
+    memcpy(cmd, base, sizeof(*cmd));
 
     cmd->consistancy =
         consistancy[consoleplayer][maketic % BACKUPTICS];
@@ -483,7 +483,7 @@ void G_DoLoadLevel(void)
     {
         if (playeringame[i] && players[i].playerstate == PST_DEAD)
             players[i].playerstate = PST_REBORN;
-        doom_memset(players[i].frags, 0, sizeof(players[i].frags));
+        memset(players[i].frags, 0, sizeof(players[i].frags));
     }
 
     P_SetupLevel(gameepisode, gamemap, 0, gameskill);
@@ -493,12 +493,12 @@ void G_DoLoadLevel(void)
     Z_CheckHeap();
 
     // clear cmd building stuff
-    doom_memset(gamekeydown, 0, sizeof(gamekeydown));
+    memset(gamekeydown, 0, sizeof(gamekeydown));
     joyxmove = joyymove = 0;
     mousex = mousey = 0;
     sendpause = sendsave = paused = false;
-    doom_memset(mousebuttons, 0, sizeof(*mousebuttons) * 3);
-    doom_memset(joybuttons, 0, sizeof(*joybuttons) * 4);
+    memset(mousebuttons, 0, sizeof(*mousebuttons) * 3);
+    memset(joybuttons, 0, sizeof(*joybuttons) * 4);
 }
 
 
@@ -666,7 +666,7 @@ void G_Ticker(void)
         {
             cmd = &players[i].cmd;
 
-            doom_memcpy(cmd, &netcmds[i][buf], sizeof(ticcmd_t));
+            memcpy(cmd, &netcmds[i][buf], sizeof(ticcmd_t));
 
             if (demoplayback)
                 G_ReadDemoTiccmd(cmd);
@@ -680,8 +680,8 @@ void G_Ticker(void)
                 static char turbomessage[80];
                 extern char* player_names[4];
                 //doom_sprintf(turbomessage, "%s is turbo!", player_names[i]);
-                doom_strcpy(turbomessage, player_names[i]);
-                doom_concat(turbomessage, " is turbo!");
+                strcpy(turbomessage, player_names[i]);
+                strcat(turbomessage, " is turbo!");
                 players[consoleplayer].message = turbomessage;
             }
 
@@ -693,11 +693,11 @@ void G_Ticker(void)
                     //I_Error("Error: consistency failure (%i should be %i)",
                     //        cmd->consistancy, consistancy[i][buf]);
                     
-                    doom_strcpy(error_buf, "Error: consistency failure (");
-                    doom_concat(error_buf, doom_itoa(cmd->consistancy, 10));
-                    doom_concat(error_buf, " should be ");
-                    doom_concat(error_buf, doom_itoa(consistancy[i][buf], 10));
-                    doom_concat(error_buf, ")");
+                    strcpy(error_buf, "Error: consistency failure (");
+                    strcat(error_buf, doom_itoa(cmd->consistancy, 10));
+                    strcat(error_buf, " should be ");
+                    strcat(error_buf, doom_itoa(consistancy[i][buf], 10));
+                    strcat(error_buf, ")");
                     I_Error(error_buf);
                 }
                 if (players[i].mo)
@@ -727,7 +727,7 @@ void G_Ticker(void)
 
                     case BTS_SAVEGAME:
                         if (!savedescription[0])
-                            doom_strcpy(savedescription, "NET GAME");
+                            strcpy(savedescription, "NET GAME");
                         savegameslot =
                             (players[i].cmd.buttons & BTS_SAVEMASK) >> BTS_SAVESHIFT;
                         gameaction = ga_savegame;
@@ -794,8 +794,8 @@ void G_PlayerFinishLevel(int player)
 
     p = &players[player];
 
-    doom_memset(p->powers, 0, sizeof(p->powers));
-    doom_memset(p->cards, 0, sizeof(p->cards));
+    memset(p->powers, 0, sizeof(p->powers));
+    memset(p->cards, 0, sizeof(p->cards));
     p->mo->flags &= ~MF_SHADOW; // cancel invisibility 
     p->extralight = 0; // cancel gun flashes 
     p->fixedcolormap = 0; // cancel ir gogles 
@@ -818,15 +818,15 @@ void G_PlayerReborn(int player)
     int itemcount;
     int secretcount;
 
-    doom_memcpy(frags, players[player].frags, sizeof(frags));
+    memcpy(frags, players[player].frags, sizeof(frags));
     killcount = players[player].killcount;
     itemcount = players[player].itemcount;
     secretcount = players[player].secretcount;
 
     p = &players[player];
-    doom_memset(p, 0, sizeof(*p));
+    memset(p, 0, sizeof(*p));
 
-    doom_memcpy(players[player].frags, frags, sizeof(players[player].frags));
+    memcpy(players[player].frags, frags, sizeof(players[player].frags));
     players[player].killcount = killcount;
     players[player].itemcount = itemcount;
     players[player].secretcount = secretcount;
@@ -911,9 +911,9 @@ void G_DeathMatchSpawnPlayer(int playernum)
     {
         //I_Error("Error: Only %i deathmatch spots, 4 required", selections);
         
-        doom_strcpy(error_buf, "Error: Only ");
-        doom_concat(error_buf, doom_itoa(selections, 10));
-        doom_concat(error_buf, " deathmatch spots, 4 required");
+        strcpy(error_buf, "Error: Only ");
+        strcat(error_buf, doom_itoa(selections, 10));
+        strcat(error_buf, " deathmatch spots, 4 required");
         I_Error(error_buf);
     }
 
@@ -1115,7 +1115,7 @@ void G_DoCompleted(void)
         wminfo.plyr[i].sitems = players[i].itemcount;
         wminfo.plyr[i].ssecret = players[i].secretcount;
         wminfo.plyr[i].stime = leveltime;
-        doom_memcpy(wminfo.plyr[i].frags, players[i].frags
+        memcpy(wminfo.plyr[i].frags, players[i].frags
                , sizeof(wminfo.plyr[i].frags));
     }
 
@@ -1124,7 +1124,7 @@ void G_DoCompleted(void)
     automapactive = false;
 
     if (statcopy)
-        doom_memcpy(statcopy, &wminfo, sizeof(wminfo));
+        memcpy(statcopy, &wminfo, sizeof(wminfo));
 
     WI_Start(&wminfo);
 }
@@ -1176,7 +1176,7 @@ void G_DoWorldDone(void)
 
 void G_LoadGame(char* name)
 {
-    doom_strcpy(savename, name);
+    strcpy(savename, name);
     gameaction = ga_loadgame;
 }
 
@@ -1194,11 +1194,11 @@ void G_DoLoadGame(void)
     save_p = savebuffer + SAVESTRINGSIZE;
 
     // skip the description field 
-    doom_memset(vcheck, 0, sizeof(vcheck));
+    memset(vcheck, 0, sizeof(vcheck));
     //doom_sprintf(vcheck, "version %i", VERSION);
-    doom_strcpy(vcheck, "version ");
-    doom_concat(vcheck, doom_itoa(VERSION, 10));
-    if (doom_strcmp((const char*)save_p, (const char*)vcheck))
+    strcpy(vcheck, "version ");
+    strcat(vcheck, doom_itoa(VERSION, 10));
+    if (strcmp((const char*)save_p, (const char*)vcheck))
         return;                                // bad version 
     save_p += VERSIONSIZE;
 
@@ -1245,7 +1245,7 @@ void G_DoLoadGame(void)
 void G_SaveGame(int slot, char* description)
 {
     savegameslot = slot;
-    doom_strcpy(savedescription, description);
+    strcpy(savedescription, description);
     sendsave = true;
 }
 
@@ -1264,21 +1264,21 @@ void G_DoSaveGame(void)
 #endif
     {
         //doom_sprintf(name, SAVEGAMENAME"%d.dsg", savegameslot);
-        doom_strcpy(name, SAVEGAMENAME);
-        doom_concat(name, doom_itoa(savegameslot, 10));
-        doom_concat(name, ".dsg");
+        strcpy(name, SAVEGAMENAME);
+        strcat(name, doom_itoa(savegameslot, 10));
+        strcat(name, ".dsg");
     }
     description = savedescription;
 
     save_p = savebuffer = screens[1] + 0x4000;
 
-    doom_memcpy(save_p, description, SAVESTRINGSIZE);
+    memcpy(save_p, description, SAVESTRINGSIZE);
     save_p += SAVESTRINGSIZE;
-    doom_memset(name2, 0, sizeof(name2));
+    memset(name2, 0, sizeof(name2));
     //doom_sprintf(name2, "version %i", VERSION);
-    doom_strcpy(name2, "version ");
-    doom_concat(name2, doom_itoa(VERSION, 10));
-    doom_memcpy(save_p, name2, VERSIONSIZE);
+    strcpy(name2, "version ");
+    strcat(name2, doom_itoa(VERSION, 10));
+    memcpy(save_p, name2, VERSIONSIZE);
     save_p += VERSIONSIZE;
 
     *save_p++ = gameskill;
@@ -1506,12 +1506,12 @@ void G_RecordDemo(char* name)
     int maxsize;
 
     usergame = false;
-    doom_strcpy(demoname, name);
-    doom_concat(demoname, ".lmp");
+    strcpy(demoname, name);
+    strcat(demoname, ".lmp");
     maxsize = 0x20000;
     i = M_CheckParm("-maxdemo");
     if (i && i < myargc - 1)
-        maxsize = doom_atoi(myargv[i + 1]) * 1024;
+        maxsize = atoi(myargv[i + 1]) * 1024;
     demobuffer = Z_Malloc(maxsize, PU_STATIC, 0);
     demoend = demobuffer + maxsize;
 
@@ -1633,11 +1633,11 @@ doom_boolean G_CheckDemoStatus(void)
         //I_Error("Error: timed %i gametics in %i realtics", gametic
         //        , endtime - starttime);
         
-        doom_strcpy(error_buf, "Error: timed ");
-        doom_concat(error_buf, doom_itoa(gametic, 10));
-        doom_concat(error_buf, " gametics in ");
-        doom_concat(error_buf, doom_itoa(endtime - starttime, 10));
-        doom_concat(error_buf, " realtics");
+        strcpy(error_buf, "Error: timed ");
+        strcat(error_buf, doom_itoa(gametic, 10));
+        strcat(error_buf, " gametics in ");
+        strcat(error_buf, doom_itoa(endtime - starttime, 10));
+        strcat(error_buf, " realtics");
         I_Error(error_buf);
     }
 
@@ -1668,9 +1668,9 @@ doom_boolean G_CheckDemoStatus(void)
         demorecording = false;
         //I_Error("Error: Demo %s recorded", demoname);
         
-        doom_strcpy(error_buf, "Error: Demo ");
-        doom_concat(error_buf, demoname);
-        doom_concat(error_buf, " recorded");
+        strcpy(error_buf, "Error: Demo ");
+        strcat(error_buf, demoname);
+        strcat(error_buf, " recorded");
         I_Error(error_buf);
     }
 

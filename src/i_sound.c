@@ -183,8 +183,8 @@ void* getsfx(char* sfxname, int* len)
     // Get the sound data from the WAD, allocate lump
     //  in zone memory.
     //doom_sprintf(name, "ds%s", sfxname);
-    doom_strcpy(name, "ds");
-    doom_concat(name, sfxname);
+    strcpy(name, "ds");
+    strcat(name, sfxname);
 
     // Now, there is a severe problem with the
     //  sound handling, in it is not (yet/anymore)
@@ -216,7 +216,7 @@ void* getsfx(char* sfxname, int* len)
     //  which does not kick in in the soundserver.
 
     // Now copy and pad.
-    doom_memcpy(paddedsfx, sfx, size);
+    memcpy(paddedsfx, sfx, size);
     for (i = size; i < paddedsize + 8; i++)
         paddedsfx[i] = 128;
 
@@ -690,8 +690,8 @@ int I_GetSfxLumpNum(sfxinfo_t* sfx)
 {
     char namebuf[9];
     //doom_sprintf(namebuf, "ds%s", sfx->name);
-    doom_strcpy(namebuf, "ds");
-    doom_concat(namebuf, sfx->name);
+    strcpy(namebuf, "ds");
+    strcat(namebuf, sfx->name);
     return W_GetNumForName(namebuf);
 }
 
@@ -997,8 +997,8 @@ void I_UnRegisterSong(int handle)
 
 int I_RegisterSong(void* data)
 {
-    doom_memcpy(&mus_header, data, sizeof(mus_header_t));
-    if (doom_strncmp(mus_header.ID, "MUS", 3) != 0 || mus_header.ID[3] != 0x1A) return 0;
+    memcpy(&mus_header, data, sizeof(mus_header_t));
+    if (strncmp(mus_header.ID, "MUS", 3) != 0 || mus_header.ID[3] != 0x1A) return 0;
 
     mus_data = (unsigned char*)data;
     mus_delay = 0;

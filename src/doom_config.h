@@ -13,6 +13,9 @@
 
 #include "DOOM.h"
 
+#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define doom_abs(x) ((x) < 0 ? -(x) : (x))
 
@@ -37,20 +40,10 @@ char *doom_getenv(const char *var);
 const char* doom_itoa(int i, int radix);
 const char* doom_ctoa(char c);
 const char* doom_ptoa(void* p);
-void doom_memset(void* ptr, int value, int num);
-void* doom_memcpy(void* destination, const void* source, int num);
 int doom_fprint(void* handle, const char* str);
-int doom_strlen(const char* str);
-char* doom_concat(char* dst, const char* src);
-char* doom_strcpy(char* destination, const char* source);
-char* doom_strncpy(char* destination, const char* source, int num);
-int doom_strcmp(const char* str1, const char* str2);
-int doom_strncmp(const char* str1, const char* str2, int n);
 int doom_strcasecmp(const char* str1, const char* str2);
 int doom_strncasecmp(const char* str1, const char* str2, int n);
-int doom_atoi(const char* str);
 int doom_atox(const char* str);
-int doom_toupper(int c);
 
 
 #endif
