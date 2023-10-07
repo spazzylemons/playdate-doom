@@ -405,6 +405,8 @@ byte* R_GetColumn(int tex, int col)
 //
 void R_InitTextures(void)
 {
+    static int mytestingthing = 0;
+
     maptexture_t* mtexture;
     texture_t* texture;
     mappatch_t* mpatch;
@@ -514,6 +516,15 @@ void R_InitTextures(void)
             I_Error("Error: R_InitTextures: bad texture directory");
 
         mtexture = (maptexture_t*)((byte*)maptex + offset);
+        if (mytestingthing == 0 && mtexture->width == 0) {
+            mytestingthing = 1;
+            doom_print(doom_itoa(__builtin_offsetof(maptexture_t, width), 10));
+            // for (int i = 0; i < 22; i++) {
+            //     doom_print(doom_itoa(((byte*) mtexture)[i], 10));
+            //     doom_print(",");
+            // }
+            doom_print("\n");
+        }
 
         texture = textures[i] =
             Z_Malloc(sizeof(texture_t)

@@ -13,18 +13,18 @@
 #include "m_argv.h"
 #include "m_misc.h"
 
+#include <string.h>
+
 
 extern byte* screens[5];
 extern unsigned char screen_palette[256 * 3];
 extern doom_boolean is_wiping_screen;
 extern default_t defaults[];
 extern int numdefaults;
-extern signed short mixbuffer[2048];
+// extern signed short mixbuffer[2048];
 
 
 static unsigned char* screen_buffer = 0;
-static unsigned char* final_screen_buffer = 0;
-static int last_update_time = 0;
 static int button_states[3] = { 0 };
 static char itoa_buf[20];
 
@@ -197,72 +197,37 @@ char* doom_getenv_impl(const char* var) {}
 
 void doom_memset(void* ptr, int value, int num)
 {
-    unsigned char* p = ptr;
-    for (int i = 0; i < num; ++i, ++p)
-    {
-        *p = (unsigned char)value;
-    }
+    memset(ptr, value, num);
 }
 
 
 void* doom_memcpy(void* destination, const void* source, int num)
 {
-    unsigned char* dst = destination;
-    const unsigned char* src = source;
-
-    for (int i = 0; i < num; ++i, ++dst, ++src)
-    {
-        *dst = *src;
-    }
-
-    return destination;
+    return memcpy(destination, source, num);
 }
 
 
 int doom_strlen(const char* str)
 {
-    int len = 0;
-    while (*str++) ++len;
-    return len;
+    return strlen(str);
 }
 
 
 char* doom_concat(char* dst, const char* src)
 {
-    char* ret = dst;
-    dst += doom_strlen(dst);
-
-    while (*src) *dst++ = *src++;
-    *dst = *src; // \0
-
-    return ret;
+    return strcat(dst, src);
 }
 
 
 char* doom_strcpy(char* dst, const char* src)
 {
-    char* ret = dst;
-
-    while (*src) *dst++ = *src++;
-    *dst = *src; // \0
-
-    return ret;
+    return strcpy(dst, src);
 }
 
 
 char* doom_strncpy(char* dst, const char* src, int num)
 {
-    int i = 0;
-
-    for (; i < num; ++i)
-    {
-        if (!src[i]) break;
-        dst[i] = src[i];
-    }
-
-    while (i < num) dst[i++] = '\0';
-
-    return dst;
+    return strncpy(dst, src, num);
 }
 
 
@@ -555,8 +520,6 @@ void doom_init(int argc, char** argv, int flags)
     if (!doom_getenv) doom_getenv = doom_getenv_impl;
 
     screen_buffer = doom_malloc(SCREENWIDTH * SCREENHEIGHT);
-    final_screen_buffer = doom_malloc(SCREENWIDTH * SCREENHEIGHT * 4);
-    last_update_time = I_GetTime();
 
     myargc = argc;
     myargv = argv;
@@ -568,18 +531,10 @@ void doom_init(int argc, char** argv, int flags)
 
 void doom_update()
 {
-    int now = I_GetTime();
-    int delta_time = now - last_update_time;
-
-    while (delta_time-- > 0)
-    {
-        if (is_wiping_screen)
-            D_UpdateWipe();
-        else
-            D_DoomLoop();
-    }
-
-    last_update_time = now;
+    if (is_wiping_screen)
+        D_UpdateWipe();
+    else
+        D_DoomLoop();
 }
 
 
@@ -616,39 +571,7 @@ const unsigned char* doom_get_framebuffer(int channels)
         }
     }
 
-    if (channels == 1)
-    {
-        return screen_buffer;
-    }
-    else if (channels == 3)
-    {
-        for (i = 0, len = SCREENWIDTH * SCREENHEIGHT; i < len; ++i)
-        {
-            int k = i * 3;
-            int kpal = screen_buffer[i] * 3;
-            final_screen_buffer[k + 0] = screen_palette[kpal + 0];
-            final_screen_buffer[k + 1] = screen_palette[kpal + 1];
-            final_screen_buffer[k + 2] = screen_palette[kpal + 2];
-        }
-        return final_screen_buffer;
-    }
-    else if (channels == 4)
-    {
-        for (i = 0, len = SCREENWIDTH * SCREENHEIGHT; i < len; ++i)
-        {
-            int k = i * 4;
-            int kpal = screen_buffer[i] * 3;
-            final_screen_buffer[k + 0] = screen_palette[kpal + 0];
-            final_screen_buffer[k + 1] = screen_palette[kpal + 1];
-            final_screen_buffer[k + 2] = screen_palette[kpal + 2];
-            final_screen_buffer[k + 3] = 255;
-        }
-        return final_screen_buffer;
-    }
-    else
-    {
-        return 0;
-    }
+    return screen_buffer;
 }
 
 
@@ -661,7 +584,7 @@ unsigned long doom_tick_midi()
 short* doom_get_sound_buffer()
 {
     I_UpdateSound();
-    return mixbuffer;
+    return 0;
 }
 
 

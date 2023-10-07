@@ -36,8 +36,8 @@
 // Needed for calling the actual sound output.
 #define SAMPLECOUNT 512
 #define NUM_CHANNELS 8
-// It is 2 for 16bit, and 2 for two channels.
-#define BUFMUL 4
+// It is 2 for 16bit
+#define BUFMUL 2
 #define MIXBUFFERSIZE (SAMPLECOUNT*BUFMUL)
 
 #define SAMPLERATE 11025 // Hz
@@ -118,7 +118,8 @@ int audio_fd;
 // Basically, samples from all active internal channels
 //  are modifed and added, and stored in the buffer
 //  that is submitted to the audio device.
-signed short mixbuffer[MIXBUFFERSIZE];
+signed short mixbuffer_left[MIXBUFFERSIZE];
+signed short mixbuffer_right[MIXBUFFERSIZE];
 
 
 // The channel step amount...
@@ -775,13 +776,13 @@ void I_UpdateSound(void)
 
     // Left and right channel
     //  are in global mixbuffer, alternating.
-    leftout = mixbuffer;
-    rightout = mixbuffer + 1;
-    step = 2;
+    leftout = mixbuffer_left;
+    rightout = mixbuffer_right;
+    step = 1;
 
     // Determine end, for left channel only
     //  (right channel is implicit).
-    leftend = mixbuffer + SAMPLECOUNT * step;
+    leftend = mixbuffer_left + SAMPLECOUNT * step;
 
     // Mix sounds into the mixing buffer.
     // Loop over step*SAMPLECOUNT,
@@ -926,8 +927,10 @@ void I_InitSound()
     doom_print(" pre-cached all sound data\n");
 
     // Now initialize mixbuffer with zero.
-    for (i = 0; i < MIXBUFFERSIZE; i++)
-        mixbuffer[i] = 0;
+    for (i = 0; i < MIXBUFFERSIZE; i++) {
+        mixbuffer_left[i] = 0;
+        mixbuffer_right[i] = 0;
+    }
 
     // Finished initialization.
     doom_print("I_InitSound: sound module ready\n");

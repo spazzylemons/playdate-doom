@@ -127,6 +127,8 @@ void I_ReadScreen(byte* scr)
     doom_memcpy(scr, screens[0], SCREENWIDTH * SCREENHEIGHT);
 }
 
+void recalculate_lighting(const byte *palette);
+
 
 //
 // I_SetPalette
@@ -134,6 +136,7 @@ void I_ReadScreen(byte* scr)
 void I_SetPalette(byte* palette)
 {
     doom_memcpy(screen_palette, palette, 256 * 3);
+    recalculate_lighting(screen_palette);
 }
 
 

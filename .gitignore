@@ -1,7 +1,10 @@
-build/
-*.wad
-.doomrc
-references/
-.DS_Store
-.vscode
-*.DLL
+# WAD not provided. You'll need to supply your own.
+Source/doom.wad
+
+# IDE settings may vary based on your setup.
+/.vscode
+
+# Generated files
+/build
+/*.pdx
+/Source/pdex.*
