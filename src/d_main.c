@@ -1194,7 +1194,6 @@ void D_DoomMain(void)
     p = M_CheckParm("-playdemo");
     if (p && p < myargc - 1)
     {
-        singledemo = true;              // quit after one demo
         G_DeferedPlayDemo(myargv[p + 1]);
         D_DoomLoop();  // never returns
     }

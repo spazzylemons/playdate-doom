@@ -100,7 +100,6 @@ void I_Quit(void)
     I_ShutdownMusic();
     M_SaveDefaults();
     I_ShutdownGraphics();
-    doom_exit(0);
 }
 
 

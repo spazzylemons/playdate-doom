@@ -116,7 +116,6 @@ doom_boolean netdemo;
 byte* demobuffer;
 byte* demo_p;
 byte* demoend;
-doom_boolean singledemo; // quit after playing a demo from cmdline 
 
 doom_boolean precache = true; // if true, load all graphics at start 
 
@@ -510,7 +509,7 @@ doom_boolean G_Responder(event_t* ev)
 {
     // allow spy mode changes even during the demo
     if (gamestate == GS_LEVEL && ev->type == ev_keydown
-        && ev->data1 == KEY_F12 && (singledemo || !deathmatch))
+        && ev->data1 == KEY_F12 && !deathmatch)
     {
         // spy mode 
         do
@@ -523,7 +522,7 @@ doom_boolean G_Responder(event_t* ev)
     }
 
     // any other key pops up menu if in demos
-    if (gameaction == ga_nothing && !singledemo &&
+    if (gameaction == ga_nothing &&
         (demoplayback || gamestate == GS_DEMOSCREEN)
         )
     {
@@ -1644,9 +1643,6 @@ doom_boolean G_CheckDemoStatus(void)
 
     if (demoplayback)
     {
-        if (singledemo)
-            I_Quit();
-
         Z_ChangeTag(demobuffer, PU_CACHE);
         demoplayback = false;
         netdemo = false;

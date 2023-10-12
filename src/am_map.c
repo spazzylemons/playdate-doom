@@ -1236,7 +1236,7 @@ void AM_drawPlayers(void)
         their_color++;
         p = &players[i];
 
-        if ((deathmatch && !singledemo) && p != plr)
+        if (deathmatch && p != plr)
             continue;
 
         if (!playeringame[i])

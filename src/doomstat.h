@@ -170,9 +170,6 @@ extern doom_boolean usergame;
 extern doom_boolean demoplayback;
 extern doom_boolean demorecording;
 
-// Quit after playing a demo from cmdline.
-extern doom_boolean singledemo;
-
 //?
 extern gamestate_t gamestate;
 

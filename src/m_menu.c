@@ -225,30 +225,6 @@ int epi;
 char detailNames[2][9] = { "M_GDHIGH","M_GDLOW" };
 char msgNames[2][9] = { "M_MSGOFF","M_MSGON" };
 
-int quitsounds[8] =
-{
-    sfx_pldeth,
-    sfx_dmpain,
-    sfx_popain,
-    sfx_slop,
-    sfx_telept,
-    sfx_posit1,
-    sfx_posit3,
-    sfx_sgtatk
-};
-
-int quitsounds2[8] =
-{
-    sfx_vilact,
-    sfx_getpow,
-    sfx_boscub,
-    sfx_slop,
-    sfx_skeswg,
-    sfx_kntdth,
-    sfx_bspact,
-    sfx_sgtatk
-};
-
 
 //
 // PROTOTYPES
@@ -262,7 +238,6 @@ void M_Options(int choice);
 void M_EndGame(int choice);
 void M_ReadThis(int choice);
 void M_ReadThis2(int choice);
-void M_QuitDOOM(int choice);
 
 void M_ChangeMessages(int choice);
 void M_SfxVol(int choice);
@@ -319,7 +294,6 @@ enum
     loadgame,
     savegame,
     readthis,
-    quitdoom,
     main_end
 } main_e;
 
@@ -330,8 +304,7 @@ menuitem_t MainMenu[] =
     {1,"M_LOADG",M_LoadGame,'l'},
     {1,"M_SAVEG",M_SaveGame,'s'},
     // Another hickup with Special edition.
-    {1,"M_RDTHIS",M_ReadThis,'r'},
-    {1,"M_QUITG",M_QuitDOOM,'q'}
+    {1,"M_RDTHIS",M_ReadThis,'r'}
 };
 
 menu_t  MainDef =
@@ -1386,46 +1359,6 @@ void M_FinishReadThis(int choice)
 }
 
 
-//
-// M_QuitDOOM
-//
-void M_QuitResponse(int ch)
-{
-    if (ch != 'y')
-        return;
-    if (!netgame)
-    {
-        if (gamemode == commercial)
-            S_StartSound(0, quitsounds2[(gametic >> 2) & 7]);
-        else
-            S_StartSound(0, quitsounds[(gametic >> 2) & 7]);
-        I_WaitVBL(105);
-    }
-    I_Quit();
-}
-
-
-void M_QuitDOOM(int choice)
-{
-    // We pick index 0 which is language sensitive,
-    //  or one at random, between 1 and maximum number.
-    if (language != english)
-    {
-        //doom_sprintf(endstring, "%s\n\n"DOSY, endmsg[0]);
-        strcpy(endstring, endmsg[0]);
-        strcat(endstring, "\n\n" DOSY);
-    }
-    else
-    {
-        //doom_sprintf(endstring, "%s\n\n" DOSY, endmsg[gametic % (NUM_QUITMESSAGES - 2) + 1]);
-        strcpy(endstring, endmsg[gametic % (NUM_QUITMESSAGES - 2) + 1]);
-        strcat(endstring, "\n\n" DOSY);
-    }
-
-    M_StartMessage(endstring, M_QuitResponse, true);
-}
-
-
 void M_ChangeSensitivity(int choice)
 {
     switch (choice)
@@ -1874,11 +1807,6 @@ doom_boolean M_Responder(event_t* ev)
                 M_QuickLoad();
                 return true;
 
-            case KEY_F10:           // Quit DOOM
-                S_StartSound(0, sfx_swtchn);
-                M_QuitDOOM(0);
-                return true;
-
             case KEY_F11:           // gamma toggle
                 usegamma++;
                 if (usegamma > 4)
@@ -2201,7 +2129,7 @@ void M_Init(void)
             // This is used because DOOM 2 had only one HELP
             //  page. I use CREDIT as second page now, but
             //  kept this hack for educational purposes.
-            MainMenu[readthis] = MainMenu[quitdoom];
+            MainMenu[readthis] = MainMenu[savegame];
             MainDef.numitems--;
             MainDef.y += 8;
             NewDef.prevMenu = &MainDef;

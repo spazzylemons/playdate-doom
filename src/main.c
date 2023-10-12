@@ -41,7 +41,7 @@ void doom_free(void *ptr) {
 }
 
 void *doom_open(const char *filename, const char *mode) {
-    FileOptions options = strstr(mode, "w") ? kFileWrite : kFileRead;
+    FileOptions options = strstr(mode, "w") ? kFileWrite : (kFileRead | kFileReadData);
     if (strstr(mode, "a")) options |= kFileAppend;
     return playdate->file->open(filename, options);
 }
@@ -68,7 +68,7 @@ int doom_tell(void *handle) {
 
 int doom_eof(void *handle) {
     int old_pos = playdate->file->tell(handle);
-    playdate->file->seek(handle, 1, SEEK_CUR);
+    playdate->file->seek(handle, 0, SEEK_END);
     int new_pos = playdate->file->tell(handle);
     playdate->file->seek(handle, old_pos, SEEK_SET);
     return old_pos == new_pos;
@@ -347,6 +347,8 @@ static int music_callback(void* context, int16_t* left, int16_t* right, int len)
     return 1;
 }
 
+void I_Quit(void);
+
 static char *argv[] = { "doom", NULL };
 
 #ifdef _WINDLL
@@ -363,7 +365,10 @@ int eventHandler(PlaydateAPI* pd, PDSystemEvent event, uint32_t arg) {
         playdate->sound->addSource(sound_callback, NULL, 1);
         playdate->sound->addSource(music_callback, NULL, 0);
         pd->system->setUpdateCallback(update, NULL);
+    } else if (event == kEventTerminate) {
+        // Clean up when terminating.
+        I_Quit();
     }
-    
+
     return 0;
 }
