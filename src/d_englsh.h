@@ -66,8 +66,6 @@
 
 #define MSGOFF "Messages OFF"
 #define MSGON "Messages ON"
-#define CROSSOFF "Crosshair OFF"
-#define CROSSON "Crosshair ON"
 #define ALWAYSRUNOFF "Always run OFF"
 #define ALWAYSRUNON "Always run ON"
 #define NETEND "you can't end a netgame!\n\n" PRESSKEY

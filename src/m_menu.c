@@ -272,7 +272,6 @@ void M_MouseOptions(int choice);
 void M_SizeDisplay(int choice);
 void M_StartGame(int choice);
 void M_Sound(int choice);
-void M_ChangeCrosshair(int choice);
 void M_ChangeAlwaysRun(int choice);
 
 void M_MouseMove(int choice);
@@ -419,7 +418,6 @@ enum
 {
     endgame,
     messages,
-    crosshair_opt,
     always_run_opt,
     //detail, // Details do nothing?
     scrnsize,
@@ -433,11 +431,10 @@ menuitem_t OptionsMenuFull[] =
 {
     {1,"M_ENDGAM",  M_EndGame,'e'},
     {1,"M_MESSG",   M_ChangeMessages,'m'},
-    {1,"TXT_CROS",  M_ChangeCrosshair,'c'},
     {1,"TXT_ARUN",  M_ChangeAlwaysRun,'r'},
     //{1,"M_DETAIL", M_ChangeDetail,'g'},  // Details do nothing?
     {2,"M_SCRNSZ",  M_SizeDisplay,'s'},
-    {-1,"",0},
+    {-1,"",0,0},
     {1,"TXT_MOPT",  M_MouseOptions,'f'},
     {1,"M_SVOL",    M_Sound,'s'}
 };
@@ -457,7 +454,6 @@ enum
 {
     endgame_no_mouse,
     messages_no_mouse,
-    crosshair_opt_no_mouse,
     always_run_opt_no_mouse,
     //detail_no_mouse, // Details do nothing?
     scrnsize_no_mouse,
@@ -470,11 +466,10 @@ menuitem_t OptionsMenuNoMouse[] =
 {
     {1,"M_ENDGAM",  M_EndGame,'e'},
     {1,"M_MESSG",   M_ChangeMessages,'m'},
-    {1,"TXT_CROS",  M_ChangeCrosshair,'c'},
     {1,"TXT_ARUN",  M_ChangeAlwaysRun,'r'},
     //{1,"M_DETAIL",  M_ChangeDetail,'g'}, // Details do nothing?
     {2,"M_SCRNSZ",  M_SizeDisplay,'s'},
-    {-1,"",0},
+    {-1,"",0,0},
     {1,"M_SVOL",    M_Sound,'s'}
 };
 
@@ -493,7 +488,6 @@ enum
 {
     endgame_no_sound,
     messages_no_sound,
-    crosshair_opt_no_sound,
     always_run_opt_no_sound,
     //detail_no_sound, // Details do nothing?
     scrnsize_no_sound,
@@ -506,11 +500,10 @@ menuitem_t OptionsMenuNoSound[] =
 {
     {1,"M_ENDGAM",  M_EndGame,'e'},
     {1,"M_MESSG",   M_ChangeMessages,'m'},
-    {1,"TXT_CROS",  M_ChangeCrosshair,'c'},
     {1,"TXT_ARUN",  M_ChangeAlwaysRun,'r'},
     //{1,"M_DETAIL",  M_ChangeDetail,'g'}, // Details do nothing?
     {2,"M_SCRNSZ",  M_SizeDisplay,'s'},
-    {-1,"",0},
+    {-1,"",0,0},
     {1,"TXT_MOPT",  M_MouseOptions,'f'}
 };
 
@@ -529,7 +522,6 @@ enum
 {
     endgame_no_sound_no_mouse,
     messages_no_sound_no_mouse,
-    crosshair_opt_no_sound_no_mouse,
     always_run_top_no_sound_no_mouse,
     //detail_no_sound_no_mouse, // Details do nothing?
     scrnsize_no_sound_no_mouse,
@@ -541,11 +533,10 @@ menuitem_t OptionsMenuNoSoundNoMouse[] =
 {
     {1,"M_ENDGAM",  M_EndGame,'e'},
     {1,"M_MESSG",   M_ChangeMessages,'m'},
-    {1,"TXT_CROS",  M_ChangeCrosshair,'c'},
     {1,"TXT_ARUN",  M_ChangeAlwaysRun,'r'},
     //{1,"M_DETAIL",  M_ChangeDetail,'g'}, // Details do nothing?
     {2,"M_SCRNSZ",  M_SizeDisplay,'s'},
-    {-1,"",0}
+    {-1,"",0,0}
 };
 
 menu_t OptionsNoSoundNoMouseDef =
@@ -574,7 +565,7 @@ menuitem_t MouseOptionsMenu[] =
 {
     {1,"TXT_MMOV", M_MouseMove,'f'},
     {2,"M_MSENS", M_ChangeSensitivity,'m'},
-    {-1,"",0},
+    {-1,"",0,0},
 };
 
 menu_t  MouseOptionsDef =
@@ -650,9 +641,9 @@ enum
 menuitem_t SoundMenuFull[] =
 {
     {2,"M_SFXVOL",M_SfxVol,'s'},
-    {-1,"",0},
+    {-1,"",0,0},
     {2,"M_MUSVOL",M_MusicVol,'m'},
-    {-1,"",0}
+    {-1,"",0,0}
 };
 
 menu_t  SoundDef =
@@ -676,7 +667,7 @@ enum
 menuitem_t SoundMenuNoSFX[] =
 {
     {2,"M_MUSVOL",M_MusicVol,'m'},
-    {-1,"",0}
+    {-1,"",0,0}
 };
 
 menu_t  SoundNoSFXDef =
@@ -700,7 +691,7 @@ enum
 menuitem_t SoundMenuNoMusic[] =
 {
     {2,"M_SFXVOL",M_SfxVol,'s'},
-    {-1,"",0}
+    {-1,"",0,0}
 };
 
 menu_t  SoundNoMusicDef =
@@ -1220,7 +1211,7 @@ void M_VerifyNightmare(int ch)
     if (ch != 'y')
         return;
 
-    G_DeferedInitNew(nightmare, epi + 1, 1);
+    G_DeferedInitNew((skill_t) nightmare, epi + 1, 1);
     M_ClearMenus();
 }
 
@@ -1273,10 +1264,6 @@ void M_DrawOptions(void)
     V_DrawPatchDirect(OptionsDef.x + 120, OptionsDef.y + LINEHEIGHT * messages, 0,
                       W_CacheLumpName(msgNames[showMessages], PU_CACHE));
 
-    extern int crosshair;
-    V_DrawPatchDirect(OptionsDef.x + 131, OptionsDef.y + LINEHEIGHT * crosshair_opt, 0,
-                      W_CacheLumpName(msgNames[crosshair], PU_CACHE));
-
     extern int always_run;
     V_DrawPatchDirect(OptionsDef.x + 147, OptionsDef.y + LINEHEIGHT * always_run_opt, 0,
                       W_CacheLumpName(msgNames[always_run], PU_CACHE));
@@ -1317,26 +1304,6 @@ void M_ChangeMessages(int choice)
         players[consoleplayer].message = MSGOFF;
     else
         players[consoleplayer].message = MSGON;
-
-    message_dontfuckwithme = true;
-}
-
-
-//
-// Toggle crosshair on/off
-//
-void M_ChangeCrosshair(int choice)
-{
-    extern int crosshair;
-
-    // warning: unused parameter `int choice'
-    choice = 0;
-    crosshair = 1 - crosshair;
-
-    if (!crosshair)
-        players[consoleplayer].message = CROSSOFF;
-    else
-        players[consoleplayer].message = CROSSON;
 
     message_dontfuckwithme = true;
 }
@@ -1583,7 +1550,7 @@ int M_StringWidth(char* string)
     int w = 0;
     int c;
 
-    for (i = 0; i < strlen(string); i++)
+    for (i = 0; i < (int) strlen(string); i++)
     {
         c = toupper(string[i]) - HU_FONTSTART;
         if (c < 0 || c >= HU_FONTSIZE)
@@ -1606,7 +1573,7 @@ int M_StringHeight(char* string)
     int height = SHORT(hu_font[0]->height);
 
     h = height;
-    for (i = 0; i < strlen(string); i++)
+    for (i = 0; i < (int) strlen(string); i++)
         if (string[i] == '\n')
             h += height;
 
@@ -1887,11 +1854,6 @@ doom_boolean M_Responder(event_t* ev)
             //     S_StartSound(0, sfx_swtchn);
             //     return true;
 
-            case KEY_F5:            // Crosshair toggle
-                M_ChangeCrosshair(0);
-                S_StartSound(0, sfx_swtchn);
-                return true;
-
             case KEY_F6:            // Quicksave
                 S_StartSound(0, sfx_swtchn);
                 M_QuickSave();
@@ -2078,7 +2040,7 @@ void M_Drawer(void)
         y = 100 - M_StringHeight(messageString) / 2;
         while (*(messageString + start))
         {
-            for (i = 0; i < strlen(messageString + start); i++)
+            for (i = 0; i < (int) strlen(messageString + start); i++)
                 if (*(messageString + start + i) == '\n')
                 {
                     memset(string, 0, 40);
@@ -2087,7 +2049,7 @@ void M_Drawer(void)
                     break;
                 }
 
-            if (i == strlen(messageString + start))
+            if (i == (int) strlen(messageString + start))
             {
                 strcpy(string, messageString + start);
                 start += i;

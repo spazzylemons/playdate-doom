@@ -67,18 +67,18 @@ byte* I_ZoneBase(int* size)
 // I_GetTime
 // returns time in 1/70th second tics
 //
-int I_GetTime(void)
-{
-    int sec, usec;
-    int newtics;
-    static int basetime = 0;
+// int I_GetTime(void)
+// {
+//     int sec, usec;
+//     int newtics;
+//     static int basetime = 0;
 
-    doom_gettime(&sec, &usec);
-    if (!basetime)
-        basetime = sec;
-    newtics = (sec - basetime) * TICRATE + usec * TICRATE / 1000000;
-    return newtics;
-}
+//     doom_gettime(&sec, &usec);
+//     if (!basetime)
+//         basetime = sec;
+//     newtics = (sec - basetime) * TICRATE + usec * TICRATE / 1000000;
+//     return newtics;
+// }
 
 
 //

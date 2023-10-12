@@ -163,6 +163,8 @@ typedef struct
     int state;
 } anim_t;
 
+#define UNINITFIELDS 0, { 0, 0, 0 }, 0, 0, 0, 0
+
 
 static point_t lnodes[NUMEPISODES][NUMMAPS] =
 {
@@ -214,39 +216,39 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] =
 //
 static anim_t epsd0animinfo[] =
 {
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 224, 104 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 184, 160 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 112, 136 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 72, 112 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 88, 96 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 64, 48 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 192, 40 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 136, 16 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 80, 16 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 64, 24 } }
+    { ANIM_ALWAYS, TICRATE / 3, 3, { 224, 104 }, 0, UNINITFIELDS },
+    { ANIM_ALWAYS, TICRATE / 3, 3, { 184, 160 }, 0, UNINITFIELDS },
+    { ANIM_ALWAYS, TICRATE / 3, 3, { 112, 136 }, 0, UNINITFIELDS },
+    { ANIM_ALWAYS, TICRATE / 3, 3, { 72, 112 }, 0, UNINITFIELDS },
+    { ANIM_ALWAYS, TICRATE / 3, 3, { 88, 96 }, 0, UNINITFIELDS },
+    { ANIM_ALWAYS, TICRATE / 3, 3, { 64, 48 }, 0, UNINITFIELDS },
+    { ANIM_ALWAYS, TICRATE / 3, 3, { 192, 40 }, 0, UNINITFIELDS },
+    { ANIM_ALWAYS, TICRATE / 3, 3, { 136, 16 }, 0, UNINITFIELDS },
+    { ANIM_ALWAYS, TICRATE / 3, 3, { 80, 16 }, 0, UNINITFIELDS },
+    { ANIM_ALWAYS, TICRATE / 3, 3, { 64, 24 }, 0, UNINITFIELDS }
 };
 
 static anim_t epsd1animinfo[] =
 {
-    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 1 },
-    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 2 },
-    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 3 },
-    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 4 },
-    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 5 },
-    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 6 },
-    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 7 },
-    { ANIM_LEVEL, TICRATE / 3, 3, { 192, 144 }, 8 },
-    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 8 }
+    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 1, UNINITFIELDS },
+    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 2, UNINITFIELDS },
+    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 3, UNINITFIELDS },
+    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 4, UNINITFIELDS },
+    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 5, UNINITFIELDS },
+    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 6, UNINITFIELDS },
+    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 7, UNINITFIELDS },
+    { ANIM_LEVEL, TICRATE / 3, 3, { 192, 144 }, 8, UNINITFIELDS },
+    { ANIM_LEVEL, TICRATE / 3, 1, { 128, 136 }, 8, UNINITFIELDS }
 };
 
 static anim_t epsd2animinfo[] =
 {
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 104, 168 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 40, 136 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 160, 96 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 104, 80 } },
-    { ANIM_ALWAYS, TICRATE / 3, 3, { 120, 32 } },
-    { ANIM_ALWAYS, TICRATE / 4, 3, { 40, 0 } }
+    { ANIM_ALWAYS, TICRATE / 3, 3, { 104, 168 }, 0, UNINITFIELDS },
+    { ANIM_ALWAYS, TICRATE / 3, 3, { 40, 136 }, 0, UNINITFIELDS },
+    { ANIM_ALWAYS, TICRATE / 3, 3, { 160, 96 }, 0, UNINITFIELDS },
+    { ANIM_ALWAYS, TICRATE / 3, 3, { 104, 80 }, 0, UNINITFIELDS },
+    { ANIM_ALWAYS, TICRATE / 3, 3, { 120, 32 }, 0, UNINITFIELDS },
+    { ANIM_ALWAYS, TICRATE / 4, 3, { 40, 0 }, 0, UNINITFIELDS }
 };
 
 static int NUMANIMS[NUMEPISODES] =

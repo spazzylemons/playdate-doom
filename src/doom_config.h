@@ -32,7 +32,6 @@ int doom_write(void *handle, const void *buf, int count);
 int doom_seek(void *handle, int offset, doom_seek_t origin);
 int doom_tell(void *handle);
 int doom_eof(void *handle);
-void doom_gettime(int *sec, int *usec);
 void doom_exit(int code);
 char *doom_getenv(const char *var);
 

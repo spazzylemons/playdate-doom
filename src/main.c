@@ -74,16 +74,12 @@ int doom_eof(void *handle) {
     return old_pos == new_pos;
 }
 
-// TODO pause menu might cause strange things to happen if we use this for timing...
-void doom_gettime(int *sec, int *usec) {
-    unsigned int msec;
-    unsigned int seconds = playdate->system->getSecondsSinceEpoch(&msec);
-    if (sec != NULL) {
-        *sec = seconds;
-    }
-    if (usec != NULL) {
-        *usec = msec * 1000;
-    }
+static int ticsalive = 0;
+
+int I_GetTime(void) {
+    // Until lag is no longer an issue, we will fake the passing of time to
+    // hopefully reduce bugs [citation needed]
+    return ticsalive;
 }
 
 void doom_exit(int code) {
@@ -112,12 +108,13 @@ static const doom_key_t keybinds_1[] = {
     DOOM_KEY_CTRL,
 };
 
+// Alternate keybinds used when in the menus.
 static const doom_key_t keybinds_2[] = {
     DOOM_KEY_UNKNOWN,
     DOOM_KEY_UNKNOWN,
     DOOM_KEY_UNKNOWN,
     DOOM_KEY_UNKNOWN,
-    DOOM_KEY_UNKNOWN,
+    DOOM_KEY_BACKSPACE,
     DOOM_KEY_ENTER,
 };
 
@@ -156,22 +153,33 @@ void recalculate_lighting(const uint8_t *palette) {
     }
 }
 
+extern int menuactive;
+extern uint8_t *screens[5];
+
 static int update(void *userdata) {
     PDButtons pressed, released;
     playdate->system->getButtonState(NULL, &pressed, &released);
     for (int i = 0; i < 6; i++) {
         PDButtons mask = 1 << i;
         if (pressed & mask) {
-            doom_key_down(keybinds_1[i]);
-            doom_key_down(keybinds_2[i]);
-        } else if (released & mask) {
-            doom_key_up(keybinds_1[i]);
-            doom_key_up(keybinds_2[i]);
+            if (keybinds_2[i] != DOOM_KEY_UNKNOWN && menuactive) {
+                doom_key_down(keybinds_2[i]);
+            } else {
+                doom_key_down(keybinds_1[i]);
+            }
+        }
+
+        if (released & mask) {
+            if (keybinds_2[i] != DOOM_KEY_UNKNOWN && menuactive) {
+                doom_key_up(keybinds_2[i]);
+            } else {
+                doom_key_up(keybinds_1[i]);
+            }
         }
     }
 
     doom_update();
-    const uint8_t *pal_buffer = doom_get_framebuffer(1);
+    const uint8_t *pal_buffer = screens[0];
     uint8_t *bit_buffer = playdate->graphics->getFrame() + (20 * 52);
     for (int y = 0; y < 200; y++) {
         for (int x = 5; x < 45; x++) {
@@ -185,6 +193,8 @@ static int update(void *userdata) {
     }
     playdate->graphics->markUpdatedRows(0, LCD_ROWS - 1);
     playdate->system->drawFPS(0, 0);
+
+    ticsalive += 2;
 
     return 1;
 }
@@ -321,7 +331,7 @@ static int music_callback(void* context, int16_t* left, int16_t* right, int len)
 
         int16_t sample = 0;
         for (int i = 0; i < 8; i++) {
-            if (channels[i].volume >= 0) {
+            if (channels[i].volume > 0) {
                 channels[i].pos = (channels[i].pos + incChart[channels[i].note]) & 0xffffff;
                 int base = waves[channels[i].bank][(channels[i].pos >> 20)] - 8;
                 if (channels[i].pos & 0x800000) {

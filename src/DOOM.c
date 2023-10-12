@@ -27,7 +27,6 @@ extern int numdefaults;
 // extern signed short mixbuffer[2048];
 
 
-static unsigned char* screen_buffer = 0;
 static int button_states[3] = { 0 };
 static char itoa_buf[20];
 
@@ -211,8 +210,6 @@ void doom_set_default_string(const char* name, const char* value)
 
 void doom_init(int argc, char** argv, int flags)
 {
-    screen_buffer = doom_malloc(SCREENWIDTH * SCREENHEIGHT);
-
     myargc = argc;
     myargv = argv;
     doom_flags = flags;
@@ -227,43 +224,6 @@ void doom_update(void)
         D_UpdateWipe();
     else
         D_DoomLoop();
-}
-
-
-const unsigned char* doom_get_framebuffer(int channels)
-{
-    int i, len;
-
-    memcpy(screen_buffer, screens[0], SCREENWIDTH * SCREENHEIGHT);
-
-    extern doom_boolean menuactive;
-    extern gamestate_t gamestate; 
-    extern doom_boolean automapactive;
-    extern int crosshair;
-
-    // Draw crosshair
-    if (crosshair && 
-        !menuactive &&
-        gamestate == GS_LEVEL &&
-        !automapactive)
-    {
-        int y;
-        extern int setblocks;
-        if (setblocks == 11) y = SCREENHEIGHT / 2 + 8;
-        else y = SCREENHEIGHT / 2 - 8;
-        for (i = 0; i < 2; ++i)
-        {
-            screen_buffer[SCREENWIDTH / 2 - 2 - i + y * SCREENWIDTH] = 4;
-            screen_buffer[SCREENWIDTH / 2 + 2 + i + y * SCREENWIDTH] = 4;
-        }
-        for (i = 0; i < 2; ++i)
-        {
-            screen_buffer[SCREENWIDTH / 2 + (y - 2 - i) * SCREENWIDTH] = 4;
-            screen_buffer[SCREENWIDTH / 2 + (y + 2 + i) * SCREENWIDTH] = 4;
-        }
-    }
-
-    return screen_buffer;
 }
 
 

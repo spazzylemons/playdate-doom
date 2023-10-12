@@ -228,7 +228,7 @@ int G_CmdChecksum(ticcmd_t* cmd)
     int i;
     int sum = 0;
 
-    for (i = 0; i < sizeof(*cmd) / 4 - 1; i++)
+    for (i = 0; i < (int) sizeof(*cmd) / 4 - 1; i++)
         sum += ((int*)cmd)[i];
 
     return sum;
@@ -1148,6 +1148,7 @@ void G_WorldDone(void)
             case 31:
                 if (!secretexit)
                     break;
+                // fallthrough
             case 6:
             case 11:
             case 20:

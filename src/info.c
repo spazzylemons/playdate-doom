@@ -125,6 +125,9 @@ void A_SpawnSound(void*);
 void A_SpawnFly(void*);
 void A_BrainExplode(void*);
 
+// TODO find a better way to deal with this error?
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-function-type"
 
 state_t states[NUMSTATES] = {
     {SPR_TROO,0,-1,{0},S_NULL,0,0}, // S_NULL
@@ -1095,6 +1098,8 @@ state_t states[NUMSTATES] = {
     {SPR_TLP2,32770,4,{0},S_TECH2LAMP4,0,0}, // S_TECH2LAMP3
     {SPR_TLP2,32771,4,{0},S_TECH2LAMP,0,0}        // S_TECH2LAMP4
 };
+
+#pragma GCC diagnostic pop
 
 
 mobjinfo_t mobjinfo[NUMMOBJTYPES] = {

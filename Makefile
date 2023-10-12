@@ -43,4 +43,5 @@ ULIBS =
 
 include $(SDK)/C_API/buildsupport/common.mk
 
-OPT += -flto
+OPT += -flto -O3 -Wextra
+LDFLAGS += -flto

@@ -72,9 +72,11 @@ typedef enum
 } Language_t;
 
 
+#ifndef TARGET_PLAYDATE
 // If rangecheck is undefined,
 // most parameter validation debugging code will not be compiled
 #define RANGECHECK
+#endif
 
 //
 // For resize of screen, at start of game.

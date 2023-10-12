@@ -133,49 +133,49 @@ extern byte scantokey[128];
 
 int usemouse;
 int usejoystick;
-int crosshair;
 int always_run;
 
+// Fill remaining default fields that aren't used
+#define DEFAULTFIELDS 0, 0, NULL, NULL
 
 default_t defaults[] =
 {
-    {"mouse_sensitivity",&mouseSensitivity, 5},
-    {"sfx_volume",&snd_SfxVolume, 8},
-    {"music_volume",&snd_MusicVolume, 8},
-    {"show_messages",&showMessages, 1},
+    {"mouse_sensitivity",&mouseSensitivity, 5, DEFAULTFIELDS},
+    {"sfx_volume",&snd_SfxVolume, 8, DEFAULTFIELDS},
+    {"music_volume",&snd_MusicVolume, 8, DEFAULTFIELDS},
+    {"show_messages",&showMessages, 1, DEFAULTFIELDS},
 
-    {"key_right",&key_right, KEY_RIGHTARROW},
-    {"key_left",&key_left, KEY_LEFTARROW},
-    {"key_up",&key_up, KEY_UPARROW},
-    {"key_down",&key_down, KEY_DOWNARROW},
-    {"key_strafeleft",&key_strafeleft, ','},
-    {"key_straferight",&key_straferight, '.'},
+    {"key_right",&key_right, KEY_RIGHTARROW, DEFAULTFIELDS},
+    {"key_left",&key_left, KEY_LEFTARROW, DEFAULTFIELDS},
+    {"key_up",&key_up, KEY_UPARROW, DEFAULTFIELDS},
+    {"key_down",&key_down, KEY_DOWNARROW, DEFAULTFIELDS},
+    {"key_strafeleft",&key_strafeleft, ',', DEFAULTFIELDS},
+    {"key_straferight",&key_straferight, '.', DEFAULTFIELDS},
 
-    {"key_fire",&key_fire, KEY_RCTRL},
-    {"key_use",&key_use, ' '},
-    {"key_strafe",&key_strafe, KEY_RALT},
-    {"key_speed",&key_speed, KEY_RSHIFT},
+    {"key_fire",&key_fire, KEY_RCTRL, DEFAULTFIELDS},
+    {"key_use",&key_use, ' ', DEFAULTFIELDS},
+    {"key_strafe",&key_strafe, KEY_RALT, DEFAULTFIELDS},
+    {"key_speed",&key_speed, KEY_RSHIFT, DEFAULTFIELDS},
 
-    {"use_mouse",&usemouse, 1},
-    {"mouseb_fire",&mousebfire,0},
-    {"mouseb_strafe",&mousebstrafe,1},
-    {"mouseb_forward",&mousebforward,2},
-    {"mouse_move",&mousemove,0},
+    {"use_mouse",&usemouse, 1, DEFAULTFIELDS},
+    {"mouseb_fire",&mousebfire,0, DEFAULTFIELDS},
+    {"mouseb_strafe",&mousebstrafe,1, DEFAULTFIELDS},
+    {"mouseb_forward",&mousebforward,2, DEFAULTFIELDS},
+    {"mouse_move",&mousemove,0, DEFAULTFIELDS},
 
-    {"use_joystick",&usejoystick, 0},
-    {"joyb_fire",&joybfire,0},
-    {"joyb_strafe",&joybstrafe,1},
-    {"joyb_use",&joybuse,3},
-    {"joyb_speed",&joybspeed,2},
+    {"use_joystick",&usejoystick, 0, DEFAULTFIELDS},
+    {"joyb_fire",&joybfire,0, DEFAULTFIELDS},
+    {"joyb_strafe",&joybstrafe,1, DEFAULTFIELDS},
+    {"joyb_use",&joybuse,3, DEFAULTFIELDS},
+    {"joyb_speed",&joybspeed,2, DEFAULTFIELDS},
 
-    {"screenblocks",&screenblocks, 9},
-    {"detaillevel",&detailLevel, 0},
-    {"crosshair",&crosshair, 0},
-    {"always_run",&always_run, 0},
+    {"screenblocks",&screenblocks, 9, DEFAULTFIELDS},
+    {"detaillevel",&detailLevel, 0, DEFAULTFIELDS},
+    {"always_run",&always_run, 0, DEFAULTFIELDS},
 
-    {"snd_channels",&numChannels, 3},
+    {"snd_channels",&numChannels, 3, DEFAULTFIELDS},
 
-    {"usegamma",&usegamma, 0},
+    {"usegamma",&usegamma, 0, DEFAULTFIELDS},
 
     {"chatmacro0", 0, STRING_VALUE, 0, 0, &chat_macros[0], HUSTR_CHATMACRO0 },
     {"chatmacro1", 0, STRING_VALUE, 0, 0, &chat_macros[1], HUSTR_CHATMACRO1 },

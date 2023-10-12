@@ -688,7 +688,7 @@ int R_FlatNumForName(char* name)
     if (i == -1)
     {
         namet[8] = 0;
-        memcpy(namet, name, 8);
+        strncpy(namet, name, 8);
         //I_Error("Error: R_FlatNumForName: %s not found", namet);
         
         strcpy(error_buf, "Error: R_FlatNumForName: ");
