@@ -43,5 +43,8 @@ ULIBS =
 
 include $(SDK)/C_API/buildsupport/common.mk
 
+# More aggressive optimizations.
 OPT += -flto -O3 -Wextra
 LDFLAGS += -flto
+# ARM target does not have signed char, but Doom expects it.
+CPFLAGS += -fsigned-char
