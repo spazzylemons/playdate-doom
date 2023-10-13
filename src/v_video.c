@@ -226,68 +226,6 @@ void V_DrawPatchFlipped(int x, int y, int scrn, patch_t* patch)
 }
 
 
-void V_DrawPatchRectDirect(int x, int y, int scrn, patch_t* patch, int src_x, int src_w)
-{
-    int count;
-    int col;
-    column_t* column;
-    byte* desttop;
-    byte* dest;
-    byte* source;
-    int w;
-
-    y -= SHORT(patch->topoffset);
-    x -= SHORT(patch->leftoffset);
-#ifdef RANGECHECK 
-    if (x<0
-        || x + SHORT(src_w) >SCREENWIDTH
-        || y<0
-        || y + SHORT(patch->height)>SCREENHEIGHT
-        || (unsigned)scrn > 4)
-    {
-        //doom_print("Patch at %d,%d exceeds LFB\n", x, y);
-        doom_print("Patch at ");
-        doom_print(doom_itoa(x, 10));
-        doom_print(",");
-        doom_print(doom_itoa(y, 10));
-        doom_print(" exceeds LFB\n");
-        // No I_Error abort - what is up with TNT.WAD?
-        doom_print("V_DrawPatch: bad patch (ignored)\n");
-        return;
-    }
-#endif 
-
-    if (!scrn)
-        V_MarkRect(x, y, SHORT(src_w), SHORT(patch->height));
-
-    col = 0;
-    desttop = screens[scrn] + y * SCREENWIDTH + x;
-
-    w = SHORT(src_w);
-
-    for (; col < w; x++, col++, desttop++)
-    {
-        column = (column_t*)((byte*)patch + LONG(patch->columnofs[col + src_x]));
-
-        // step through the posts in a column 
-        while (column->topdelta != 0xff)
-        {
-            source = (byte*)column + 3;
-            dest = desttop + column->topdelta * SCREENWIDTH;
-            count = column->length;
-
-            while (count--)
-            {
-                *dest = *source++;
-                dest += SCREENWIDTH;
-            }
-            column = (column_t*)((byte*)column + column->length
-                                 + 4);
-        }
-    }
-}
-
-
 //
 // V_DrawPatchDirect
 // Draws directly to the screen on the pc. 

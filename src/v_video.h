@@ -64,8 +64,6 @@ void V_DrawPatchDirect(int x,
                        int scrn, 
                        patch_t* patch);
 
-void V_DrawPatchRectDirect(int x, int y, int scrn, patch_t* patch, int src_x, int src_w);
-
 // Draw a linear block of pixels into the view buffer.
 void V_DrawBlock(int x,
                  int y,
