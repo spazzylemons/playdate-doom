@@ -284,27 +284,27 @@ void S_StartSoundAtVolume(void* origin_p, int sfx_id, int volume)
         sep = NORM_SEP;
     }
 
-    // hacks to vary the sfx pitches
-    if (sfx_id >= sfx_sawup
-        && sfx_id <= sfx_sawhit)
-    {
-        pitch += 8 - (M_Random() & 15);
+    // // hacks to vary the sfx pitches
+    // if (sfx_id >= sfx_sawup
+    //     && sfx_id <= sfx_sawhit)
+    // {
+    //     pitch += 8 - (M_Random() & 15);
 
-        if (pitch < 0)
-            pitch = 0;
-        else if (pitch > 255)
-            pitch = 255;
-    }
-    else if (sfx_id != sfx_itemup
-             && sfx_id != sfx_tink)
-    {
-        pitch += 16 - (M_Random() & 31);
+    //     if (pitch < 0)
+    //         pitch = 0;
+    //     else if (pitch > 255)
+    //         pitch = 255;
+    // }
+    // else if (sfx_id != sfx_itemup
+    //          && sfx_id != sfx_tink)
+    // {
+    //     pitch += 16 - (M_Random() & 31);
 
-        if (pitch < 0)
-            pitch = 0;
-        else if (pitch > 255)
-            pitch = 255;
-    }
+    //     if (pitch < 0)
+    //         pitch = 0;
+    //     else if (pitch > 255)
+    //         pitch = 255;
+    // }
 
     // kill old sound
     S_StopSound(origin);
