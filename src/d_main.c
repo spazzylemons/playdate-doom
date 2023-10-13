@@ -320,14 +320,18 @@ void D_Display(void)
 #endif
 }
 
+int updatetics = 0;
+
 
 //
 //  D_DoomLoop
 //
 void D_UpdateWipe(void)
 {
-    if (wipe_ScreenWipe(wipe_Melt, 0, 0, SCREENWIDTH, SCREENHEIGHT, 1))
+    if (wipe_ScreenWipe(wipe_Melt, 0, 0, SCREENWIDTH, SCREENHEIGHT, 1)) {
         is_wiping_screen = false;
+        updatetics = I_GetTime();
+    }
 }
 
 
@@ -356,15 +360,37 @@ void D_DoomLoop(void)
         // process one or more tics
         if (singletics)
         {
-            I_StartTic();
-            D_ProcessEvents();
-            G_BuildTiccmd(&netcmds[consoleplayer][maketic % BACKUPTICS]);
-            if (advancedemo)
-                D_DoAdvanceDemo();
-            M_Ticker();
-            G_Ticker();
-            gametic++;
-            maketic++;
+            // Run several tics if lagging behind.
+            int tic = I_GetTime();
+            int maxtics = 3;
+            while (maxtics > 0 && updatetics < tic) {
+                doom_print(doom_itoa(tic, 10));
+                doom_print(" ");
+                doom_print(doom_itoa(updatetics, 10));
+                doom_print("\n");
+                --maxtics;
+                ++updatetics;
+                I_StartTic();
+                D_ProcessEvents();
+                G_BuildTiccmd(&netcmds[consoleplayer][maketic % BACKUPTICS]);
+                if (advancedemo)
+                    D_DoAdvanceDemo();
+                M_Ticker();
+                G_Ticker();
+                gametic++;
+                maketic++;
+            }
+            updatetics = tic;
+
+            // I_StartTic();
+            // D_ProcessEvents();
+            // G_BuildTiccmd(&netcmds[consoleplayer][maketic % BACKUPTICS]);
+            // if (advancedemo)
+            //     D_DoAdvanceDemo();
+            // M_Ticker();
+            // G_Ticker();
+            // gametic++;
+            // maketic++;
         }
         else
         {

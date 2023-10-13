@@ -74,12 +74,10 @@ int doom_eof(void *handle) {
     return old_pos == new_pos;
 }
 
-static int ticsalive = 0;
+extern int updatetics;
 
 int I_GetTime(void) {
-    // Until lag is no longer an issue, we will fake the passing of time to
-    // hopefully reduce bugs [citation needed]
-    return ticsalive;
+    return (playdate->system->getCurrentTimeMilliseconds() * 35LL) / 1000LL;
 }
 
 void doom_exit(int code) {
@@ -193,8 +191,6 @@ static int update(void *userdata) {
     }
     playdate->graphics->markUpdatedRows(20, 219);
     playdate->system->drawFPS(0, 0);
-
-    ticsalive += 2;
 
     return 1;
 }
@@ -347,6 +343,11 @@ static int music_callback(void* context, int16_t* left, int16_t* right, int len)
     return 1;
 }
 
+void onDoomMenu(void *userdata) {
+    doom_key_down(DOOM_KEY_ESCAPE);
+    doom_key_up(DOOM_KEY_ESCAPE);
+}
+
 void I_Quit(void);
 
 static char *argv[] = { "doom", NULL };
@@ -360,7 +361,9 @@ int eventHandler(PlaydateAPI* pd, PDSystemEvent event, uint32_t arg) {
 
         // match DOOM tic rate
         playdate->display->setRefreshRate(35.0f);
+        playdate->system->addMenuItem("doom menu", onDoomMenu, NULL);
         doom_init(1, argv, 0);
+        updatetics = I_GetTime();
 
         playdate->sound->addSource(sound_callback, NULL, 1);
         playdate->sound->addSource(music_callback, NULL, 0);
