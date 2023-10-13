@@ -176,50 +176,6 @@ char skullName[2][/*8*/9] = { "M_SKULL1","M_SKULL2" };
 // current menudef
 menu_t* currentMenu;
 
-// We create new menu text by cutting into existing graphics and pasting them to create the new text.
-// This way we don't ship code with embeded graphics that come from WAD files.
-menu_custom_text_t menu_custom_texts[] =
-{
-    {"TXT_MMOV", {
-        {"M_MSENS", 0, 74, 0, 0}, // Mouse
-        {"M_MSENS", 0, 31, 83, 0}, // Mo
-        {"M_MSENS", 160, 14, 83 + 31, 0}, // v
-        {"M_MSENS", 60, 14, 83 + 31 + 14, 0}, // e
-        {"M_DETAIL", 169, 5, 83 + 31 + 14 + 14, 0}, // :
-        {0}
-    }},
-    {"TXT_MOPT", {
-        {"M_MSENS", 0, 74, 0, 0}, // Mouse
-        {"M_OPTION", 0, 92, 74 + 9, 0}, // Options
-        {0}
-    }},
-    {"TXT_CROS", {
-        {"M_SKILL", 0, 16, 0, 0}, // C
-        {"M_DETAIL", 14, 15, 16, 0}, // r
-        {"M_SKILL", 46, 30, 16 + 15, 0}, // os
-        {"M_SKILL", 62, 14, 16 + 15 + 30, 0}, // s
-        {"M_SKILL", 16, 15, 16 + 15 + 30 + 14, 0}, // h
-        {"M_DETAIL", 140, 19, 16 + 15 + 30 + 14 + 15, 0}, // ai
-        {"M_DETAIL", 14, 15, 16 + 15 + 30 + 14 + 15 + 19, 0}, // r
-        {"M_DETAIL", 169, 5, 16 + 15 + 30 + 14 + 15 + 19 + 15, 0}, // :
-        {0}
-    }},
-    {"TXT_ARUN", {
-        {"M_SGTTL", 90, 17, 0, 0}, // A
-        {"M_GDLOW", 0, 10, 17, 3}, // l
-        {"M_GDLOW", 26, 16, 17 + 10, 3}, // 
-        {"M_DISP", 57, 30, 17 + 10 + 16, 0}, // ay
-        {"M_RDTHIS", 99, 14, 17 + 10 + 16 + 30, 0}, // s
-        {"M_RDTHIS", 0, 16, 17 + 10 + 16 + 30 + 14 + 7, 0}, // R
-        {"M_SFXVOL", 90, 15, 17 + 10 + 16 + 30 + 14 + 7 + 16, 0}, // u
-        {"M_OPTION", 62, 15, 17 + 10 + 16 + 30 + 14 + 7 + 16 + 15, 0}, // n
-        {"M_DETAIL", 169, 5, 17 + 10 + 16 + 30 + 14 + 7 + 16 + 15 + 15, 0}, // :
-        {0}
-    }},
-};
-
-const int custom_texts_count = sizeof(menu_custom_texts) / sizeof(menu_custom_text_t);
-
 char tempstring[80];
 int epi;
 char detailNames[2][9] = { "M_GDHIGH","M_GDLOW" };
@@ -243,11 +199,9 @@ void M_ChangeMessages(int choice);
 void M_SfxVol(int choice);
 void M_MusicVol(int choice);
 void M_ChangeDetail(int choice);
-void M_MouseOptions(int choice);
 void M_SizeDisplay(int choice);
 void M_StartGame(int choice);
 void M_Sound(int choice);
-void M_ChangeAlwaysRun(int choice);
 
 void M_MouseMove(int choice);
 void M_ChangeSensitivity(int choice);
@@ -281,7 +235,6 @@ void M_StartControlPanel(void);
 void M_StartMessage(char* string, void* routine, doom_boolean input);
 void M_StopMessage(void);
 void M_ClearMenus(void);
-void M_DrawMouseOptions(void);
 
 
 //
@@ -385,30 +338,28 @@ menu_t  NewDef =
 //
 // OPTIONS MENU
 //
-menuitem_t* OptionsMenu;
-
 enum
 {
     endgame,
     messages,
-    always_run_opt,
-    //detail, // Details do nothing?
+    detail,
     scrnsize,
     option_empty1,
-    mouseoptions,
+    mousesens,
+    option_empty2,
     soundvol,
     opt_end
 } options_e;
 
-menuitem_t OptionsMenuFull[] =
+menuitem_t OptionsMenu[] =
 {
     {1,"M_ENDGAM",  M_EndGame,'e'},
     {1,"M_MESSG",   M_ChangeMessages,'m'},
-    {1,"TXT_ARUN",  M_ChangeAlwaysRun,'r'},
-    //{1,"M_DETAIL", M_ChangeDetail,'g'},  // Details do nothing?
+    {1,"M_DETAIL", M_ChangeDetail,'g'},  // Details do nothing?
     {2,"M_SCRNSZ",  M_SizeDisplay,'s'},
     {-1,"",0,0},
-    {1,"TXT_MOPT",  M_MouseOptions,'f'},
+    {2,"M_MSENS", M_ChangeSensitivity,'m'},
+    {-1,"",0,0},
     {1,"M_SVOL",    M_Sound,'s'}
 };
 
@@ -416,141 +367,11 @@ menu_t  OptionsDef =
 {
     opt_end,
     &MainDef,
-    OptionsMenuFull,
+    OptionsMenu,
     M_DrawOptions,
     60,37,
     0
 };
-
-
-enum
-{
-    endgame_no_mouse,
-    messages_no_mouse,
-    always_run_opt_no_mouse,
-    //detail_no_mouse, // Details do nothing?
-    scrnsize_no_mouse,
-    option_empty1_no_mouse,
-    soundvol_no_mouse,
-    opt_end_no_mouse
-} options_e_no_mouse;
-
-menuitem_t OptionsMenuNoMouse[] =
-{
-    {1,"M_ENDGAM",  M_EndGame,'e'},
-    {1,"M_MESSG",   M_ChangeMessages,'m'},
-    {1,"TXT_ARUN",  M_ChangeAlwaysRun,'r'},
-    //{1,"M_DETAIL",  M_ChangeDetail,'g'}, // Details do nothing?
-    {2,"M_SCRNSZ",  M_SizeDisplay,'s'},
-    {-1,"",0,0},
-    {1,"M_SVOL",    M_Sound,'s'}
-};
-
-menu_t  OptionsNoMouseDef =
-{
-    opt_end_no_mouse,
-    &MainDef,
-    OptionsMenuNoMouse,
-    M_DrawOptions,
-    60,37,
-    0
-};
-
-
-enum
-{
-    endgame_no_sound,
-    messages_no_sound,
-    always_run_opt_no_sound,
-    //detail_no_sound, // Details do nothing?
-    scrnsize_no_sound,
-    option_empty1_no_sound,
-    mouseoptions_no_sound,
-    opt_end_no_sound
-} options_e_no_sound;
-
-menuitem_t OptionsMenuNoSound[] =
-{
-    {1,"M_ENDGAM",  M_EndGame,'e'},
-    {1,"M_MESSG",   M_ChangeMessages,'m'},
-    {1,"TXT_ARUN",  M_ChangeAlwaysRun,'r'},
-    //{1,"M_DETAIL",  M_ChangeDetail,'g'}, // Details do nothing?
-    {2,"M_SCRNSZ",  M_SizeDisplay,'s'},
-    {-1,"",0,0},
-    {1,"TXT_MOPT",  M_MouseOptions,'f'}
-};
-
-menu_t OptionsNoSoundDef =
-{
-    opt_end_no_sound,
-    &MainDef,
-    OptionsMenuNoSound,
-    M_DrawOptions,
-    60,37,
-    0
-};
-
-
-enum
-{
-    endgame_no_sound_no_mouse,
-    messages_no_sound_no_mouse,
-    always_run_top_no_sound_no_mouse,
-    //detail_no_sound_no_mouse, // Details do nothing?
-    scrnsize_no_sound_no_mouse,
-    option_empty1_no_sound_no_mouse,
-    opt_end_no_sound_no_mouse
-} options_e_no_sound_no_mouse;
-
-menuitem_t OptionsMenuNoSoundNoMouse[] =
-{
-    {1,"M_ENDGAM",  M_EndGame,'e'},
-    {1,"M_MESSG",   M_ChangeMessages,'m'},
-    {1,"TXT_ARUN",  M_ChangeAlwaysRun,'r'},
-    //{1,"M_DETAIL",  M_ChangeDetail,'g'}, // Details do nothing?
-    {2,"M_SCRNSZ",  M_SizeDisplay,'s'},
-    {-1,"",0,0}
-};
-
-menu_t OptionsNoSoundNoMouseDef =
-{
-    opt_end_no_sound_no_mouse,
-    &MainDef,
-    OptionsMenuNoSoundNoMouse,
-    M_DrawOptions,
-    60,37,
-    0
-};
-
-
-//
-// MOUSE OPTIONS
-//
-enum
-{
-    mousemov,
-    mousesens,
-    mouse_option_empty1,
-    mouse_opt_end
-} mouseoptions_e;
-
-menuitem_t MouseOptionsMenu[] =
-{
-    {1,"TXT_MMOV", M_MouseMove,'f'},
-    {2,"M_MSENS", M_ChangeSensitivity,'m'},
-    {-1,"",0,0},
-};
-
-menu_t  MouseOptionsDef =
-{
-    mouse_opt_end,
-    &OptionsDef,
-    MouseOptionsMenu,
-    M_DrawMouseOptions,
-    60,70,
-    0
-};
-
 
 //
 // Read This! MENU 1 & 2
@@ -734,30 +555,6 @@ menu_t  SaveDef =
     80,54,
     0
 };
-
-
-//
-// M_DrawCustomMenuText
-//  Draw several segments of patches to make up new text
-//
-void M_DrawCustomMenuText(char* name, int x, int y)
-{
-    for (int i = 0; i < custom_texts_count; ++i)
-    {
-        menu_custom_text_t* custom_text = menu_custom_texts + i;
-        if (strcmp(custom_text->name, name) == 0)
-        {
-            menu_custom_text_seg_t* seg = custom_text->segs;
-            while (seg->lump)
-            {
-                void* lump = W_CacheLumpName(seg->lump, PU_CACHE);
-                V_DrawPatchRectDirect(x + seg->offx, y, 0, lump, seg->x, seg->w);
-                ++seg;
-            }
-            break;
-        }
-    }
-}
 
 
 //
@@ -1095,12 +892,6 @@ void M_Sound(int choice)
 }
 
 
-void M_MouseOptions(int choice)
-{
-    M_SetupNextMenu(&MouseOptionsDef);
-}
-
-
 void M_SfxVol(int choice)
 {
     switch (choice)
@@ -1231,30 +1022,17 @@ void M_DrawOptions(void)
 {
     V_DrawPatchDirect(108, 15, 0, W_CacheLumpName("M_OPTTTL", PU_CACHE));
 
-    //V_DrawPatchDirect (OptionsDef.x + 175,OptionsDef.y+LINEHEIGHT*detail,0,
-    //                W_CacheLumpName(detailNames[detailLevel],PU_CACHE)); // Details do nothing?
+    V_DrawPatchDirect (OptionsDef.x + 175,OptionsDef.y+LINEHEIGHT*detail,0,
+                   W_CacheLumpName(detailNames[detailLevel],PU_CACHE)); // Details do nothing?
 
     V_DrawPatchDirect(OptionsDef.x + 120, OptionsDef.y + LINEHEIGHT * messages, 0,
                       W_CacheLumpName(msgNames[showMessages], PU_CACHE));
 
-    extern int always_run;
-    V_DrawPatchDirect(OptionsDef.x + 147, OptionsDef.y + LINEHEIGHT * always_run_opt, 0,
-                      W_CacheLumpName(msgNames[always_run], PU_CACHE));
+    M_DrawThermo(OptionsDef.x,OptionsDef.y+LINEHEIGHT*(mousesens+1),
+		 10,mouseSensitivity);
 
     M_DrawThermo(OptionsDef.x, OptionsDef.y + LINEHEIGHT * (scrnsize + 1),
                  9, screenSize);
-}
-
-
-void M_DrawMouseOptions(void)
-{
-    M_DrawCustomMenuText("TXT_MOPT", 74, 45);
-
-    V_DrawPatchDirect(MouseOptionsDef.x + 149, MouseOptionsDef.y + LINEHEIGHT * mousemov, 0,
-                      W_CacheLumpName(msgNames[mousemove], PU_CACHE));
-
-    M_DrawThermo(MouseOptionsDef.x, MouseOptionsDef.y + LINEHEIGHT * (mousesens + 1),
-                 10, mouseSensitivity);
 }
 
 
@@ -1277,26 +1055,6 @@ void M_ChangeMessages(int choice)
         players[consoleplayer].message = MSGOFF;
     else
         players[consoleplayer].message = MSGON;
-
-    message_dontfuckwithme = true;
-}
-
-
-//
-// Toggle always-run on/off
-//
-void M_ChangeAlwaysRun(int choice)
-{
-    extern int always_run;
-
-    // warning: unused parameter `int choice'
-    choice = 0;
-    always_run = 1 - always_run;
-
-    if (!always_run)
-        players[consoleplayer].message = ALWAYSRUNOFF;
-    else
-        players[consoleplayer].message = ALWAYSRUNON;
 
     message_dontfuckwithme = true;
 }
@@ -1389,8 +1147,12 @@ void M_ChangeDetail(int choice)
     choice = 0;
     detailLevel = 1 - detailLevel;
 
-    // FIXME - does not work. Remove anyway?
-    doom_print("M_ChangeDetail: low detail mode n.a.\n");
+    R_SetViewSize (screenblocks, detailLevel);
+
+    if (!detailLevel)
+	players[consoleplayer].message = DETAILHI;
+    else
+	players[consoleplayer].message = DETAILLO;
 }
 
 
@@ -2020,14 +1782,7 @@ void M_Drawer(void)
         menuitem_t* menuitem = currentMenu->menuitems + i;
         if (menuitem->name[0])
         {
-            if (strncmp(menuitem->name, "TXT_", 4) == 0)
-            {
-                M_DrawCustomMenuText(menuitem->name, x, y);
-            }
-            else
-            {
-                V_DrawPatchDirect(x, y, 0, W_CacheLumpName(menuitem->name, PU_CACHE));
-            }
+            V_DrawPatchDirect(x, y, 0, W_CacheLumpName(menuitem->name, PU_CACHE));
         }
         y += LINEHEIGHT;
     }
@@ -2077,38 +1832,6 @@ void M_Ticker(void)
 //
 void M_Init(void)
 {
-    doom_boolean hide_mouse = (doom_flags & DOOM_FLAG_HIDE_MOUSE_OPTIONS) ? true : false;
-    doom_boolean hide_sound = ((doom_flags & DOOM_FLAG_HIDE_MUSIC_OPTIONS) && (doom_flags & DOOM_FLAG_HIDE_SOUND_OPTIONS)) ? true : false;
-
-    OptionsMenu = OptionsMenuFull;
-    if (hide_mouse && !hide_sound)
-    {
-        OptionsMenu = OptionsMenuNoMouse;
-        memcpy(&OptionsDef, &OptionsNoMouseDef, sizeof(OptionsDef));
-    }
-    else if (!hide_mouse && hide_sound)
-    {
-        OptionsMenu = OptionsMenuNoSound;
-        memcpy(&OptionsDef, &OptionsNoSoundDef, sizeof(OptionsDef));
-    }
-    else if (hide_mouse && hide_sound)
-    {
-        OptionsMenu = OptionsMenuNoSoundNoMouse;
-        memcpy(&OptionsDef, &OptionsNoSoundNoMouseDef, sizeof(OptionsDef));
-    }
-
-    SoundMenu = SoundMenuFull;
-    if (doom_flags & DOOM_FLAG_HIDE_MUSIC_OPTIONS)
-    {
-        SoundMenu = SoundMenuNoMusic;
-        memcpy(&SoundDef, &SoundNoMusicDef, sizeof(SoundDef));
-    }
-    else if (doom_flags & DOOM_FLAG_HIDE_SOUND_OPTIONS)
-    {
-        SoundMenu = SoundMenuNoSFX;
-        memcpy(&SoundDef, &SoundNoSFXDef, sizeof(SoundDef));
-    }
-
     currentMenu = &MainDef;
     menuactive = 0;
     itemOn = currentMenu->lastOn;

@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define doom_abs(x) ((x) < 0 ? -(x) : (x))
+#define doom_abs(x) abs(x)
 
 
 extern char error_buf[260];
