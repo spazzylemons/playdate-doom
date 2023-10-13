@@ -364,10 +364,6 @@ void D_DoomLoop(void)
             int tic = I_GetTime();
             int maxtics = 3;
             while (maxtics > 0 && updatetics < tic) {
-                doom_print(doom_itoa(tic, 10));
-                doom_print(" ");
-                doom_print(doom_itoa(updatetics, 10));
-                doom_print("\n");
                 --maxtics;
                 ++updatetics;
                 I_StartTic();
