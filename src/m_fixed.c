@@ -49,11 +49,9 @@ fixed_t FixedDiv(fixed_t a, fixed_t b)
 
 fixed_t FixedDiv2(fixed_t a, fixed_t b)
 {
-    double c;
-
-    c = ((double)a) / ((double)b) * FRACUNIT;
-
-    if (c >= 2147483648.0 || c < -2147483648.0)
-        I_Error("Error: FixedDiv: divide by zero");
-    return (fixed_t)c;
+    // Doubles are not supported on Playdate hardware.
+    // We'll use integers here.
+    long long c;
+    c = ((long long)a<<16) / ((long long)b);
+    return (fixed_t) c;
 }
