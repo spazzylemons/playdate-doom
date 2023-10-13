@@ -160,10 +160,6 @@ int turnheld; // for accelerative turning
 doom_boolean mousearray[4];
 doom_boolean* mousebuttons = &mousearray[1]; // allow [-1]
 
-// mouse values are used once 
-int mousex;
-int mousey;
-
 int dclicktime;
 int dclickstate;
 int dclicks;
@@ -172,8 +168,6 @@ int dclickstate2;
 int dclicks2;
 
 // joystick values are repeated 
-int joyxmove;
-int joyymove;
 doom_boolean joyarray[5];
 doom_boolean* joybuttons = &joyarray[1]; // allow [-1] 
 
@@ -270,10 +264,7 @@ void G_BuildTiccmd(ticcmd_t* cmd)
 
     // use two stage accelerative turning
     // on the keyboard and joystick
-    if (joyxmove < 0
-        || joyxmove > 0
-        || gamekeydown[key_right]
-        || gamekeydown[key_left])
+    if (gamekeydown[key_right] || gamekeydown[key_left])
         turnheld += ticdup;
     else
         turnheld = 0;
@@ -294,10 +285,6 @@ void G_BuildTiccmd(ticcmd_t* cmd)
         {
             side -= sidemove[speed];
         }
-        if (joyxmove > 0)
-            side += sidemove[speed];
-        if (joyxmove < 0)
-            side -= sidemove[speed];
 
     }
     else
@@ -305,10 +292,6 @@ void G_BuildTiccmd(ticcmd_t* cmd)
         if (gamekeydown[key_right])
             cmd->angleturn -= angleturn[tspeed];
         if (gamekeydown[key_left])
-            cmd->angleturn += angleturn[tspeed];
-        if (joyxmove > 0)
-            cmd->angleturn -= angleturn[tspeed];
-        if (joyxmove < 0)
             cmd->angleturn += angleturn[tspeed];
     }
 
@@ -320,10 +303,6 @@ void G_BuildTiccmd(ticcmd_t* cmd)
     {
         forward -= forwardmove[speed];
     }
-    if (joyymove < 0)
-        forward += forwardmove[speed];
-    if (joyymove > 0)
-        forward -= forwardmove[speed];
     if (gamekeydown[key_straferight])
         side += sidemove[speed];
     if (gamekeydown[key_strafeleft])
@@ -407,15 +386,6 @@ void G_BuildTiccmd(ticcmd_t* cmd)
         }
     }
 
-    if (mousemove)
-        forward += mousey;
-    if (strafe)
-        side += mousex * 2;
-    else
-        cmd->angleturn -= mousex * 0x8;
-
-    mousex = mousey = 0;
-
     if (forward > MAXPLMOVE)
         forward = MAXPLMOVE;
     else if (forward < -MAXPLMOVE)
@@ -493,8 +463,6 @@ void G_DoLoadLevel(void)
 
     // clear cmd building stuff
     memset(gamekeydown, 0, sizeof(gamekeydown));
-    joyxmove = joyymove = 0;
-    mousex = mousey = 0;
     sendpause = sendsave = paused = false;
     memset(mousebuttons, 0, sizeof(*mousebuttons) * 3);
     memset(joybuttons, 0, sizeof(*joybuttons) * 4);
@@ -526,9 +494,7 @@ doom_boolean G_Responder(event_t* ev)
         (demoplayback || gamestate == GS_DEMOSCREEN)
         )
     {
-        if (ev->type == ev_keydown ||
-            (ev->type == ev_mouse && ev->data1) ||
-            (ev->type == ev_joystick && ev->data1))
+        if (ev->type == ev_keydown)
         {
             M_StartControlPanel();
             return true;
@@ -575,23 +541,6 @@ doom_boolean G_Responder(event_t* ev)
             if (ev->data1 < NUMKEYS)
                 gamekeydown[ev->data1] = false;
             return false;   // always let key up events filter down 
-
-        case ev_mouse:
-            mousebuttons[0] = ev->data1 & 1;
-            mousebuttons[1] = ev->data1 & 2;
-            mousebuttons[2] = ev->data1 & 4;
-            mousex = ev->data2 * (mouseSensitivity + 5) / 10;
-            mousey = ev->data3 * (mouseSensitivity + 5) / 10;
-            return true;    // eat events 
-
-        case ev_joystick:
-            joybuttons[0] = ev->data1 & 1;
-            joybuttons[1] = ev->data1 & 2;
-            joybuttons[2] = ev->data1 & 4;
-            joybuttons[3] = ev->data1 & 8;
-            joyxmove = ev->data2;
-            joyymove = ev->data3;
-            return true;    // eat events 
 
         default:
             break;

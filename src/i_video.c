@@ -54,8 +54,6 @@ doom_boolean shmFinished;
 // According to Dave Taylor, it still is a bonehead thing
 // to use ....
 static int multiply = 1;
-static int lastmousex = 0;
-static int lastmousey = 0;
 
 
 void I_ShutdownGraphics(void)

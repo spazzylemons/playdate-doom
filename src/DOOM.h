@@ -175,9 +175,6 @@ unsigned long doom_tick_midi(void);
 // Events
 void doom_key_down(doom_key_t key);
 void doom_key_up(doom_key_t key);
-void doom_button_down(doom_button_t button);
-void doom_button_up(doom_button_t button);
-void doom_mouse_move(int delta_x, int delta_y);
 
 
 #ifdef __cplusplus
