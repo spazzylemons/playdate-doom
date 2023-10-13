@@ -149,7 +149,7 @@ void recalculate_lighting(const uint8_t *palette) {
         uint8_t red = *palette++;
         uint8_t green = *palette++;
         uint8_t blue = *palette++;
-        brightness[i] = (uint8_t) (red * 0.299f + green * 0.587f + blue * 0.114f) / 15;
+        brightness[i] = (uint8_t) ((red * 0.299f + green * 0.587f + blue * 0.114f) / 15.058823529411764f);
     }
 }
 
@@ -349,7 +349,8 @@ static int music_callback(void* context, int16_t* left, int16_t* right, int len)
 
 void I_Quit(void);
 
-static char *argv[] = { "doom", NULL };
+// Instruct doom to load the graphics patches
+static char *argv[] = { "doom", "-file", "/playdate.wad", NULL };
 
 #ifdef _WINDLL
 __declspec(dllexport)
@@ -360,7 +361,7 @@ int eventHandler(PlaydateAPI* pd, PDSystemEvent event, uint32_t arg) {
 
         // match DOOM tic rate
         playdate->display->setRefreshRate(35.0f);
-        doom_init(1, argv, 0);
+        doom_init(3, argv, 0);
 
         playdate->sound->addSource(sound_callback, NULL, 1);
         playdate->sound->addSource(music_callback, NULL, 0);
