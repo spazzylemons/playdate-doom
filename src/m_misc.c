@@ -133,7 +133,6 @@ extern byte scantokey[128];
 
 int usemouse;
 int usejoystick;
-int always_run;
 
 // Fill remaining default fields that aren't used
 #define DEFAULTFIELDS 0, 0, NULL, NULL
@@ -171,7 +170,6 @@ default_t defaults[] =
 
     {"screenblocks",&screenblocks, 9, DEFAULTFIELDS},
     {"detaillevel",&detailLevel, 0, DEFAULTFIELDS},
-    {"always_run",&always_run, 0, DEFAULTFIELDS},
 
     {"snd_channels",&numChannels, 3, DEFAULTFIELDS},
 

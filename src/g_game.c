@@ -256,8 +256,9 @@ void G_BuildTiccmd(ticcmd_t* cmd)
     strafe = gamekeydown[key_strafe] || mousebuttons[mousebstrafe]
         || joybuttons[joybstrafe];
 
-    extern int always_run;
-    doom_boolean running = always_run ? (gamekeydown[key_speed] ? false : true) : (gamekeydown[key_speed] ? true : false);
+    // Not enough buttons on Playdate to have a run toggle, so we just leave it on.
+    // Besides, how often in Doom do you *not* want to be running?
+    doom_boolean running = true;
     speed = running || joybuttons[joybspeed];
 
     forward = side = 0;
