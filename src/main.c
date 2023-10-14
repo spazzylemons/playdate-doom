@@ -1,4 +1,5 @@
 #include "DOOM.h"
+#include "m_menu.h"
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -151,6 +152,8 @@ void recalculate_lighting(const uint8_t *palette) {
     }
 }
 
+int M_OnMainMenu(void);
+
 extern int menuactive;
 extern uint8_t *screens[5];
 
@@ -161,7 +164,11 @@ static int update(void *userdata) {
         PDButtons mask = 1 << i;
         if (pressed & mask) {
             if (keybinds_2[i] != DOOM_KEY_UNKNOWN && menuactive) {
-                doom_key_down(keybinds_2[i]);
+                if (M_OnMainMenu() && keybinds_2[i] == DOOM_KEY_BACKSPACE) {
+                    doom_key_down(DOOM_KEY_ESCAPE);
+                } else {
+                    doom_key_down(keybinds_2[i]);
+                }
             } else {
                 doom_key_down(keybinds_1[i]);
             }
@@ -169,7 +176,11 @@ static int update(void *userdata) {
 
         if (released & mask) {
             if (keybinds_2[i] != DOOM_KEY_UNKNOWN && menuactive) {
-                doom_key_up(keybinds_2[i]);
+                if (M_OnMainMenu() && keybinds_2[i] == DOOM_KEY_BACKSPACE) {
+                    doom_key_up(DOOM_KEY_ESCAPE);
+                } else {
+                    doom_key_up(keybinds_2[i]);
+                }
             } else {
                 doom_key_up(keybinds_1[i]);
             }
@@ -344,8 +355,10 @@ static int music_callback(void* context, int16_t* left, int16_t* right, int len)
 }
 
 void onDoomMenu(void *userdata) {
-    doom_key_down(DOOM_KEY_ESCAPE);
-    doom_key_up(DOOM_KEY_ESCAPE);
+    if (!menuactive) {
+        doom_key_down(DOOM_KEY_ESCAPE);
+        doom_key_up(DOOM_KEY_ESCAPE);
+    }
 }
 
 void I_Quit(void);

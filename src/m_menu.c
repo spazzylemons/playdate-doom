@@ -270,6 +270,10 @@ menu_t  MainDef =
     0
 };
 
+int M_OnMainMenu(void) {
+    return currentMenu == &MainDef;
+}
+
 
 //
 // EPISODE SELECT
