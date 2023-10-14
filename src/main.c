@@ -1,5 +1,9 @@
 #include "DOOM.h"
+#include "d_player.h"
 #include "m_menu.h"
+
+extern player_t players[MAXPLAYERS];
+extern gamestate_t gamestate;
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -157,6 +161,32 @@ int M_OnMainMenu(void);
 extern int menuactive;
 extern uint8_t *screens[5];
 
+// Cycle to the next or previous weapon.
+static void cycle_weapon(bool forward) {
+    player_t *player = &players[0];
+    // If we're pending a weapon change, use that as the basis, otherwise use
+    // what we're currently wielding.
+    weapontype_t weapon;
+    if (player->pendingweapon == wp_nochange) {
+        weapon = player->readyweapon;
+    } else {
+        weapon = player->pendingweapon;
+    }
+    // Go through the list in the direction specified until we find a weapon we own.
+    do {
+        if (forward) {
+            weapon = (weapon + 1) % NUMWEAPONS;
+        } else {
+            weapon = (weapon + (NUMWEAPONS - 1)) % NUMWEAPONS;
+        }
+    } while (!player->weaponowned[weapon]);
+    // Request a weapon change.
+    player->pendingweapon = weapon;
+}
+
+static float lastAngle = 0.0f;
+static bool wasDocked = true;
+
 static int update(void *userdata) {
     PDButtons pressed, released;
     playdate->system->getButtonState(NULL, &pressed, &released);
@@ -184,6 +214,26 @@ static int update(void *userdata) {
             } else {
                 doom_key_up(keybinds_1[i]);
             }
+        }
+    }
+
+    if (gamestate == GS_LEVEL) {
+        bool isDocked = playdate->system->isCrankDocked();
+        if (wasDocked && !isDocked) {
+            lastAngle = playdate->system->getCrankAngle();
+        }
+        wasDocked = isDocked;
+        if (!isDocked) {
+            float newAngle = playdate->system->getCrankAngle();
+            if (floorf(lastAngle / 90.0f) != floorf(newAngle / 90.0f)) {
+                float change = playdate->system->getCrankChange();
+                if (change > 0.0f) {
+                    cycle_weapon(1);
+                } else {
+                    cycle_weapon(-1);
+                }
+            }
+            lastAngle = newAngle;
         }
     }
 
