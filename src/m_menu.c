@@ -750,7 +750,7 @@ void M_SaveGame(int choice)
 //
 void M_QuickSaveResponse(int ch)
 {
-    if (ch == 'y')
+    if (ch == KEY_ENTER)
     {
         M_DoSave(quickSaveSlot);
         S_StartSound(0, sfx_swtchx);
@@ -790,7 +790,7 @@ void M_QuickSave(void)
 //
 void M_QuickLoadResponse(int ch)
 {
-    if (ch == 'y')
+    if (ch == KEY_ENTER)
     {
         M_LoadSelect(quickSaveSlot);
         S_StartSound(0, sfx_swtchx);
@@ -976,7 +976,7 @@ void M_DrawEpisode(void)
 
 void M_VerifyNightmare(int ch)
 {
-    if (ch != 'y')
+    if (ch != KEY_ENTER)
         return;
 
     G_DeferedInitNew((skill_t) nightmare, epi + 1, 1);
@@ -1069,7 +1069,7 @@ void M_ChangeMessages(int choice)
 //
 void M_EndGameResponse(int ch)
 {
-    if (ch != 'y')
+    if (ch != KEY_ENTER)
         return;
 
     currentMenu->lastOn = itemOn;
@@ -1398,7 +1398,7 @@ doom_boolean M_Responder(event_t* ev)
     if (messageToPrint)
     {
         if (messageNeedsInput == true &&
-            !(ch == ' ' || ch == 'n' || ch == 'y' || ch == KEY_ESCAPE))
+            !(ch == ' ' || ch == KEY_BACKSPACE || ch == KEY_ENTER || ch == KEY_ESCAPE))
             return false;
 
         menuactive = messageLastMenuActive;
