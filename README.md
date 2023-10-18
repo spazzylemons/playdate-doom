@@ -1,6 +1,6 @@
 # DOOM Playdate port
 
-Based on PureDOOM.
+Based on PureDOOM. OPL emulation from Chocolate Doom.
 
 ## Building
 
